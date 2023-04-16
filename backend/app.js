@@ -14,6 +14,9 @@ const routes = require("./routes");
 const { environment } = require('./config');
 const isProduction = environment === 'production';
 
+// import the Error Validation handler
+const { ValidationError } = require('sequelize');
+
 // initialize Express application
 const app = express();
 
@@ -52,6 +55,42 @@ app.use(
 
 // tie in the routes
 app.use(routes);
+
+// after the routes, we didn't catch whatever the request was, and that's bad
+// Catch unhandled requests and forward to error handler.
+app.use((_req, _res, next) => {
+    const err = new Error("The requested resource couldn't be found.");
+    err.title = "Resource Not Found";
+    err.errors = { message: "The requested resource couldn't be found." };
+    err.status = 404;
+    next(err);
+});
+
+// handle Sequelize ValidationErrors
+app.use((err, _req, _res, next) => {
+    // check if error is a Sequelize error:
+    if (err instanceof ValidationError) {
+        let errors = {};
+        for (let error of err.errors) {
+            errors[error.path] = error.message;
+        }
+        err.title = 'Validation error';
+        err.errors = errors;
+    }
+    next(err);
+});
+
+// Error formatter
+app.use((err, _req, res, _next) => {
+    res.status(err.status || 500);
+    console.error(err);
+    res.json({
+        title: err.title || 'Server Error',
+        message: err.message,
+        errors: err.errors,
+        stack: isProduction ? null : err.stack
+    });
+});
 
 // export the application for use
 module.exports = app;
