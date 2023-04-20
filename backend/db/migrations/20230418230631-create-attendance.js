@@ -18,13 +18,19 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       eventId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Events"
+        }
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Users"
+        }
       },
       status: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM('attending', 'waitlist', 'pending')
       },
       createdAt: {
         allowNull: false,
@@ -37,6 +43,7 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Attendances');
+    options.tableName = "Groups";
+    await queryInterface.dropTable(options);
   }
 };

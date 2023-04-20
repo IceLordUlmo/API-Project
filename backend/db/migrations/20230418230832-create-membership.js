@@ -18,13 +18,19 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'User'
+        }
       },
       groupId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Group'
+        }
       },
       status: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM('co-host', 'member', 'pending')
       },
       createdAt: {
         allowNull: false,
@@ -37,6 +43,7 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Memberships');
+    options.tableName = "Groups";
+    await queryInterface.dropTable(options);
   }
 };

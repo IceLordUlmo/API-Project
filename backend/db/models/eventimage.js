@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      EventImage.belongsTo(models.Event, {
+        otherKey: 'eventId'
+      })
     }
   }
   EventImage.init({

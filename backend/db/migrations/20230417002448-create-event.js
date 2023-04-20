@@ -17,10 +17,16 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       venueId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Venues"
+        }
       },
       groupId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Group'
+        }
       },
       name: {
         type: Sequelize.STRING
@@ -29,7 +35,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       type: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM("Online", "In Person")
       },
       capacity: {
         type: Sequelize.INTEGER
@@ -54,6 +60,7 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Events');
+    options.tableName = "Groups";
+    await queryInterface.dropTable(options);
   }
 };

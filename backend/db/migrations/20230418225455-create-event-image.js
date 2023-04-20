@@ -17,7 +17,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       eventId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Events'
+        }
       },
       url: {
         type: Sequelize.STRING
@@ -36,6 +39,7 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('EventImages');
+    options.tableName = "Groups";
+    await queryInterface.dropTable(options);
   }
 };
