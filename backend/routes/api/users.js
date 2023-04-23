@@ -17,7 +17,7 @@ const validateSignup = [
     check('email')
         .exists({ checkFalsy: true })
         .isEmail()
-        .withMessage('Please provide a valid email.'),
+        .withMessage('Invalid email'),
     check('username')
         .exists({ checkFalsy: true })
         .isLength({ min: 4 })
@@ -32,10 +32,10 @@ const validateSignup = [
         .withMessage('Password must be 6 characters or more.'),
     check('firstName')
         .exists({ checkFalsy: true })
-        .withMessage('First name must exist.'),
+        .withMessage('First Name is required'),
     check('lastName')
         .exists({ checkFalsy: true })
-        .withMessage('Last name must exist.'),
+        .withMessage('Last Name is required'),
     handleValidationErrors
 ];
 
