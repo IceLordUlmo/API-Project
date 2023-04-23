@@ -27,7 +27,13 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.ENUM("Online", "In Person"),
     private: DataTypes.BOOLEAN,
     city: DataTypes.STRING,
-    state: DataTypes.STRING
+    state: DataTypes.STRING,
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    }
   }, {
     sequelize,
     modelName: 'Group',
