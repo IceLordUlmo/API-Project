@@ -14,14 +14,11 @@ const { Membership } = require('../../db/models');
 const { User } = require('../../db/models');
 const { Venue } = require('../../db/models');
 const router = express.Router();
-const attendeeRouter = require('./attendees.js')
 
 // import express validator and function to validate request bodies
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
-
-router.use(attendeeRouter);
 
 // get all events
 
