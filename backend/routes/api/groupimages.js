@@ -52,7 +52,7 @@ router.delete("/:imageId", requireAuth, async (req, res) => {
     })
 
     let organizerId = groupForDeletedGroupImage.organizerId;
-    // this is feeling very convoluted
+
     // if there's no cohost membership and we're not the organizer
     if (!cohostMembershipOfTheUser &&
         organizerId !== userId) {
