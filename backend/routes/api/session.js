@@ -20,7 +20,7 @@ const validateLogin = [
         .withMessage('Please provide a valid email or username.'),
     check('password')
         .exists({ checkFalsy: true })
-        .withMessage('Please provide a password.'),
+        .withMessage('Password is required.'),
     handleValidationErrors
 ];
 
@@ -40,12 +40,14 @@ router.post(
             }
         });
 
-        if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
+        if (!user ||
+            !bcrypt.compareSync(password, user.hashedPassword.toString())) {
             const err = new Error('Login failed');
-            err.status = 401;
+            err.status = 401; /// might not need this anymore
+            res.status(401);
             err.title = 'Login failed';
-            err.errors = { credential: 'The provided credentials were invalid.' };
-            return next(err);
+            err.errors = { message: 'Invalid credentials' };
+            return res.json(err.errors);
         }
 
         const safeUser = {
