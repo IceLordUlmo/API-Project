@@ -15,7 +15,6 @@ const Group = require('../../db/models/group');
 const Membership = require('../../db/models/membership');
 const GroupImage = require('../../db/models/groupimage');
 const Venue = require('../../db/models/venue');
-const User = require('../../db/models/user');
 const membership = require('../../db/models/membership');
 
 
