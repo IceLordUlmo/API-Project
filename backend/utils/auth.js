@@ -71,15 +71,6 @@ const requireAuth = function (req, _res, next) {
     return next(err);
 }
 
-
-const assignToCredential = ((req, res, next) => {
-    //console.log(req.body)
-    const { userName, email } = req.body;
-
-    req.body.credential = (userName) ? userName : email
-
-    next();
-})
 // export the three functions, Set Token Cookie, Restore User, and Require Auth
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, assignToCredential };
+module.exports = { setTokenCookie, restoreUser, requireAuth };
