@@ -478,6 +478,8 @@ router.post('/:groupId/venues', requireAuth, async (req, res) => {
     return res.json(objectifyVenue);
 })
 
+
+// get all events from a group by groupId
 router.get('/:groupId/events', async (req, res) => {
     const { groupId } = req.params;
     const requestedGroupId = groupId;
@@ -513,6 +515,14 @@ router.get('/:groupId/events', async (req, res) => {
         ]
     })
 
+    if (groupEvents.length === 0) {
+        res.status(404);
+        return res.json(
+            {
+                'message': "No events found for group"
+            })
+    }
+
     for (let event of groupEvents) {
         // attach the image
         const eventImage = await EventImage.findOne({
@@ -538,47 +548,7 @@ router.get('/:groupId/events', async (req, res) => {
     return res.json(objectifyGroupEvents);
 })
 
-// get event details by eventId
 
-router.get("/:eventId", async (req, res) => {
-    const { eventId } = req.params;
-    const requestedEventId = eventId;
-    const requestedEvent = await Event.findOne({
-        where: {
-            id: requestedEventId
-        },
-        include: [{
-            model: Group,
-            attributes: ["id", "name", "private", "city", "state"]
-        },
-        {
-            model: EventImage,
-            attributes: ["id", "url", "preview"]
-        }, {
-            model: Venue,
-            attributes: ["id", "address", "city", "state", "lat", "lng"]
-        }
-        ],
-        attributes: ["id", "groupId", "venueId", "name", "description", "type", "capacity", "price", "startDate", "endDate"]
-    })
-
-    if (!requestedEvent) {
-        res.status(404)
-        res.json(
-            {
-                'message': "Event couldn't be found"
-            }
-        )
-    }
-
-    let attendanceCount = await Attendance.count({ where: { eventId: requestedEventId } })
-
-    requestedEvent.dataValues.numAttending = attendanceCount;
-
-    objectifyEvent = requestedEvent; // I guess we don't need to do this but it's for consistency
-
-    return res.json(objectifyEvent);
-})
 
 // create an event for a group by groupId
 router.post("/:groupId/events", requireAuth, async (req, res) => {

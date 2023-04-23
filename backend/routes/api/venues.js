@@ -34,11 +34,15 @@ router.put("/:venueId", requireAuth, async (req, res) => {
         errorList.state = "State is required";
         errorFlag = true;
     }
-    if (isNaN(lat)) {
+    if (lat < -90 ||
+        lat > 90 ||
+        typeof lat != "number") {
         errorList.lat = 'Latitude is not valid'
         errorFlag = true;
     }
-    if (isNaN(lng)) {
+    if (lng < -180 ||
+        lng > 180 ||
+        typeof lng != "number") {
         errorList.lng = 'Longitude is not valid'
         errorFlag = true;
     }

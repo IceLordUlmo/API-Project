@@ -137,6 +137,46 @@ router.get('/', async (req, res, next) => {
     return res.json(objectifyAllEvents);
 })
 
+// get event details by eventId
 
+router.get("/:eventId", async (req, res) => {
+    const { eventId } = req.params;
+    const requestedEventId = eventId;
+    const requestedEvent = await Event.findOne({
+        where: {
+            id: requestedEventId
+        },
+        include: [{
+            model: Group,
+            attributes: ["id", "name", "private", "city", "state"]
+        },
+        {
+            model: EventImage,
+            attributes: ["id", "url", "preview"]
+        }, {
+            model: Venue,
+            attributes: ["id", "address", "city", "state", "lat", "lng"]
+        }
+        ],
+        attributes: ["id", "groupId", "venueId", "name", "description", "type", "capacity", "price", "startDate", "endDate"]
+    })
+
+    if (!requestedEvent) {
+        res.status(404)
+        res.json(
+            {
+                'message': "Event couldn't be found"
+            }
+        )
+    }
+
+    let attendanceCount = await Attendance.count({ where: { eventId: requestedEventId } })
+
+    requestedEvent.dataValues.numAttending = attendanceCount;
+
+    objectifyEvent = requestedEvent; // I guess we don't need to do this but it's for consistency
+
+    return res.json(objectifyEvent);
+})
 // export it
 module.exports = router;
