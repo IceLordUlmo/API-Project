@@ -364,14 +364,14 @@ router.get("/:groupId/venues", requireAuth, async (req, res) => {
         return res.json({ 'message': "Group couldn't be found" })
     };
 
-    const cohostMemberships = await Memberships.findAll({
+    const cohostMemberships = await Membership.findAll({
         where: {
             userId: req.user.id,
             status: "co-host"
         }
     })
 
-    const cohostedGroups = memberships.map(membership => { return membership.groupId })
+    const cohostedGroups = cohostMemberships.map(membership => { return membership.groupId })
 
     let currentUserId = req.user.id
     let organizerId = requestedGroup.organizerId
@@ -436,14 +436,14 @@ router.post('/:groupId/venues', requireAuth, async (req, res) => {
         })
     }
 
-    const cohostMemberships = await Memberships.findAll({
+    const cohostMemberships = await Membership.findAll({
         where: {
             userId: req.user.id,
             status: "co-host"
         }
     })
 
-    const cohostedGroups = memberships.map(membership => { return membership.groupId })
+    const cohostedGroups = cohostMemberships.map(membership => { return membership.groupId })
 
     let currentUserId = req.user.id
     let organizerId = requestedGroup.organizerId
