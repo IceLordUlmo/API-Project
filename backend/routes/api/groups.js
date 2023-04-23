@@ -230,7 +230,7 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
     let organizerId = groupToAddImageTo.organizerId
 
     if (currentUserId != organizerId) {
-        let error = { 'message': 'Forbidden' }
+        let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
         res.status(403);
         return res.json(error)
     }
@@ -339,7 +339,7 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
     let organizerId = groupToBeDeleted.organizerId
 
     if (currentUserId != organizerId) {
-        let error = { 'message': 'Forbidden' }
+        let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
         res.status(403);
         return res.json(error)
     }
@@ -478,8 +478,227 @@ router.post('/:groupId/venues', requireAuth, async (req, res) => {
     return res.json(objectifyVenue);
 })
 
-router.use((err, req, res, next) => {
-    return res.json(err.errors)
+router.get('/:groupId/events', async (req, res) => {
+    const { groupId } = req.params;
+    const requestedGroupId = groupId;
+    const requestedGroup = await Group.findAll({
+        where: {
+            id: requestedGroupId
+        }
+    });
+
+    if (requestedGroup.length === 0) {
+        // didn't find the group
+        res.status(404)
+        return res.json(
+            {
+                'message': "Group couldn't be found"
+            })
+    }
+
+    const groupEvents = await Event.findAll({
+        where: {
+            groupId: requestedGroupId
+        },
+        attributes: ["id", "groupId", "venueId", "name", "type", "startDate", "endDate"],
+        include: [
+            {
+                model: Venue,
+                attributes: ["id", "city", "state"]
+            },
+            {
+                model: Group,
+                attributes: ["id", "name", "city", "state"]
+            }
+        ]
+    })
+
+    for (let event of groupEvents) {
+        // attach the image
+        const eventImage = await EventImage.findOne({
+            where: {
+                eventId: eventId,
+                preview: true
+            }
+        })
+        event.dataValues.previewImage = eventImage ? eventImage.url : null;
+
+        // attach the attendance count
+        let eventId = event.id
+        const attendanceCount = await Attendance.count({
+            where: {
+                eventId: eventId
+            }
+        })
+        event.dataValues.numAttending = attendanceCount;
+    }
+
+    const objectifyGroupEvents = { 'Events': groupEvents }
+
+    return res.json(objectifyGroupEvents);
+})
+
+// get event details by eventId
+
+router.get("/:eventId", async (req, res) => {
+    const { eventId } = req.params;
+    const requestedEventId = eventId;
+    const requestedEvent = await Event.findOne({
+        where: {
+            id: requestedEventId
+        },
+        include: [{
+            model: Group,
+            attributes: ["id", "name", "private", "city", "state"]
+        },
+        {
+            model: EventImage,
+            attributes: ["id", "url", "preview"]
+        }, {
+            model: Venue,
+            attributes: ["id", "address", "city", "state", "lat", "lng"]
+        }
+        ],
+        attributes: ["id", "groupId", "venueId", "name", "description", "type", "capacity", "price", "startDate", "endDate"]
+    })
+
+    if (!requestedEvent) {
+        res.status(404)
+        res.json(
+            {
+                'message': "Event couldn't be found"
+            }
+        )
+    }
+
+    let attendanceCount = await Attendance.count({ where: { eventId: requestedEventId } })
+
+    requestedEvent.dataValues.numAttending = attendanceCount;
+
+    objectifyEvent = requestedEvent; // I guess we don't need to do this but it's for consistency
+
+    return res.json(objectifyEvent);
+})
+
+// create an event for a group by groupId
+router.post("/:groupId/events", requireAuth, async (req, res) => {
+    const { groupId } = req.params;
+    const requestedGroupId = groupId;
+    const userId = req.user.id;
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+
+    const destinationGroup = await Group.findOne({
+        where: { id: requestedGroupId }
+    })
+
+    if (!destinationGroup) {
+        res.status(404)
+        return res.json(
+            {
+                'message': "Group couldn't be found"
+            }
+        )
+    }
+
+    const cohostMembershipOfTheUser = await Membership.findOne({
+        where: {
+            groupId: requestedGroupId,
+            status: "co-host",
+            userId: userId
+        }
+    })
+
+    let organizerId = destinationGroup.organizerId;
+
+    // if there's no cohost membership and we're not the organizer
+    if (!cohostMembershipOfTheUser &&
+        organizerId !== userId) {
+        let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
+        res.status(403);
+        return res.json(error)
+    }
+
+    let venueLookup = await Venue.findOne({
+        where: {
+            id: venueId
+        }
+    })
+
+    let errorList = {};
+    let errorFlag = false;
+    let now = new Date();
+
+    if (!venueLookup) {
+        errorList.venueId = "Venue does not exist"
+        errorFlag = true;
+    }
+    const startDateComparable = new Date(startDate).toDateString();
+    const endDateComparable = new Date(endDate).toDateString();
+    if (now > startDateComparable) {
+        errorList.startDate = "Start date must be in the future"
+        errorFlag = true;
+    }
+    if (startDateComparable > endDateComparable) {
+        errorList.endDate = "End date is less than start date"
+        errorFlag = true;
+    }
+    if (name.length < 5) {
+        errorList.name = "Name must be at least 5 characters"
+        errorFlag = true;
+    }
+    if (type !== "Online" && type !== "In Person") {
+        errorList.type = "Type must be Online or In person"
+        errorFlag = true;
+    }
+    if (!Number.isInteger(capacity)) {
+        errorList.capacity = "Capacity must be an integer"
+        errorFlag = true;
+    }
+    if (typeof price !== 'number') {
+        errorList.price = "Price is invalid"
+        errorFlag = true;
+    }
+    if (!description) {
+        errorList.description = "Description is required"
+        errorFlag = true;
+    }
+
+    if (errorFlag) {
+        res.status(400)
+        return res.json({
+            "message": "Bad Request",
+            errorList
+        })
+    }
+
+    const createdEvent = await Event.create({
+        venueId,
+        groupId,
+        name,
+        description,
+        type,
+        capacity,
+        price,
+        startDate,
+        endDate
+    })
+
+    res.status(200)
+
+    objectifyCreatedEvent = {
+        id: createdEvent.dataValues.id,
+        groupId: createdEvent.dataValues.groupId,
+        venueId: createdEvent.dataValues.venueId,
+        name: createdEvent.dataValues.name,
+        type: createdEvent.dataValues.type,
+        capacity: createdEvent.dataValues.capacity,
+        price: evcreatedEventent.dataValues.price,
+        description: createdEvent.dataValues.description,
+        startDate: createdEvent.dataValues.startDate,
+        endDate: createdEvent.dataValues.endDate
+    }
+
+    return res.json()
 })
 
 // export it
