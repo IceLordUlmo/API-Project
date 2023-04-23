@@ -67,6 +67,12 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           len: [60, 60]
         }
+      },
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
       }
     },
     {
