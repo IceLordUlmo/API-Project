@@ -692,7 +692,7 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
         name: createdEvent.dataValues.name,
         type: createdEvent.dataValues.type,
         capacity: createdEvent.dataValues.capacity,
-        price: evcreatedEventent.dataValues.price,
+        price: createdEvent.dataValues.price,
         description: createdEvent.dataValues.description,
         startDate: createdEvent.dataValues.startDate,
         endDate: createdEvent.dataValues.endDate
@@ -700,6 +700,7 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
 
     return res.json()
 })
+
 
 // export it
 module.exports = router;
