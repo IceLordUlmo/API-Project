@@ -34,8 +34,8 @@ module.exports = {
         about: "We like missiles.",
         type: "Online",
         private: true,
-        city: null,
-        state: null
+        city: "Malchizedek",
+        state: "Ofmind"
       },
       {
         organizerId: 4,
@@ -43,15 +43,15 @@ module.exports = {
         about: "Don't leave your drones behind",
         type: "Online",
         private: true,
-        city: null,
-        state: null
+        city: "Kronos",
+        state: "Atron"
       }
     ], {})
   },
 
   async down(queryInterface, Sequelize) {
     options.tableName = 'Groups';
-    // const Op = Sequelize.Op;
+
     await queryInterface.bulkDelete(options);
   }
 };
