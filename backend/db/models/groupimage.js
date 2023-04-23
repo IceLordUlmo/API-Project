@@ -18,7 +18,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   GroupImage.init({
     url: DataTypes.STRING,
-    preview: DataTypes.BOOLEAN
+    preview: DataTypes.BOOLEAN,
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    }
   }, {
     sequelize,
     modelName: 'GroupImage',
