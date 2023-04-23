@@ -350,6 +350,135 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
     return res.json(objectifyDeletion)
 })
 
+// get all venues for a group by groupId
+
+router.get("/:groupId/venues", requireAuth, async (req, res) => {
+    const { groupId } = req.params;
+    const requestedGroup = await Group.findOne({
+        where: {
+            id: groupId
+        }
+    });
+
+    if (!requestedGroup) {
+        res.status(404);
+        return res.json({ 'message': "Group couldn't be found" })
+    };
+
+    const cohostMemberships = await Memberships.findAll({
+        where: {
+            userId: req.user.id,
+            status: "co-host"
+        }
+    })
+
+    const cohostedGroups = memberships.map(membership => { return membership.groupId })
+
+    let currentUserId = req.user.id
+    let organizerId = requestedGroup.organizerId
+
+    if (currentUserId != organizerId) {
+        if (!cohostedGroups.includes(groupId)) {
+            let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
+            res.status(403);
+            return res.json(error)
+        }
+    }
+
+    //we get this far, we're the organizer or the cohost and we found the group, lets go
+
+    const venuesOfGroup = await Venue.findAll({
+        where: {
+            groupId: groupId
+        },
+        attributes: ["id", "groupId", "address", "city", "state", "lat", "lng"]
+    })
+
+    objectifyVenues = { 'Venues': venuesOfGroup }
+
+    return res.json(objectifyVenues);
+})
+
+
+// create new venue by groupId
+
+router.post('/:groupId/venues', requireAuth, async (req, res) => {
+    const { address, city, state, lat, lng } = req.body;
+    const { groupId } = req.params;
+
+    let errorFlag = false;
+    const errorList = {};
+    if (!address) {
+        errorList.address = 'Street address is required';
+        errorFlag = true;
+    }
+    if (!city) {
+        errorList.city = 'City is required';
+        errorFlag = true;
+    }
+    if (!state) {
+        errorList.state = "State is required";
+        errorFlag = true;
+    }
+    if (isNaN(lat)) {
+        errorList.lat = 'Latitude is not valid'
+        errorFlag = true;
+    }
+    if (isNaN(lng)) {
+        errorList.lng = 'Longitude is not valid'
+        errorFlag = true;
+    }
+
+    if (errorFlag) {
+        res.status(400)
+        return res.json({
+            "message": "Bad Request",
+            errorList
+        })
+    }
+
+    const cohostMemberships = await Memberships.findAll({
+        where: {
+            userId: req.user.id,
+            status: "co-host"
+        }
+    })
+
+    const cohostedGroups = memberships.map(membership => { return membership.groupId })
+
+    let currentUserId = req.user.id
+    let organizerId = requestedGroup.organizerId
+
+    if (currentUserId != organizerId) {
+        if (!cohostedGroups.includes(groupId)) {
+            let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
+            res.status(403);
+            return res.json(error)
+        }
+    }
+
+    const newVenue = await Venue.create({
+        groupId: groupId,
+        address: address,
+        city: city,
+        state: state,
+        lat: lat,
+        lng: lng
+    });
+
+    objectifyVenue = {
+        id: newVenue.id,
+        groupId: newVenue.groupId,
+        address: newVenue.address,
+        city: newVenue.city,
+        state: newVenue.state,
+        lat: newVenue.lat,
+        lng: newVenue.lng
+    }
+
+    return res.json(objectifyVenue);
+})
+
 router.use((err, req, res, next) => {
     return res.json(err.errors)
 })
