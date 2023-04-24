@@ -731,6 +731,25 @@ router.delete('/:eventId/attendance', requireAuth, async (req, res) => {
     const { userId } = req.body;
     const userIdToUseForDeletion = userId;
     const loggedInUserId = req.user.id;
+
+    const userBeingDeletedFrom = await User.findOne({
+        where: {
+            id: userIdToUseForDeletion
+        }
+    })
+
+    if (!userBeingDeletedFrom) {
+        res.status(400);
+        return res.json(
+            {
+                "message": "Validation Error",
+                "errors": {
+                    "memberId": "User couldn't be found"
+                }
+            }
+        )
+    }
+
     const eventThatHasTheAttendanceToDelete = await Event.findOne(
         {
             where: {
@@ -765,23 +784,7 @@ router.delete('/:eventId/attendance', requireAuth, async (req, res) => {
         return res.json(error)
     }
 
-    const userBeingDeletedFrom = await User.findOne({
-        where: {
-            id: userIdToUseForDeletion
-        }
-    })
 
-    if (!userBeingDeletedFrom) {
-        res.status(400);
-        return res.json(
-            {
-                "message": "Validation Error",
-                "errors": {
-                    "memberId": "User couldn't be found"
-                }
-            }
-        )
-    }
 
     const attendanceToDelete = await Attendance.findOne({
         where: {
