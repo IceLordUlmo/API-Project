@@ -28,11 +28,11 @@ router.get('/', async (req, res, next) => {
     });
 
     for (let group of allGroups) {
-        const groupIdNum = group.id;
+        const groupId = group.id;
 
         const memberCount = await Membership.count({
             where: {
-                groupId: groupIdNum
+                groupId: groupId
             }
         });
 
@@ -40,12 +40,8 @@ router.get('/', async (req, res, next) => {
 
         const preview = await GroupImage.findOne({
             where: {
-                groupId: {
-                    [Op.eq]: groupIdNum
-                },
-                preview: {
-                    [Op.eq]: true
-                }
+                groupId: groupId,
+                preview: true
             }
         });
 
