@@ -55,6 +55,17 @@ module.exports = {
                 startDate: new Date("2023-08-13"),
                 endDate: new Date("2023-08-14")
             }
+            ,
+            {
+                groupId: 4,
+                name: "Magic again",
+                description: "the second Gathering",
+                type: "Online",
+                capacity: 14,
+                price: 216,
+                startDate: new Date("2123-08-13"),
+                endDate: new Date("2123-08-14")
+            }
         ], {})
     },
 
