@@ -200,6 +200,9 @@ router.post("/:eventId/images", requireAuth, async (req, res) => {
     const groupForAddedImage = await Group.findOne({
         where: {
             id: eventToAddTo.groupId
+        },
+        include: {
+            model: Event
         }
     })
 
