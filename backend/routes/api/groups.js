@@ -906,7 +906,6 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
             res.status(403);
             return res.json(error)
         }
-
     }
 
     // find the user and the membership
@@ -946,6 +945,15 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
     }
 
     membershipToChange.update({ status })
+
+    objectifyStatusChange = {
+        id: membershipToChange.id,
+        groupId: membershipToChange.groupId,
+        memberId: membershipToChange.memberId,
+        status: membershipToChange.status
+    }
+
+    return res.json(objectifyStatusChange);
 })
 
 
