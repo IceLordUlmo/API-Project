@@ -35,11 +35,11 @@ router.get('/', async (req, res, next) => {
         errorFlag = true;
     }
     if (size < 1) {
-        errorList.page = "Page must be greater than or equal to 1";
+        errorList.size = "Size must be greater than or equal to 1";
         errorFlag = true;
     }
     if (startDate && !Number.isInteger(Date.parse(startDate))) {
-        errorList.date = "Start date must be in date format";
+        errorList.startDate = "Start date must be in date format";
         errorFlag = true;
     }
     if (type && type !== 'Online' && type !== 'In person') {
@@ -70,7 +70,7 @@ router.get('/', async (req, res, next) => {
 
 
     if (startDate) {
-        where.startDate = startDate
+        where.startDate = new Date(startDate);
     }
 
     if (name) {
