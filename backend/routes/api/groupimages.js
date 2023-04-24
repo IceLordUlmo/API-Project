@@ -38,13 +38,13 @@ router.delete("/:imageId", requireAuth, async (req, res) => {
 
     const groupForDeletedGroupImage = await Group.findOne({
         where: {
-            id: groupImageToDelete.Event.groupId
+            id: groupImageToDelete.Group.id
         }
     })
 
     const cohostMembershipOfTheUser = await Membership.findOne({
         where: {
-            groupId: groupImageToDelete.Event.groupId,
+            groupId: groupImageToDelete.Group.id,
             status: "co-host",
             userId: userId
         }
