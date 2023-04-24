@@ -15,28 +15,44 @@ const { handleValidationErrors } = require('../../utils/validation');
 // get all groups
 router.get('/', async (req, res, next) => {
     const allGroups = await Group.findAll({
-        include: [{
-            model: Membership, attributes: ['id']
-        }, {
-            model: GroupImage, attributes: ['url'],
-            where: {
-                preview: true
-            }
-        }]
-    })
+        attributes: ["id",
+            "organizerId",
+            "name",
+            "about",
+            "type",
+            "private",
+            "city",
+            "state",
+            "createdAt",
+            "updatedAt"]
+    });
 
     for (let group of allGroups) {
-        group.dataValues.numMembers = group.dataValues.Memberships.length;
-        Reflect.deleteProperty(group.dataValues, 'Memberships');
+        let groupId = group.id;
 
-        group.dataValues.previewImage = group.dataValues.GroupImages[0].url;
-        Reflect.deleteProperty(group.dataValues, 'GroupImages');
+        const memberCount = await Membership.count({
+            where: {
+                groupId: groupId
+            }
+        });
+
+        group.dataValues.numMembers = memberCount;
+
+        const preview = await GroupImage.findOne({
+            where: {
+                groupId: id,
+                preview: true
+            }
+        });
+
+        group.dataValues.previewImage = preview ? preview.url : null;
     }
 
-    // turn it into an object to be returned per spec
-    let objectifyAllGroups = { "Groups": allGroups };
+    objectifyAllGroups = {
+        Groups: allGroups
+    }
 
-    res.json(objectifyAllGroups)
+    return res.json(objectifyAllGroups);
 })
 
 // get all groups joined or organized by currentuser
