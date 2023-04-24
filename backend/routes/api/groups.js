@@ -741,5 +741,74 @@ router.get("/:groupId/members", async (req, res) => {
 
     return res.json(objectifyMemberList);
 })
+
+// request a membership for a group by groupId
+router.post("/:groupId/membership", requireAuth, async (req, res) => {
+    const { groupId } = req.params;
+    const groupIdRequestingMembershipFor = groupId;
+    const userId = req.user.id;
+
+    const groupRequestingMembershipFor = await Group.findOne({
+        where:
+        {
+            id: groupIdRequestingMembershipFor
+        }
+    })
+
+    if (!groupRequestingMembershipFor) {
+        res.status(404)
+        return res.json(
+            {
+                message: "Group couldn't be found"
+            }
+        )
+    }
+
+    const userMembership = await Membership.findOne(
+        {
+            where:
+            {
+                groupId: groupId,
+                userId: userId
+            }
+        }
+    )
+
+    // if we already have one pending
+    if (userMembership.status == "pending") {
+        res.status(400)
+        return res.json(
+            {
+                message: 'Membership has already been requested'
+            }
+        )
+    }
+
+    // if we're already in
+    if (userMembership.status == "member" ||
+        userMembership.status == "co-host" ||
+        userMembership.status == "organizer") {
+        res.status(400)
+        return res.json(
+            {
+                message: 'User is already a member of the group'
+            }
+        )
+    }
+
+    const newMembership = await Membership.create({
+        userId,
+        groupId,
+        status: 'pending'
+    })
+
+    objectifyNewMembership =
+    {
+        memberId: userId,
+        status: 'pending'
+    }
+
+    return res.json(objectifyNewMembership)
+})
 // export it
 module.exports = router;
