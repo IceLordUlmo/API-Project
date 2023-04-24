@@ -265,15 +265,15 @@ router.put('/:groupId', requireAuth, async (req, res) => {
         errorList.name = "Name must be 60 characters or less"
         errorFlag = true;
     }
-    if (name.about > 60) {
+    if (about.length < 50) {
         errorList.about = "About must be 50 characters or more"
         errorFlag = true;
     }
-    if (type > 60) {
+    if (type != 'Online' && type != 'In person') {
         errorList.type = "Type must be 'Online' or 'In person'"
         errorFlag = true;
     }
-    if (private > 60) {
+    if (typeof private != 'boolean') {
         errorList.private = "Private must be a boolean"
         errorFlag = true;
     }
@@ -622,7 +622,7 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
         errorList.name = "Name must be at least 5 characters"
         errorFlag = true;
     }
-    if (type !== "Online" && type !== "In Person") {
+    if (type !== "Online" && type !== "In person") {
         errorList.type = "Type must be Online or In person"
         errorFlag = true;
     }
