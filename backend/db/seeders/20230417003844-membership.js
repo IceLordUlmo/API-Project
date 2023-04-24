@@ -33,7 +33,7 @@ module.exports = {
             },
             {
                 userId: 2,
-                groupId: 3,
+                groupId: 4,
                 status: "member"
             },
             {

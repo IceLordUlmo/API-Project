@@ -29,10 +29,10 @@ module.exports = {
             {
                 groupId: 3,
                 address: "Jove Empire",
-                city: null,
-                state: null,
-                lat: null,
-                lng: null
+                city: "Hedion",
+                state: "South Dakota",
+                lat: -10.3,
+                lng: -14.2
             }
         ], {})
     },
