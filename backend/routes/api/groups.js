@@ -76,14 +76,9 @@ router.get('/current', requireAuth, async (req, res) => {
         }
     });
 
-    // make an array of all the groups
-    const membGroupArray = allMembershipGroups.map(membershipGroup => {
-        return membershipGroup.dataValues.Group
-    })
-
-    // if we found more to add, smush them
-    if (membGroupArray.length > 0) {
-        organizedGroups.concat(membGroupArray);
+    // combine membership groups with organized groups
+    for (let membership of allMembershipGroups) {
+        organizedGroups.push(membership.Group);
     }
 
     for (let group of organizedGroups) {
