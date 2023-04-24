@@ -543,6 +543,8 @@ router.get('/:groupId/events', async (req, res) => {
 
     for (let event of groupEvents) {
         // attach the image
+        let eventId = event.id
+
         const eventImage = await EventImage.findOne({
             where: {
                 eventId: eventId,
@@ -552,7 +554,7 @@ router.get('/:groupId/events', async (req, res) => {
         event.dataValues.previewImage = eventImage ? eventImage.url : null;
 
         // attach the attendance count
-        let eventId = event.id
+
         const attendanceCount = await Attendance.count({
             where: {
                 eventId: eventId
