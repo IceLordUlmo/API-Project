@@ -887,32 +887,25 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
             }
         )
     }
-    // 403 forbidden
 
-    const cohostMembershipOfTheUser = await Membership.findOne({
-        where: {
-            groupId: groupIdChangingMembershipOf,
-            status: "co-host",
-            userId: userId
-        }
-    })
+    // 403 forbidden
 
     let organizerId = groupChangingMembershipOf.organizerId;
     let isOrganizer = (organizerId == userId);
 
     // if there's no cohost membership and we're not the organizer
     if (!isOrganizer) {
-        if (!cohostMembershipOfTheUser) {
+        if (!(membership.status == "co-host")) {
             let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
             res.status(403);
             return res.json(error)
         }
 
-        if (status == 'co-host') {
-            let error = { 'message': 'To change the status from "member" to "co-host, Current User must already be the organizer' }
-            res.status(403);
-            return res.json(error)
-        }
+
+        let error = { 'message': 'To change the status from "member" to "co-host, Current User must already be the organizer' }
+        res.status(403);
+        return res.json(error)
+
     }
 
     // find the user and the membership
