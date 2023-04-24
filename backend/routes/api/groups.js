@@ -40,8 +40,12 @@ router.get('/', async (req, res, next) => {
 
         const preview = await GroupImage.findOne({
             where: {
-                groupId: groupIdNum,
-                preview: true
+                groupId: {
+                    [Op.eq]: id
+                },
+                preview: {
+                    [Op.eq]: true
+                }
             }
         });
 
