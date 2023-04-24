@@ -721,5 +721,97 @@ router.put(':eventId/attendance', requireAuth, async (req, res) => {
     // feel like I'm going to do an ObiWan next week, "who wrote all this verbose nonsense" "of course I know him, he's me"
     return res.json(objectifyAttendanceChange)
 })
+
+// delete attendance to an event specified by eventId and userId
+
+router.delete('/:eventId/attendance', requireAuth, async (req, res) => {
+    const { eventId } = req.params;
+    const { userId } = req.body;
+    const userIdToUseForDeletion = userId;
+    const loggedInUserId = req.user.id;
+    const eventThatHasTheAttendanceToDelete = await Event.findOne(
+        {
+            where: {
+                id: eventId
+            },
+            include: {
+                model: Group,
+                attributes: ['id', 'organizerId']
+            }
+
+        }
+    )
+
+    if (!eventThatHasTheAttendanceToDelete) {
+        res.status(404);
+        return res.json(
+            {
+                message: "Event couldn't be found"
+            }
+        )
+    }
+
+    let isCurrentUser = (userIdToUseForDeletion == loggedInUserId)
+    let isOrganizer = (eventThatHasTheAttendanceToDelete.Group.organizerId == loggedInUserId)
+
+    if (!isCurrentUser && !isOrganizer) {
+        // 403 forbidden
+        let error = {
+            "message": "Only the User or organizer may delete an Attendance"
+        }
+        res.status(403);
+        return res.json(error)
+    }
+
+    const userBeingDeletedFrom = await User.findOne({
+        where: {
+            id: userIdToUseForDeletion
+        }
+    })
+
+    if (!userBeingDeletedFrom) {
+        res.status(400);
+        return res.json(
+            {
+                "message": "Validation Error",
+                "errors": {
+                    "memberId": "User couldn't be found"
+                }
+            }
+        )
+    }
+
+    const attendanceToDelete = await Attendance.findOne({
+        where: {
+            userId: userIdToUseForDeletion,
+            eventId: eventId
+        }
+    })
+
+    if (!attendanceToDelete) {
+        res.status(404);
+        return res.json(
+            {
+                "message": "Attendance does not exist for this User"
+            }
+        )
+    }
+
+    // sometimes you have to roll the hard six
+    await Attendance.destroy(
+        {
+            where:
+            {
+                id: attendanceToDelete.id
+            }
+        }
+    )
+
+    objectifyDeletionOfAttendance = {
+        message: "Successfully deleted attendance from event"
+    }
+
+    return res.json(objectifyDeletionOfAttendance)
+})
 // export it
 module.exports = router;
