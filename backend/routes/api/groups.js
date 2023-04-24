@@ -688,7 +688,7 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
         endDate: createdEvent.dataValues.endDate
     }
 
-    return res.json()
+    return res.json(objectifyCreatedEvent)
 })
 
 router.get("/:groupId/members", async (req, res) => {
