@@ -416,7 +416,7 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
     //403 forbidden
     const groupForDeletedEvent = await Group.findOne({
         where: {
-            id: eventToDelete.Group.groupId
+            id: eventToDelete.Group.id
         }
     })
 
