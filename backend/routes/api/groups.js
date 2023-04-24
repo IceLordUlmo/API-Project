@@ -58,17 +58,18 @@ router.get('/', async (req, res, next) => {
 // get all groups joined or organized by currentuser
 
 router.get('/current', requireAuth, async (req, res) => {
-    const currentGroups = await Group.findAll({
+    const userId = req.user.id;
+    const organizedGroups = await Group.findAll({
         attributes: ["id", "organizerId", "name", "about", "type", "private", "city", "state", "createdAt", "updatedAt"],
         where: {
-            organizerId: req.user.id
+            organizerId: userId
         }
     })
 
     const allMembershipGroups = await Membership.findAll({
         attributes: ['id', 'userId', 'groupId'],
         where: {
-            userId: req.user.id
+            userId: userId
         },
         include: {
             model: Group
@@ -81,11 +82,11 @@ router.get('/current', requireAuth, async (req, res) => {
     })
 
     // if we found more to add, smush them
-    if (membGroupArray.length > 1) {
-        currentGroups.concat(membGroupArray);
+    if (membGroupArray.length > 0) {
+        organizedGroups.concat(membGroupArray);
     }
 
-    for (let group of allMembershipGroups) {
+    for (let group of organizedGroups) {
         const id = group.id;
         const membershipCount = await Membership.count({
             where: {
@@ -108,7 +109,7 @@ router.get('/current', requireAuth, async (req, res) => {
     }
 
     const objectifyCurrentGroups = {
-        "Groups": allMembershipGroups
+        "Groups": organizedGroups
     }
 
     return res.json(objectifyCurrentGroups);
