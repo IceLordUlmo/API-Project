@@ -696,6 +696,7 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
     return res.json(objectifyCreatedEvent)
 })
 
+// get all members of a group by groupId
 router.get("/:groupId/members", async (req, res) => {
     const { groupId } = req.params;
     const userId = req.user.id;
@@ -747,7 +748,7 @@ router.get("/:groupId/members", async (req, res) => {
     })
 
     const memberArray = []
-    for (membership of membershipsOfGroup) {
+    for (let membership of membershipsOfGroup) {
         const membershipInfo = {};
         membershipInfo.id = membership.User.id;
         membershipInfo.firstName = membership.User.firstName;
