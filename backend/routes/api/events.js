@@ -98,7 +98,7 @@ router.get('/', async (req, res, next) => {
 
     for (let event of allEvents) {
 
-        const eventId = event.Id;
+        const eventId = event.id;
 
         // add the preview image
         const previewImage = await EventImage.findOne({
