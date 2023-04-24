@@ -43,7 +43,7 @@ router.get('/', async (req, res, next) => {
         errorFlag = true;
     }
     if (type && type !== 'Online' && type !== 'In person') {
-        errorList.type = "Type must be 'Online' or 'In Person'";
+        errorList.type = "Type must be 'Online' or 'In person'";
         errorFlag = true;
     }
     if (name && typeof name !== 'string') {
@@ -305,8 +305,8 @@ router.put("/:eventId", requireAuth, async (req, res) => {
         errorList.name = "Name must be at least 5 characters";
         errorFlag = true;
     }
-    if (type !== "Online" && type !== "In Person") {
-        errorList.type = "Type must be Online or In Person";
+    if (type !== "Online" && type !== "In person") {
+        errorList.type = "Type must be Online or In person";
         errorFlag = true;
     }
     if (!Number.isInteger(capacity)) {
