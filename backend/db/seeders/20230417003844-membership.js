@@ -21,12 +21,6 @@ module.exports = {
                 status: "member"
             },
             {
-                userId: 2,
-                groupId: 2,
-                status: "pending"
-            }
-            ,
-            {
                 userId: 3,
                 groupId: 2,
                 status: "pending"
