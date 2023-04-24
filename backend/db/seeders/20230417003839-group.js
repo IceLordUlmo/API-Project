@@ -14,7 +14,7 @@ module.exports = {
         organizerId: 1,
         name: "Amarr",
         about: "Have faith in armor and lasers.",
-        type: "In Person",
+        type: "In person",
         private: false,
         city: "Hedion",
         state: "New York"
@@ -23,7 +23,7 @@ module.exports = {
         organizerId: 2,
         name: "Minmatar",
         about: "In rust we trust!",
-        type: "In Person",
+        type: "In person",
         private: false,
         city: "Hek",
         state: "Ammatar"
