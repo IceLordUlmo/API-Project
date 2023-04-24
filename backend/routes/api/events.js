@@ -418,7 +418,7 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
         where: {
             id: eventToDelete.Group.id
         },
-        attributes: organizerId
+        attributes: ['organizerId']
     })
 
     const cohostMembershipOfTheUser = await Membership.findOne({
