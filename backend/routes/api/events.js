@@ -275,7 +275,7 @@ router.put("/:eventId", requireAuth, async (req, res) => {
 
     const cohostMembershipOfTheUser = await Membership.findOne({
         where: {
-            groupId: groupForEditedEvent.Event.groupId,
+            groupId: groupForEditedEvent.id,
             status: "co-host",
             userId: userId
         }
@@ -292,7 +292,7 @@ router.put("/:eventId", requireAuth, async (req, res) => {
     }
 
 
-    const now = (new Date()).toDateString();
+    let now = Date.now();
     const startDateString = new Date(startDate).toDateString();
     const endDateString = new Date(endDate).toDateString();
     const errorList = {};
@@ -320,7 +320,7 @@ router.put("/:eventId", requireAuth, async (req, res) => {
         errorList.description = "Description is required";
         errorFlag = true;
     }
-    if (now >= startDateString) {
+    if (now > (new Date(startDate).getTime())) {
         errorList.startDate = "Start date must be in the future";
         errorFlag = true;
     }
