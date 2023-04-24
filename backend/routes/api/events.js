@@ -299,7 +299,12 @@ router.put("/:eventId", requireAuth, async (req, res) => {
     let errorFlag = false;
 
 
-    if (!venueId || !Number.isInteger(venueId)) {
+    const venueFinder = await Venue.findOne({
+        where: {
+            id: venueId
+        }
+    })
+    if (!venueId || !Number.isInteger(venueId) || venueFinder) {
         errorList.venueId = "Venue does not exist";
         errorFlag = true;
     }
@@ -326,6 +331,10 @@ router.put("/:eventId", requireAuth, async (req, res) => {
     }
     if (startDateString > endDateString) {
         errorList.endDate = "End date is less than start date";
+        errorFlag = true;
+    }
+    if (!price || price < 0 || isNaN(price)) {
+        errorList.price = "Price is invalid";
         errorFlag = true;
     }
 
