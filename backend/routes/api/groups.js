@@ -890,7 +890,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
     const membershipToChange = await Membership.findOne({
         where: {
             userId: memberIdToChange,
-            groupId: groupChangingMembershipOf
+            groupId: groupIdChangingMembershipOf
         }
     })
 
@@ -901,19 +901,16 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
         })
     }
 
-    if (!membership) {
-        res.status(404)
-        return res.json(
-            {
-                "message": "Membership between the user and the group does not exist"
-            }
-        )
-    }
-
     // 403 forbidden
 
     let organizerId = groupChangingMembershipOf.organizerId;
     let isOrganizer = (organizerId == userId);
+    const membership = await Membership.findOne({
+        where: {
+            userId: userId,
+            groupId: groupChangingMembershipOf
+        }
+    })
 
     // if there's no cohost membership and we're not the organizer
     if (!isOrganizer) {
