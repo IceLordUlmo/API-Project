@@ -536,6 +536,9 @@ router.post("/:eventId/attendance", requireAuth, async (req, res) => {
         {
             where: {
                 id: eventIdBeingRequested
+            },
+            include: {
+                model: Group
             }
         }
     )
