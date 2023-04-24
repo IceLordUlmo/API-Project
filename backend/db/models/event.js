@@ -27,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'eventId'
       })
       Event.belongsToMany(models.User, {
-        onDelete: 'cascade'
+        onDelete: 'cascade',
+        through: models.Attendance
       })
     }
   }
