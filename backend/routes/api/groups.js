@@ -737,13 +737,11 @@ router.get("/:groupId/members", async (req, res) => {
 
     const membershipsOfGroup = await Membership.findAll({
         where: {
-            groupId: groupId
+            groupId: groupId,
+            status: statusesAuthorizedToSee
         },
         include: {
-            model: User,
-            where: {
-                status: statusesAuthorizedToSee
-            }
+            model: User
         }
     })
 
