@@ -347,7 +347,12 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
         return res.json(error)
     }
 
-    groupToBeDeleted.destroy();
+    await Group.destroy({
+        where: {
+            id: groupToBeDeleted.id
+        }
+    })
+
     const objectifyDeletion = { 'message': 'Successfully deleted' }
     return res.json(objectifyDeletion)
 })
