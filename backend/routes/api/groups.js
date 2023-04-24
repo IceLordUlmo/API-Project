@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User } = require('../../db/models');
 const router = express.Router();
-
+const { Op } = require('sequelize');
 // import express validator and function to validate request bodies
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -16,11 +16,6 @@ const Membership = require('../../db/models/membership');
 const GroupImage = require('../../db/models/groupimage');
 const Venue = require('../../db/models/venue');
 const membership = require('../../db/models/membership');
-
-
-function AddMemberCountAndPreviewImage(groups) {
-
-}
 
 // get all groups
 router.get('/', async (req, res, next) => {
@@ -52,7 +47,7 @@ router.get('/', async (req, res, next) => {
 // get all groups joined or organized by currentuser
 
 router.get('/current', requireAuth, async (req, res) => {
-    const currentGroups = await Group.findall({
+    const currentGroups = await Group.findAll({
         attributes: ["id", "organizerId", "name", "about", "type", "private", "city", "state", "createdAt", "updatedAt"],
         where: {
             organizerId: req.user.id
