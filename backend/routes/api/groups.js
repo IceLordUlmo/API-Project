@@ -445,6 +445,14 @@ router.post('/:groupId/venues', requireAuth, async (req, res) => {
         }
     })
 
+    if (!requestedGroup) {
+        res.status(404)
+        return res.json(
+            {
+                "message": "Group couldn't be found"
+            }
+        )
+    }
     const cohostMemberships = await Membership.findAll({
         where: {
             userId: req.user.id,
