@@ -488,7 +488,7 @@ router.get("/:eventId/attendees", async (req, res) => {
 
     // if we are a co-host or the organizer, add pending visibility as well
     if (cohostMembership ||
-        groupToGetMembersOf.organizerId === userId) {
+        eventAttended.Group.organizerId === userId) {
         statusesAuthorizedToSee.push('pending')
     }
 
