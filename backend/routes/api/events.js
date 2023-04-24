@@ -428,6 +428,7 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
         }
     })
 
+
     let organizerId = groupForDeletedEvent.organizerId;
 
     // if there's no cohost membership and we're not the organizer
