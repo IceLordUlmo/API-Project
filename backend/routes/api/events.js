@@ -660,7 +660,7 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
     )
 
     let isCoHost = (attendanceCohostMembership) ? true : false;
-    let isOrganizer = (groupToDeleteFrom.organizerId == userId)
+    let isOrganizer = (eventToAlter.Group.id == userId)
 
     if (!isCoHost && !isOrganizer) {
         // 403 forbidden
