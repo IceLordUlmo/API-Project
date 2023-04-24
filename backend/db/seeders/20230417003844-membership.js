@@ -12,7 +12,7 @@ module.exports = {
         await queryInterface.bulkInsert(options, [
             {
                 userId: 1,
-                groupId: 1,
+                groupId: 4,
                 status: "co-host"
             },
             {
