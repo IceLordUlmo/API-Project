@@ -901,10 +901,11 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
             return res.json(error)
         }
 
-
-        let error = { 'message': 'To change the status from "member" to "co-host, Current User must already be the organizer' }
-        res.status(403);
-        return res.json(error)
+        if (status == "co-host") {
+            let error = { 'message': 'To change the status from "member" to "co-host, Current User must already be the organizer' }
+            res.status(403);
+            return res.json(error)
+        }
 
     }
 
@@ -944,6 +945,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
         })
     }
 
+    membershipToChange.update({ status })
 })
 
 
