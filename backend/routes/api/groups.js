@@ -211,7 +211,7 @@ router.post("/", requireAuth, async (req, res) => {
     })
 
     res.status(201);
-    return res.json(newGroup);
+    return res.json(groupToAdd);
 })
 
 // add image to group based on groupId
