@@ -208,7 +208,7 @@ router.post("/:eventId/images", requireAuth, async (req, res) => {
 
     const cohostMembershipOfTheUser = await Membership.findOne({
         where: {
-            groupId: groupForAddedImage.Event.groupId,
+            groupId: groupForAddedImage.id,
             status: "co-host",
             userId: userId
         }
