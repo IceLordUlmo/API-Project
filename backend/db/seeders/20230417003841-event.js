@@ -18,8 +18,8 @@ module.exports = {
                 type: "In person",
                 capacity: 15,
                 price: 10,
-                startDate: new Date(2023, 04, 29),
-                endDate: new Date(2023, 04, 29)
+                startDate: new Date(2023, 4, 29),
+                endDate: new Date(2023, 4, 29)
             },
             {
                 venueId: 2,
@@ -29,8 +29,8 @@ module.exports = {
                 type: "In person",
                 capacity: 6,
                 price: 149,
-                startDate: new Date(2023, 06, 30),
-                endDate: new Date(2023, 06, 30)
+                startDate: new Date(2023, 6, 30),
+                endDate: new Date(2023, 6, 30)
             },
             {
                 venueId: 3,
@@ -40,8 +40,8 @@ module.exports = {
                 type: "Online",
                 capacity: 300,
                 price: 1,
-                startDate: new Date(2023, 04, 30),
-                endDate: new Date(2023, 04, 30)
+                startDate: new Date(2023, 4, 30),
+                endDate: new Date(2023, 4, 30)
             }
             ,
             {
@@ -52,8 +52,8 @@ module.exports = {
                 type: "Online",
                 capacity: 4,
                 price: 26,
-                startDate: new Date(2023, 08, 13),
-                endDate: new Date(2023, 08, 14)
+                startDate: new Date(2023, 8, 13),
+                endDate: new Date(2023, 8, 14)
             }
             ,
             {
@@ -63,8 +63,8 @@ module.exports = {
                 type: "Online",
                 capacity: 14,
                 price: 216,
-                startDate: new Date(2123, 08, 13),
-                endDate: new Date(2123, 08, 14)
+                startDate: new Date(2123, 8, 13),
+                endDate: new Date(2123, 8, 14)
             }
         ], {})
     },
