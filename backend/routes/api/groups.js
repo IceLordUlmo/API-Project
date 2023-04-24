@@ -927,8 +927,6 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
         }
     }
 
-
-
     membershipToChange.update({ status })
 
     objectifyStatusChange = {

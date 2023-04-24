@@ -481,7 +481,7 @@ router.get("/:eventId/attendees", async (req, res) => {
     const cohostMembership = await Membership.findOne({
         where: {
             userId: userId,
-            groupId: eventAttended.group.id,
+            groupId: eventAttended.Group.id,
             status: "co-host"
         }
     })
