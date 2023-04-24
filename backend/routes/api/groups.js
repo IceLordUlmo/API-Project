@@ -871,13 +871,35 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
             }
         )
     }
-
-    const membership = await Membership.findOne({
+    const userToChange = await User.findOne(
+        {
+            where: {
+                id: memberIdToChange
+            }
+        }
+    )
+    if (!userToChange) {
+        res.status(400);
+        return res.json({
+            "message": "Validation Error",
+            "errors": {
+                "memberId": "User couldn't be found"
+            }
+        })
+    }
+    const membershipToChange = await Membership.findOne({
         where: {
             userId: memberIdToChange,
             groupId: groupChangingMembershipOf
         }
     })
+
+    if (!membershipToChange) {
+        res.status(404);
+        return res.json({
+            "message": "Membership between the user and the group does not exist"
+        })
+    }
 
     if (!membership) {
         res.status(404)
@@ -908,41 +930,7 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
         }
     }
 
-    // find the user and the membership
-    const userToChange = await User.findOne(
-        {
-            where: {
-                id: memberIdToChange
-            }
-        }
-    )
 
-    const membershipToChange = await Membership.findOne(
-        {
-            where: {
-                groupId: groupIdChangingMembershipOf,
-                userId: memberIdToChange
-            }
-        }
-    )
-
-    // see if they exist
-    if (!userToChange) {
-        res.status(400);
-        return res.json({
-            "message": "Validation Error",
-            "errors": {
-                "memberId": "User couldn't be found"
-            }
-        })
-    }
-
-    if (!membershipToChange) {
-        res.status(404);
-        return res.json({
-            "message": "Membership between the user and the group does not exist"
-        })
-    }
 
     membershipToChange.update({ status })
 
