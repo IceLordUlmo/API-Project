@@ -5,17 +5,12 @@ const express = require('express')
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { User } = require('../../db/models');
+const { User, Group, Membership, GroupImage, Venue } = require('../../db/models');
 const router = express.Router();
 const { Op } = require('sequelize');
 // import express validator and function to validate request bodies
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const Group = require('../../db/models/group');
-const Membership = require('../../db/models/membership');
-const GroupImage = require('../../db/models/groupimage');
-const Venue = require('../../db/models/venue');
-const membership = require('../../db/models/membership');
 
 // get all groups
 router.get('/', async (req, res, next) => {

@@ -11,7 +11,6 @@ const router = express.Router();
 // import express validator and function to validate request bodies
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const venue = require('../../db/models/venue');
 
 
 // edit venue specified by id
