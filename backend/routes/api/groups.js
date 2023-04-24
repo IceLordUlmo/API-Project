@@ -719,7 +719,7 @@ router.get("/:groupId/members", async (req, res) => {
     // not quite 403 forbidden
 
     // everyone can see these
-    const statusesAuthorizedToSee = ['organizer', 'co-host', 'member'];
+    const statusesAuthorizedToSee = ['co-host', 'member'];
 
     const cohostMembership = await Membership.findOne({
         where: {
@@ -810,8 +810,7 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
 
     // if we're already in
     if (userMembership.status == "member" ||
-        userMembership.status == "co-host" ||
-        userMembership.status == "organizer") {
+        userMembership.status == "co-host") {
         res.status(400)
         return res.json(
             {
