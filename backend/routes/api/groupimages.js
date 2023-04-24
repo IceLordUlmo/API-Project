@@ -5,7 +5,7 @@ const express = require('express')
 const bcrypt = require('bcryptjs');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Membership, GroupImage } = require('../../db/models');
+const { Membership, GroupImage, Group } = require('../../db/models');
 const router = express.Router();
 
 // import express validator and function to validate request bodies
