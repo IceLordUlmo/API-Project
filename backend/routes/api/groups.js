@@ -248,6 +248,7 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
     return res.json(objectifiedImage)
 })
 
+// edit a group
 router.put('/:groupId', requireAuth, async (req, res) => {
     const { name, about, type, private, city, state } = req.body;
     const { groupId } = req.params;
@@ -305,12 +306,12 @@ router.put('/:groupId', requireAuth, async (req, res) => {
     let organizerId = groupToEdit.organizerId
 
     if (currentUserId != organizerId) {
-        let error = { 'message': 'Forbidden' }
+        let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
         res.status(403);
         return res.json(error)
     }
 
-    groupToEdit.update({
+    await groupToEdit.update({
         name: name,
         about: about,
         type: type,
