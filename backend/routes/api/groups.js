@@ -810,5 +810,192 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
 
     return res.json(objectifyNewMembership)
 })
+
+// Change the status of a membership for a group by groupId
+
+router.put('/:groupId/membership', requireAuth, async (req, res) => {
+    const { memberId, status } = req.body;
+    const { groupId } = req.params;
+    const groupIdChangingMembershipOf = groupId;
+    const memberIdToChange = memberId;
+    const userId = req.user.id;
+
+    const groupChangingMembershipOf = await Group.findOne({
+        where: {
+            id: groupIdChangingMembershipOf
+        }
+    })
+
+    if (status == 'pending') {
+        res.status(400)
+        return res.json(
+            {
+                "message": "Validations Error",
+                "errors": {
+                    "status": "Cannot change a membership status to pending"
+                }
+            }
+        )
+    }
+
+    if (!groupChangingMembershipOf) {
+        res.status(404)
+        return res.json(
+            {
+                message: "Group couldn't be found"
+            }
+        )
+    }
+
+    // 403 forbidden
+
+    const cohostMembershipOfTheUser = await Membership.findOne({
+        where: {
+            groupId: groupIdChangingMembershipOf,
+            status: "co-host",
+            userId: userId
+        }
+    })
+
+    let organizerId = groupChangingMembershipOf.organizerId;
+    let isOrganizer = (organizerId == userId);
+
+    // if there's no cohost membership and we're not the organizer
+    if (!isOrganizer) {
+        if (!cohostMembershipOfTheUser) {
+            let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
+            res.status(403);
+            return res.json(error)
+        }
+
+        if (status == 'co-host') {
+            let error = { 'message': 'To change the status from "member" to "co-host, Current User must already be the organizer' }
+            res.status(403);
+            return res.json(error)
+        }
+    }
+
+    // find the user and the membership
+    const userToChange = await User.findOne(
+        {
+            where: {
+                id: memberIdToChange
+            }
+        }
+    )
+
+    const membershipToChange = await Membership.findOne(
+        {
+            where: {
+                groupId: groupIdChangingMembershipOf,
+                userId: memberIdToChange
+            }
+        }
+    )
+
+    // see if they exist
+    if (!userToChange) {
+        res.status(400);
+        return res.json({
+            "message": "Validation Error",
+            "errors": {
+                "memberId": "User couldn't be found"
+            }
+        })
+    }
+
+    if (!membershipToChange) {
+        res.status(404);
+        return res.json({
+            "message": "Membership between the user and the group does not exist"
+        })
+    }
+
+})
+
+
+// delete a membership by groupId and memberId
+router.delete("/:groupId/membership", requireAuth, async (req, res) => {
+    const userId = req.user.id;
+    const { memberId } = req.body;
+    const { groupId } = req.params;
+    const groupIdToDeleteFrom = groupId;
+    const memberIdToDeleteFrom = memberId;
+    const groupToDeleteFrom = await Group.findOne({
+        where:
+        {
+            id: groupIdToDeleteFrom
+        }
+    })
+    const userToDeleteFrom = await User.findOne(
+        {
+            where: {
+                id: memberIdToDeleteFrom
+            }
+        }
+    )
+    const membershipToDelete = await Membership.findOne({
+        where: {
+            userId: memberId,
+            groupId: groupIdToDeleteFrom
+        }
+    })
+
+    // see if they exist
+    if (!groupToDeleteFrom) {
+        res.status(404)
+        return res.json(
+            {
+                message: "Group couldn't be found"
+            }
+        )
+    }
+
+    if (!userToDeleteFrom) {
+        res.status(400)
+        return res.json(
+            {
+                "message": "Validation Error",
+                "errors": {
+                    "memberId": "User couldn't be found"
+                }
+            }
+        )
+    }
+
+    if (!membershipToDelete) {
+        res.status(404)
+        return res.json(
+            {
+                "message": "Membership does not exist for this User"
+            }
+        )
+    }
+
+    let isCurrentUser = (memberIdToDeleteFrom == userId)
+    let isOrganizer = (groupToDeleteFrom.organizerId == userId)
+
+    if (!isCurrentUser && !isOrganizer) {
+        // 403 forbidden
+        let error = { 'message': 'Current User must be the host of the group, or the user whose membership is being deleted' }
+        res.status(403);
+        return res.json(error)
+    }
+
+    // this is where the magic happens
+    await Membership.destroy({
+        where: {
+            id: membershipToDelete.id
+        }
+    })
+
+    objectifyDelete = {
+        message: 'Successfully deleted membership from group'
+    }
+
+    return res.json(objectifyDelete);
+})
+
 // export it
 module.exports = router;
+//

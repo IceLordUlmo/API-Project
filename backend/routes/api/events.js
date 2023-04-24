@@ -447,5 +447,279 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
 
     return res.json(objectifyDeletion)
 })
+
+
+// get all attendees of an event by eventId
+
+router.get("/:eventId/attendees", async (req, res) => {
+
+    const { eventId } = req.params;
+    const userId = req.user ? req.user.id : null; // hope this works if we're not logged in
+    const statusesAuthorizedToSee = ['organizer', 'co-host', 'member'];
+
+    const eventAttended = await Event.findOne({
+        where:
+        {
+            id: eventId
+        },
+        include:
+        {
+            model: Group
+        }
+    })
+
+    if (!eventAttended) {
+        res.status(404);
+        return res.json(
+            {
+                message: "Event couldn't be found"
+            }
+        )
+    }
+
+
+
+    const cohostMembership = await Membership.findOne({
+        where: {
+            userId: userId,
+            groupId: eventAttended.group.id,
+            status: "co-host"
+        }
+    })
+
+    // if we are a co-host or the organizer, add pending visibility as well
+    if (cohostMembership ||
+        groupToGetMembersOf.organizerId === userId) {
+        statusesAuthorizedToSee.push('pending')
+    }
+
+    const attendeesOfEvent = await Attendance.findAll({
+        where: {
+            eventId: eventId
+
+        },
+        include: {
+            model: User,
+            where: {
+                status: statusesAuthorizedToSee
+            }
+        }
+    })
+
+    const attendeeArray = []
+    for (attendee of attendeesOfEvent) {
+        const attendeeInfo = {};
+        attendeeInfo.id = attendee.User.id;
+        attendeeInfo.firstName = attendee.User.firstName;
+        attendeeInfo.lastName = attendee.User.lastName;
+        attendeeInfo.Attendance = {
+            status: attendee.status
+        }
+
+        attendeeArray.push(attendeeInfo);
+    }
+
+    objectifyAttendeeArray = {
+        Attendees: attendeeInfo
+    }
+
+    return res.json(objectifyAttendeeArray)
+})
+
+// request to attend an event based on eventId
+
+router.post("/:eventId/attendance", requireAuth, async (req, res) => {
+    const userId = req.user.id;
+    const { eventId } = req.params;
+    const eventIdBeingRequested = eventId;
+
+    const eventBeingRequested = await Event.findOne(
+        {
+            where: {
+                id: eventIdBeingRequested
+            }
+        }
+    )
+
+    if (!eventBeingRequested) {
+        res.status(404);
+        return res.json(
+            {
+                message: "Event couldn't be found"
+            }
+        )
+    }
+
+    const authorizedMembership = await Membership.findOne(
+        {
+            where: {
+                groupId: eventBeingRequested.Group.id,
+                userId: userId,
+                status: ['organizer', 'co-host', 'member']
+            }
+        }
+    )
+
+    if (!authorizedMembership) {
+        let error = { 'message': 'Current User must be a member of the group' }
+        res.status(403);
+        return res.json(error)
+    }
+
+    const eventAttendance = await Attendance.findOne({
+        where: {
+            eventId: eventIdBeingRequested,
+            userId: userId
+        }
+    })
+
+
+
+    // if we already have an entry
+    if (eventAttendance) {
+        const attendanceStatus = eventAttendance.status;
+        if (attendanceStatus == 'pending') {
+            res.status(400);
+            return res.json(
+                {
+                    "message": "Attendance has already been requested"
+                }
+            )
+        }
+        else {
+            return res.json(
+                {
+                    "message": "User is already an attendee of the event"
+                }
+            )
+        }
+    }
+
+    // here we go
+    const attendance = await Attendance.create({
+        userId,
+        eventId,
+        status: 'pending'
+    })
+
+    objectifyNewAttendance = {
+        userId: attendance.userId,
+        status: attendance.status
+    }
+
+    return res.json(objectifyNewAttendance)
+})
+
+// change the status of an attendance specified by eventId and userId
+
+router.put(':eventId/attendance', requireAuth, async (req, res) => {
+    const loggedInUserId = req.user.id;
+    const { eventId } = req.params;
+    const { userId, status } = req.body;
+    const userIdToChangeAttendanceOf = userId;
+
+    if (status == 'pending') {
+        res.status(400)
+        return res.json(
+            {
+                "status": "Cannot change an attendance status to pending"
+            }
+
+        )
+    }
+
+    const eventToAlter = await Event.findOne({
+        where: {
+            id: eventId
+        },
+        include: {
+            model: Group,
+            attributes: ['id', 'organizerId']
+        }
+    })
+
+    if (!eventToAlter) {
+        res.status(404);
+        return res.json(
+            {
+                message: "Event couldn't be found"
+            }
+        )
+    }
+
+    const attendanceCohostMembership = await Membership.findOne(
+        {
+            where: {
+                groupId: eventToAlter.Group.id,
+                userId: loggedInUserId,
+                status: 'co-host'
+            }
+        }
+    )
+
+    let isCoHost = (attendanceCohostMembership) ? true : false;
+    let isOrganizer = (groupToDeleteFrom.organizerId == userId)
+
+    if (!isCoHost && !isOrganizer) {
+        // 403 forbidden
+        let error = { 'message': 'Current User must already be the organizer or have a membership to the group with the status of "co-host"' }
+        res.status(403);
+        return res.json(error)
+    }
+
+    const attendingUser = await User.findOne(
+        {
+            where: {
+                id: userIdToChangeAttendanceOf
+            }
+        }
+    )
+
+    if (!attendingUser) {
+        res.status(400);
+        return res.json(
+            {
+                "message": "Validation Error",
+                "errors": {
+                    "memberId": "User couldn't be found"
+                }
+            }
+        )
+    }
+
+    const attendanceToChange = await Attendance.findOne({
+        where: {
+            eventId: eventId,
+            userId: userIdToChangeAttendanceOf
+        }
+    })
+
+    if (!attendanceToChange) {
+        res.status(404)
+        return res.json(
+            {
+                "message": "Attendance between the user and the event does not exist"
+            }
+        )
+    }
+
+    // hey witch doctor give me the magic words:
+
+    attendanceToChange.update(
+        {
+            status: status
+        }
+    )
+
+    const objectifyAttendanceChange =
+    {
+        id: attendanceToChange.id,
+        eventId: attendanceToChange.eventId,
+        userId: attendanceToChange.userId,
+        status: attendanceToChange.status
+    }
+    // feel like I'm going to do an ObiWan next week, "who wrote all this verbose nonsense" "of course I know him, he's me"
+    return res.json(objectifyAttendanceChange)
+})
 // export it
 module.exports = router;
