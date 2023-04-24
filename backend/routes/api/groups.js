@@ -77,7 +77,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
     // make an array of all the groups
     const membGroupArray = allMembershipGroups.map(membershipGroup => {
-        return membership.dataValues.Group
+        return membershipGroup.dataValues.Group
     })
 
     // if we found more to add, smush them
