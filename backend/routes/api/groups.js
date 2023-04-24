@@ -797,28 +797,28 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
             }
         }
     )
+    if (userMembership) {
+        // if we already have one pending
+        if (userMembership.status == "pending") {
+            res.status(400)
+            return res.json(
+                {
+                    message: 'Membership has already been requested'
+                }
+            )
+        }
 
-    // if we already have one pending
-    if (userMembership.status == "pending") {
-        res.status(400)
-        return res.json(
-            {
-                message: 'Membership has already been requested'
-            }
-        )
+        // if we're already in
+        if (userMembership.status == "member" ||
+            userMembership.status == "co-host") {
+            res.status(400)
+            return res.json(
+                {
+                    message: 'User is already a member of the group'
+                }
+            )
+        }
     }
-
-    // if we're already in
-    if (userMembership.status == "member" ||
-        userMembership.status == "co-host") {
-        res.status(400)
-        return res.json(
-            {
-                message: 'User is already a member of the group'
-            }
-        )
-    }
-
     const newMembership = await Membership.create({
         userId,
         groupId,
