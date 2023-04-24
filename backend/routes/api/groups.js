@@ -624,7 +624,7 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
     }
     const startDateComparable = new Date(startDate).toDateString();
     const endDateComparable = new Date(endDate).toDateString();
-    if (now > startDate.getTime()) {
+    if (now > (new Date(startDate).getTime())) {
         errorList.startDate = "Start date must be in the future"
         errorFlag = true;
     }
