@@ -797,6 +797,7 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
             }
         }
     )
+
     if (userMembership) {
         // if we already have one pending
         if (userMembership.status == "pending") {
@@ -819,6 +820,7 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
             )
         }
     }
+
     const newMembership = await Membership.create({
         userId,
         groupId,
@@ -870,6 +872,21 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
         )
     }
 
+    const membership = await Membership.findOne({
+        where: {
+            userId: memberIdToChange,
+            groupId: groupChangingMembershipOf
+        }
+    })
+
+    if (!membership) {
+        res.status(404)
+        return res.json(
+            {
+                "message": "Membership between the user and the group does not exist"
+            }
+        )
+    }
     // 403 forbidden
 
     const cohostMembershipOfTheUser = await Membership.findOne({
