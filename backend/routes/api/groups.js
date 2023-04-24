@@ -671,6 +671,75 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
     return res.json()
 })
 
+router.get("/:groupId/members", async (req, res) => {
+    const { groupId } = req.params;
+    const userId = req.user.id;
+    const groupIdToGetMembersOf = groupId
+    const groupToGetMembersOf = await Group.findOne({
+        where: {
+            id: groupIdToGetMembersOf
+        }
+    });
 
+    if (!groupToGetMembersOf) {
+        res.status(404);
+        return res.json(
+            {
+                message: "Group couldn't be found"
+            }
+        )
+    };
+
+    // not quite 403 forbidden
+
+    // everyone can see these
+    const statusesAuthorizedToSee = ['organizer', 'co-host', 'member'];
+
+    const cohostMembership = await Membership.findOne({
+        where: {
+            userId: userId,
+            groupId: groupId,
+            status: "co-host"
+        }
+    })
+
+    // if we are a co-host or the organizer, add pending visibility as well
+    if (cohostMembership ||
+        groupToGetMembersOf.organizerId === userId) {
+        statusesAuthorizedToSee.push('pending')
+    }
+
+    const membershipsOfGroup = await Membership.findAll({
+        where: {
+            groupId: groupId
+        },
+        include: {
+            model: User,
+            where: {
+                status: statusesAuthorizedToSee
+            }
+        }
+    })
+
+    const memberArray = []
+    for (membership of membershipsOfGroup) {
+        const membershipInfo = {};
+        membershipInfo.id = membership.User.id;
+        membershipInfo.firstName = membership.User.firstName;
+        membershipInfo.lastName = membership.User.lastName;
+        membershipInfo.Membership = {
+            status: membership.status
+        }
+
+        memberArray.push(membershipInfo);
+    }
+
+    objectifyMemberList =
+    {
+        Members: memberArray
+    }
+
+    return res.json(objectifyMemberList);
+})
 // export it
 module.exports = router;
