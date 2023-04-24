@@ -616,7 +616,7 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
 
     let errorList = {};
     let errorFlag = false;
-    let now = new Date();
+    let now = Date.now();
 
     if (!venueLookup) {
         errorList.venueId = "Venue does not exist"
@@ -624,7 +624,7 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
     }
     const startDateComparable = new Date(startDate).toDateString();
     const endDateComparable = new Date(endDate).toDateString();
-    if (now > startDateComparable) {
+    if (now > startDate.getTime()) {
         errorList.startDate = "Start date must be in the future"
         errorFlag = true;
     }
