@@ -227,7 +227,7 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
         }
     })
 
-    if (!group) {
+    if (!groupToAddImageTo) {
         res.status(404)
         return res.json({ 'message': "Group couldn't be found" })
     }
