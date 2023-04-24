@@ -454,7 +454,7 @@ router.get("/:eventId/attendees", async (req, res) => {
 
     const { eventId } = req.params;
     const userId = req.user ? req.user.id : null; // hope this works if we're not logged in
-    const statusesAuthorizedToSee = ['organizer', 'co-host', 'member'];
+    const statusesAuthorizedToSee = ['co-host', 'member'];
 
     const eventAttended = await Event.findOne({
         where:
