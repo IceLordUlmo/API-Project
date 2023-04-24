@@ -83,7 +83,7 @@ router.put("/:venueId", requireAuth, async (req, res) => {
     const cohostedGroups = cohostMemberships.map(membership => { return membership.groupId })
 
     if (currentUserId != organizerId) {
-        if (!cohostedGroups.includes(groupId)) {
+        if (!cohostedGroups.includes(venueToEdit.groupId)) {
             let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
             res.status(403);
             return res.json(error)

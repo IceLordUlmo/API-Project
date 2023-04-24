@@ -453,6 +453,7 @@ router.post('/:groupId/venues', requireAuth, async (req, res) => {
             }
         )
     }
+
     const cohostMemberships = await Membership.findAll({
         where: {
             userId: req.user.id,
