@@ -614,7 +614,7 @@ router.post("/:eventId/attendance", requireAuth, async (req, res) => {
 
 // change the status of an attendance specified by eventId and userId
 
-router.put(':eventId/attendance', requireAuth, async (req, res) => {
+router.put('/:eventId/attendance', requireAuth, async (req, res) => {
     const loggedInUserId = req.user.id;
     const { eventId } = req.params;
     const { userId, status } = req.body;
