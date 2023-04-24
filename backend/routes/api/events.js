@@ -414,22 +414,15 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
     }
 
     //403 forbidden
-    const groupForDeletedEvent = await Group.findOne({
-        where: {
-            id: eventToDelete.Group.id
-        },
-        attributes: ['organizerId']
-    })
-
     const cohostMembershipOfTheUser = await Membership.findOne({
         where: {
-            groupId: groupForDeletedEvent.id,
+            groupId: eventToDelete.Group.id,
             status: "co-host",
             userId: userId
         }
     })
 
-    let organizerId = groupForDeletedEvent.organizerId;
+    let organizerId = eventToDelete.Group.organizerId;
 
     // if there's no cohost membership and we're not the organizer
     if (!cohostMembershipOfTheUser &&
