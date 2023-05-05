@@ -1,0 +1,30 @@
+.navbutton {
+    align-self: center;
+    width: 80px;
+    padding: 4px;
+    background: #3d3af5;
+    border: none;
+    font-size: 12px;
+    border-radius: 5px;
+    color: white;
+    margin: 4px;
+}
+
+.home {
+    list-style-type: none;
+}
+
+.navlinkbutton {
+    align-self: center;
+    padding: 8px;
+    background: #3d3af5;
+    border: none;
+    font-size: 12px;
+    border-radius: 5px;
+    color: white;
+    margin: 4px;
+}
+
+.hidden {
+    display: none;
+}
