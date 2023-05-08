@@ -52,7 +52,7 @@ router.post(
         const safeUser = {
             id: user.id,
             email: user.email,
-            userName: user.username,
+            username: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
         };
@@ -83,7 +83,7 @@ router.get(
             const safeUser = {
                 id: user.id,
                 email: user.email,
-                userName: user.username,
+                username: user.username,
                 firstName: user.firstName,
                 lastName: user.lastName,
             };
