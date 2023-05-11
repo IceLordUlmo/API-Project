@@ -1,6 +1,20 @@
-.home {
+.profile-dropdown {
+    right: 30px;
+    top: 30px;
+    position: fixed;
     list-style-type: none;
-    font-size: 26px;
+}
+
+.navigation-top {
+    display: flex;
+    align-items: center;
+    height: 75px;
+}
+
+.navigation-top-right {
+    display: flex;
+    align-items: center;
+    list-style-type: none;
 }
 
 
