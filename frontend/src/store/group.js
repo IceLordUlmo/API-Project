@@ -3,7 +3,7 @@
 
 // consts for actions
 const GET_ALL_GROUPS = "groups/getGroups"
-const initialState = { groups: {} };
+
 
 // actions to export
 export const getAllGroupsAction = groups => ({
@@ -29,6 +29,7 @@ export const getAllGroupsThunk = () => async (dispatch) => {
     }
 }
 
+const initialState = { allGroups: {} };
 const groupReducer = (state = initialState, action) => {
 
     console.log("group Reducer")

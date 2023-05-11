@@ -12,8 +12,8 @@ export function AllGroups() {
     const dispatch = useDispatch();
     const [loadComplete, setLoadComplete] = useState(false)
     let allGroups = useSelector(state => state.groups.allGroups);
-    console.log(allGroups);
-    allGroups = allGroups ? Object.values(allGroups) : null
+
+    allGroups = Object.values(allGroups);
     useEffect(() => {
         console.log("useEffect allGroups");
         dispatch(getAllGroupsThunk())

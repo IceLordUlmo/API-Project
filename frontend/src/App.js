@@ -18,7 +18,10 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route path="/groups">
+          <Route path="/groups/new">
+            <GroupFormModal />
+          </Route>
+          <Route exact path="/groups">
             <AllGroups />
           </Route>
         </Switch>
