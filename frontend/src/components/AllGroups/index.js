@@ -11,11 +11,11 @@ import "./AllGroups.css"
 export function AllGroups() {
     const dispatch = useDispatch();
 
-    const groupsSelection = useSelector(state => state.groups);
-    console.log(groupsSelection);
-    const allGroups = Object.values(groupsSelection);
+    const allGroups = useSelector(state => state.groups.allGroups);
+    console.log(allGroups);
 
     useEffect(() => {
+        console.log("useEffect allGroups");
         dispatch(getAllGroupsThunk())
     }, [dispatch])
 

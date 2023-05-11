@@ -8,6 +8,7 @@ import { AllGroups } from "./components/AllGroups";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
@@ -15,12 +16,14 @@ function App() {
   return (
     <>
       <Navigation isLoaded={isLoaded} />
-      {isLoaded &&
+      {isLoaded && (
         <Switch>
           <Route path="/groups">
             <AllGroups />
           </Route>
-        </Switch>}
+        </Switch>
+      )
+      }
     </>
   );
 }
