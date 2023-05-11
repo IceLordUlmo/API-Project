@@ -14,17 +14,17 @@ export const getAllGroupsAction = groups => ({
 // thunk about it
 
 export const getAllGroupsThunk = () => async (dispatch) => {
+
     const response = await fetch("/api/groups");
 
     const allGroupsJson = await response.json();
 
-    console.log("groups Thunk")
-
     if (response.ok) {
         await dispatch(getAllGroupsAction(allGroupsJson));
-
+        console.log("groups thunk ok")
     } else {
         const error = await response.json();
+        console.log("groups thunk definitely NOT ok")
         return error;
     }
 }
@@ -35,13 +35,15 @@ const groupReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case GET_ALL_GROUPS:
-            const allGroupsState = { ...state, groups: {} };
+            console.log("getting all groups in groups reducer")
+            const allGroupsState = { ...state, allGroups: {} };
 
-            const allGroups = action.groups.Groups.forEach(group => {
-                allGroupsState[group.id] = group;
+            action.groups.Groups.forEach(group => {
+                allGroupsState.allGroups[group.id] = group;
             })
 
-            return allGroups;
+            return allGroupsState;
+
 
         default:
             return state;
