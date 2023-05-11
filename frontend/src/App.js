@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import { AllGroups } from "./components/AllGroups";
+import { GroupFormModal } from "./components/GroupFormModal"
 
 function App() {
   const dispatch = useDispatch();

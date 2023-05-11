@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as groupActions from '../../store/group';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
-import './LoginForm.css';
+import './GroupForm.css';
 
-export function CreateGroupModal({ preexistingGroup, isCreateForm }) {
+export function GroupFormModal({ preexistingGroup, isCreateForm }) {
     const dispatch = useDispatch();
 
+    //
     const [name, setName] = useState('');
     const [about, setAbout] = useState('');
     const [type, setType] = useState('');
@@ -14,7 +15,9 @@ export function CreateGroupModal({ preexistingGroup, isCreateForm }) {
     const [location, setLocation] = useState('');
     const [image, setImage] = useState('');
 
-    const joinedLocation = group.city + ', ' + group.state;
+    const [hasBeenSubmitted, setHasBeenSubmitted] = useState(false);
+
+    const joinedLocation = preexistingGroup.city + ', ' + preexistingGroup.state;
     const imageURL = preexistingGroup.image ? preexistingGroup.image.url : '';
 
     if (!isCreateForm) {
@@ -48,10 +51,33 @@ export function CreateGroupModal({ preexistingGroup, isCreateForm }) {
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setErrors({});
-        return dispatch(groupActions.create({ name, about, type, private: isPrivate, city, state }))
+        setHasBeenSubmitted(true);
+
+
+        if (Object.keys(errors).length !== 0) {
+            return errors;
+        }
+
+        const [city, state] = location.split(", ");
+        const groupObject = {
+            name,
+            about,
+            type,
+            private: isPrivate,
+            city,
+            state
+        }
+
+        const imageObject = {
+            url: image,
+            preview: true
+        }
+
+        const group = dispatch(groupActions.createGroupAction({ groupObject }))
+
+        return dispatch(groupActions.createImageAction(imageObject, group))
             .then(closeModal)
             .catch(async (res) => {
                 const data = await res.json();
@@ -75,7 +101,7 @@ export function CreateGroupModal({ preexistingGroup, isCreateForm }) {
                     <input type='text' value={type} onChange={(event) => setType(event.target.value)} />
                 </label>
                 <label className='group-form-is-private-container'>
-                    <select value={isPrivate} onChange={(event) => setIsPrivate(e.target.value === 'true')}>
+                    <select value={isPrivate} onChange={(event) => setIsPrivate(event.target.value === 'true')}>
                         <h3> Is this group private? </h3>
                         <option value='false'>
                             Public
