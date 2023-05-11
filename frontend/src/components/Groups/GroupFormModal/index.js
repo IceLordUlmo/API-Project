@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import * as groupActions from '../../store/group';
+import * as groupActions from '../../../store/group';
 import { useDispatch } from 'react-redux';
-import { useModal } from '../../context/Modal';
+import { useModal } from '../../../context/Modal';
 import './GroupForm.css';
 
 export function GroupFormModal({ preexistingGroup, isCreateForm }) {
@@ -14,28 +14,13 @@ export function GroupFormModal({ preexistingGroup, isCreateForm }) {
     const [isPrivate, setIsPrivate] = useState('');
     const [location, setLocation] = useState('');
     const [image, setImage] = useState('');
-
-    const [hasBeenSubmitted, setHasBeenSubmitted] = useState(false);
-
-    const joinedLocation = preexistingGroup.city + ', ' + preexistingGroup.state;
-    const imageURL = preexistingGroup.image ? preexistingGroup.image.url : '';
-
-    if (!isCreateForm) {
-        setName(preexistingGroup.name);
-        setAbout(preexistingGroup.about);
-        setType(preexistingGroup.type);
-        setIsPrivate(preexistingGroup.private);
-        setLocation(joinedLocation);
-        setImage(imageURL);
-    }
-
     useEffect(() => {
         const errors = {};
 
         if (!name.length) {
             errors.name = 'Please enter a name';
         }
-        if (about.length < 31) {
+        if (about.length > 30) {
             errors.about = 'Please enter a description 30 characters or less';
         }
         if (!location.length) {
@@ -50,13 +35,35 @@ export function GroupFormModal({ preexistingGroup, isCreateForm }) {
 
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
+    if (!isCreateForm) {
+        if (Object.keys(preexistingGroup).length === 0) { return null; }
+    }
+
+
+
+    if (!isCreateForm) {
+        const joinedLocation = preexistingGroup.city + ', ' + preexistingGroup.state;
+        const imageURL = preexistingGroup.image ? preexistingGroup.image.url : '';
+
+        setName(preexistingGroup.name);
+        setAbout(preexistingGroup.about);
+        setType(preexistingGroup.type);
+        setIsPrivate(preexistingGroup.private);
+        setLocation(joinedLocation);
+        setImage(imageURL);
+    }
+
+
+
+
 
     const handleSubmit = async (e) => {
+        console.log('start of handleSubmit');
         e.preventDefault();
-        setHasBeenSubmitted(true);
 
 
         if (Object.keys(errors).length !== 0) {
+            console.log('errors', errors)
             return errors;
         }
 
@@ -74,10 +81,10 @@ export function GroupFormModal({ preexistingGroup, isCreateForm }) {
             url: image,
             preview: true
         }
-
-        const group = dispatch(groupActions.createGroupAction({ groupObject }))
-
-        return dispatch(groupActions.createImageAction(imageObject, group))
+        console.log('we got this far')
+        const group = dispatch(groupActions.createGroupThunk({ groupObject }))
+        console.log('but in the ennnnnnnnd')
+        return dispatch(groupActions.createImageThunk(imageObject, group))
             .then(closeModal)
             .catch(async (res) => {
                 const data = await res.json();
@@ -86,6 +93,8 @@ export function GroupFormModal({ preexistingGroup, isCreateForm }) {
                 }
             });
     }
+
+    const buttonText = isCreateForm ? 'Create Group' : 'Update Group'
 
     return (
         <>
@@ -101,8 +110,9 @@ export function GroupFormModal({ preexistingGroup, isCreateForm }) {
                     <input type='text' value={type} onChange={(event) => setType(event.target.value)} />
                 </label>
                 <label className='group-form-is-private-container'>
+                    <h3> Is this group private? </h3>
                     <select value={isPrivate} onChange={(event) => setIsPrivate(event.target.value === 'true')}>
-                        <h3> Is this group private? </h3>
+
                         <option value='false'>
                             Public
                         </option>
@@ -117,6 +127,9 @@ export function GroupFormModal({ preexistingGroup, isCreateForm }) {
                 <label className='group-form-image-container'>
                     <input type='text' value={image} onChange={(event) => setImage(event.target.value)} />
                 </label>
+                <button type='submit'>
+                    {buttonText}
+                </button>
             </form>
         </>
     )

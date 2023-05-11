@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Link } from "react-router-dom"
 
-import { getAllGroupsThunk } from "../../store/group"
+
+import { getAllGroupsThunk } from "../../../store/group"
 
 import { SingleGroup } from "../SingleGroup"
 
@@ -10,7 +10,6 @@ import "./AllGroups.css"
 
 export function AllGroups() {
     const dispatch = useDispatch();
-    const [loadComplete, setLoadComplete] = useState(false)
     let allGroups = useSelector(state => state.groups.allGroups);
 
     allGroups = Object.values(allGroups);

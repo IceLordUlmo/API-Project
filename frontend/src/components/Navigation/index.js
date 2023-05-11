@@ -4,6 +4,9 @@ import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
 import { Logo } from './Logo/index'
+import { UpdateGroup } from '../Groups/UpdateGroup'
+import { CreateGroup } from '../Groups/CreateGroup'
+import OpenModalMenuItem from './OpenModalMenuItem'
 
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector(state => state.session.user);
@@ -25,10 +28,16 @@ function Navigation({ isLoaded }) {
                 <NavLink to="/groups">See All Groups</NavLink>
             </div>
             <div>
-                <NavLink to="/groups/new">Create a Group</NavLink>
+                <OpenModalMenuItem
+                    itemText="Create a Group"
+                    modalComponent={<CreateGroup />}
+                />
             </div>
             <div>
-                <NavLink to="/groups/update">Update a Group</NavLink>
+                <OpenModalMenuItem
+                    itemText="Update a Group"
+                    modalComponent={<UpdateGroup />}
+                />
             </div>
             <div>
                 <NavLink to="/groups/delete">Delete a Group</NavLink>

@@ -3,10 +3,11 @@ import { csrfFetch } from "./csrf"; // don't need this yet
 
 // consts for actions
 const GET_ALL_GROUPS = "groups/getGroups"
-const CREATE_GROUP = "groups/newGroup"
+const GET_ONE_GROUP = "groups/getOneGroup"
+const CREATE_GROUP = "groups/createOneGroup"
 const CREATE_IMAGE = "groups/newImage"
 const UPDATE_GROUP = "groups/updateGroup"
-const DELETE_GROUP = "gorups/deleteGroup"
+const DELETE_GROUP = "groups/deleteGroup"
 const headers = { 'Content-Type': 'application/json' }
 
 // actions to export
@@ -17,13 +18,18 @@ export const getAllGroupsAction = groups => (
     }
 )
 
+export const getOneGroupAction = (groupObject) => (
+    {
+        type: GET_ONE_GROUP,
+        groupObject
+    }
+)
 export const createGroupAction = (groupObject) => (
     {
         type: CREATE_GROUP,
         groupObject
     }
 )
-
 export const createImageAction = (imageObject, groupObject) => (
     {
         type: CREATE_IMAGE,
@@ -66,6 +72,8 @@ export const getAllGroupsThunk = () => async (dispatch) => {
 }
 
 export const createGroupThunk = (groupObject) => async (dispatch) => {
+
+    console.log('we got to create group thunk')
     const response = await csrfFetch('api/groups', {
         method: 'POST',
         headers,
@@ -84,16 +92,33 @@ export const createGroupThunk = (groupObject) => async (dispatch) => {
 
 export const createImageThunk = (imageObject, groupId) => async (dispatch) => {
     const createURL = `/api/groups/${groupId}/images`
-
+    console.log(createURL);
     const response = await csrfFetch(createURL, {
         method: 'POST',
         headers,
         body: JSON.stringify(imageObject)
     })
-
+    console.log('what about here')
     if (response.ok) {
         const jsonResponse = await response.json();
         dispatch(createImageAction(imageObject));
+        return jsonResponse;
+    }
+    else {
+        return await response.json();
+    }
+}
+
+export const getOneGroupThunk = (groupId) => async (dispatch) => {
+    const getURL = "/api/groups/" + groupId;
+
+    console.log(getURL);
+
+    const response = await csrfFetch(getURL);
+
+    if (response.ok) {
+        const jsonResponse = await response.json();
+        dispatch(getOneGroupAction(jsonResponse));
         return jsonResponse;
     }
     else {
@@ -141,7 +166,7 @@ export const deleteGroupThunk = (groupIdToDelete) => async (dispatch) => {
     }
 }
 
-const initialState = { allGroups: {} };
+const initialState = { allGroups: {}, singleGroup: {} };
 const groupReducer = (state = initialState, action) => {
 
     console.log("group Reducer")
@@ -156,7 +181,12 @@ const groupReducer = (state = initialState, action) => {
             })
 
             return allGroupsState;
+        case GET_ONE_GROUP:
+            console.log("get one group reducer")
+            const oneGroupState = { ...state, oneGroup: {} }
 
+            oneGroupState.oneGroup = action.groupObject;
+            return oneGroupState;
         default:
             return state;
     }
