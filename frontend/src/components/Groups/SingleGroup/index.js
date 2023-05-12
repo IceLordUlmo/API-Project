@@ -1,15 +1,11 @@
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+
 
 // import { getGroupEventsThunk } from "../../store/events";
 
 export const SingleGroup = ({ group }) => {
-    const dispatch = useDispatch();
+
     const groupPublicity = group.private ? 'Private' : 'Public'
-    //useEffect(() => {
-    //    dispatch
-    //})
 
     return (
         <li className="all-groups-single-group">

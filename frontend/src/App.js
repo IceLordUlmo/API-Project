@@ -3,7 +3,9 @@ import { useDispatch } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
-import { AllGroups } from "./components/AllGroups";
+import { AllGroups } from "./components/Groups/AllGroups";
+import { CreateGroup } from "./components/Groups/CreateGroup"
+import { UpdateGroup } from "./components/Groups/UpdateGroup"
 
 function App() {
   const dispatch = useDispatch();
@@ -18,7 +20,14 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route path="/groups">
+
+          <Route path="/groups/update">
+            <UpdateGroup />
+          </Route>
+          <Route path="/groups/new">
+            <CreateGroup />
+          </Route>
+          <Route exact path="/groups">
             <AllGroups />
           </Route>
         </Switch>
