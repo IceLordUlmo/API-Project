@@ -16,14 +16,10 @@ export function AllGroups() {
     useEffect(() => {
         console.log("useEffect allGroups");
         dispatch(getAllGroupsThunk())
-        //const timerID = setTimeout(() => { setLoadComplete(true) }, 1500)
-        //return () => clearInterval(timerID)
 
     }, [dispatch])
 
-    // if (!loadComplete) {
-    //     return null;
-    // }
+
 
     return (
         <div className="all-groups-external-div">

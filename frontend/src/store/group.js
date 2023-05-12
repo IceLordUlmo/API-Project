@@ -8,8 +8,8 @@ const CREATE_GROUP = "groups/createOneGroup"
 const CREATE_IMAGE = "groups/newImage"
 const UPDATE_GROUP = "groups/updateGroup"
 const DELETE_GROUP = "groups/deleteGroup"
+//const headers = { 'Content-Type': 'application/json' }
 const headers = { 'Content-Type': 'application/json' }
-
 // actions to export
 export const getAllGroupsAction = groups => (
     {
@@ -73,26 +73,30 @@ export const getAllGroupsThunk = () => async (dispatch) => {
 
 export const createGroupThunk = (groupObject) => async (dispatch) => {
 
-    console.log('we got to create group thunk')
-    const response = await csrfFetch('api/groups', {
+    console.log('we got to create group thunk: ', groupObject)
+    const request = {
         method: 'POST',
         headers,
         body: JSON.stringify(groupObject)
-    })
-
+    }
+    console.log(request);
+    const response = await csrfFetch('api/groups', request)
+    console.log('stage 2 of create group thunk')
     if (response.ok) {
+        console.log('create group thunk response ok')
         const jsonResponse = await response.json();
         dispatch(createGroupAction(groupObject));
         return jsonResponse;
     }
     else {
+        console.log('create group thunk response NOT ok')
         return await response.json();
     }
 }
 
 export const createImageThunk = (imageObject, groupId) => async (dispatch) => {
     const createURL = `/api/groups/${groupId}/images`
-    console.log(createURL);
+    console.log('start of image thunk ', createURL);
     const response = await csrfFetch(createURL, {
         method: 'POST',
         headers,
