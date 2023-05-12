@@ -39,8 +39,6 @@ export function GroupFormModal({ preexistingGroup, isCreateForm }) {
         if (Object.keys(preexistingGroup).length === 0) { return null; }
     }
 
-
-
     if (!isCreateForm) {
         const joinedLocation = preexistingGroup.city + ', ' + preexistingGroup.state;
         const imageURL = preexistingGroup.image ? preexistingGroup.image.url : '';
@@ -52,10 +50,6 @@ export function GroupFormModal({ preexistingGroup, isCreateForm }) {
         setLocation(joinedLocation);
         setImage(imageURL);
     }
-
-
-
-
 
     const handleSubmit = async (e) => {
         console.log('start of handleSubmit');

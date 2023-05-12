@@ -2,28 +2,27 @@ import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 
-import { getAllGroupsThunk } from "../../../store/group"
+import { getOneGroupThunk } from "../../../store/group"
 
 import { SingleGroup } from "../SingleGroup"
 
-import "./AllGroups.css"
+import "./OneGroup.css"
 
-export function AllGroups() {
+export function OneGroup() {
     const dispatch = useDispatch();
-    let allGroups = useSelector(state => state.groups.allGroups);
-    let oneGroup = useSelector(state => state.groups.oneGroup);
+    let group = useSelector(state => state.groups.oneGroup);
+
     allGroups = Object.values(allGroups);
     useEffect(() => {
-        console.log("useEffect allGroups");
-        dispatch(getAllGroupsThunk())
+        console.log("useEffect oneGroup");
+        dispatch(getOneGroupThunk())
 
-    }, [dispatch, oneGroup])
+    }, [dispatch])
 
 
 
     return (
         <div className="all-groups-external-div">
-
             <ul className="all-groups-unordered-list-of-groups">
                 {
                     allGroups?.map((singleGroup) => (

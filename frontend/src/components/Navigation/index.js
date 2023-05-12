@@ -33,15 +33,7 @@ function Navigation({ isLoaded }) {
                     modalComponent={<CreateGroup />}
                 />
             </div>
-            <div>
-                <OpenModalMenuItem
-                    itemText="Update a Group"
-                    modalComponent={<UpdateGroup />}
-                />
-            </div>
-            <div>
-                <NavLink to="/groups/delete">Delete a Group</NavLink>
-            </div>
+
         </div>
     );
 }
