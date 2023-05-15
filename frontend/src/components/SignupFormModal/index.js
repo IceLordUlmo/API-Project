@@ -125,7 +125,7 @@ function SignupFormModal() {
                 <button
                     type="submit"
                     disabled={!canSignUp}
-                    className={canLogIn ? 'signup-form-button-active' : 'signup-form-button-inactive'}>Sign Up</button>
+                    className={canSignUp ? 'signup-form-button-active' : 'signup-form-button-inactive'}>Sign Up</button>
             </form>
         </>
     );
