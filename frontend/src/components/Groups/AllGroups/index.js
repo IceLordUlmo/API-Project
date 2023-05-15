@@ -23,7 +23,8 @@ export function AllGroups() {
 
     return (
         <div className="all-groups-external-div">
-
+            <h1 className='all-groups-events'>Events</h1>
+            <h1 className='all-groups-groups'>Groups</h1>
             <ul className="all-groups-unordered-list-of-groups">
                 {
                     allGroups?.map((singleGroup) => (

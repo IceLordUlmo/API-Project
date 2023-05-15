@@ -4,7 +4,7 @@ import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
-import { useHistory } from "react-router-dom";
+import { useHistory, NavLink } from "react-router-dom";
 
 function ProfileButton({ user }) {
     const dispatch = useDispatch();
@@ -69,6 +69,7 @@ function ProfileButton({ user }) {
                             onItemClick={closeMenu}
                             modalComponent={<SignupFormModal />}
                         />
+                        <NavLink to="/groups">See All Groups</NavLink>
                     </>
                 )}
             </ul>
