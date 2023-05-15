@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
@@ -122,7 +122,10 @@ function SignupFormModal() {
                 {errors.confirmPassword && (
                     <p>{errors.confirmPassword}</p>
                 )}
-                <button type="submit" disabled={!canSignUp}>Sign Up</button>
+                <button
+                    type="submit"
+                    disabled={!canSignUp}
+                    className={canLogIn ? 'signup-form-button-active' : 'signup-form-button-inactive'}>Sign Up</button>
             </form>
         </>
     );
