@@ -11,6 +11,7 @@ function SignupFormModal() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
+    const [canSignUp, setCanSignUp] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
@@ -40,6 +41,20 @@ function SignupFormModal() {
             confirmPassword: "Confirm Password field must be the same as the Password field"
         });
     };
+
+    useEffect(() => {
+        // when any field is empty
+        if ((email.length < 1 ||
+            username.length < 1 ||
+            firstName.length < 1 ||
+            lastName.length < 1 ||
+            password.length < 1) ||
+            (username.length < 4 || password.length < 6)) {
+            setCanSignUp(false);
+        } else {
+            setCanSignUp(true);
+        }
+    }, [email, username, firstName, lastName, password])
 
     return (
         <>
@@ -107,7 +122,7 @@ function SignupFormModal() {
                 {errors.confirmPassword && (
                     <p>{errors.confirmPassword}</p>
                 )}
-                <button type="submit">Sign Up</button>
+                <button type="submit" disabled={!canSignUp}>Sign Up</button>
             </form>
         </>
     );
