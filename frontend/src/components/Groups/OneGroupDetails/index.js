@@ -7,8 +7,8 @@ import "./OneGroupDetails.css";
 
 //import GroupEventItem from "../GroupEventItem";
 
-import { getGroupThunk } from "../../store/groups";
-import { getGroupEventsThunk } from "../../store/events";
+//import { getGroupThunk } from "../../store/groups";
+//import { getGroupEventsThunk } from "../../store/events";
 
 export const OneGroupDetails = () => {
 

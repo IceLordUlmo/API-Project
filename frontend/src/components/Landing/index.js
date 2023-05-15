@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-
+import fleetUpImage from './fleetup.jpg'
 import './Landing.css'
 
 
@@ -20,16 +20,14 @@ export function Landing() {
 
                 </div>
                 <div className='landing-div-one-image'>
-                    coming soon
+                    <img src={fleetUpImage} alt='image of a fleet'></img>
                 </div>
             </div>
             <div className='landing-div-two'>
                 <h3 className='landing-div-two-subtitle'>
                     Subtitle
                 </h3>
-                <p className='landing-div-two-caption'>
-                    Caption
-                </p>
+                <p className='landing-div-two-caption'>Caption</p>
             </div>
             <div className='landing-div-three'>
                 <Link className='landing-div-three-link' to='/groups'>
