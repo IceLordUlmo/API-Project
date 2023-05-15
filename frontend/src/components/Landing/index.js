@@ -38,7 +38,7 @@ export function Landing() {
                 <Link className='landing-div-three-link' to='/event'>
                     Find an event
                 </Link>
-                <Link className='landing-div-three-link' to='/event'>
+                <Link className='landing-div-three-link' to='/groups/new'>
                     Start a group
                 </Link>
             </div>

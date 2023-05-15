@@ -7,6 +7,7 @@ import { AllGroups } from "./components/Groups/AllGroups";
 import { CreateGroup } from "./components/Groups/CreateGroup"
 import { UpdateGroup } from "./components/Groups/UpdateGroup"
 import { Landing } from "./components/Landing"
+import { OneGroupDetails } from "./components/Groups/OneGroupDetails"
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -20,11 +21,13 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-
-          <Route path="/groups/update">
+          <Route path="/groups/:groupId">
+            <OneGroupDetails />
+          </Route>
+          <Route path="/groups/:groupId/edit">
             <UpdateGroup />
           </Route>
-          <Route path="/groups/new">
+          <Route exact path="/groups/new">
             <CreateGroup />
           </Route>
           <Route exact path="/groups">
