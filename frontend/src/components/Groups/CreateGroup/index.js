@@ -1,4 +1,4 @@
-import { GroupFormModal } from '../GroupFormModal';
+import { GroupFormModal } from '../GroupForm';
 
 export const CreateGroup = () => {
     // make a dummy group name: '', about: '', type: '', private: '', city: '', state: ''

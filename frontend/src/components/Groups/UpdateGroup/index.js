@@ -1,4 +1,4 @@
-import { GroupFormModal } from '../GroupFormModal';
+import { GroupFormModal } from '../GroupForm';
 import { useParams } from 'react-router-dom'
 export const UpdateGroup = () => {
 

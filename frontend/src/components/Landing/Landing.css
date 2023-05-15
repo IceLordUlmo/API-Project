@@ -1,0 +1,44 @@
+.landing-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.landing-div-one {
+    align-items: center;
+    display: flex;
+    width: 70%;
+    padding: 15%;
+}
+
+.landing-div-one-texts {
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+}
+
+.landing-div-one-image {
+    display: flex;
+    width: 25%;
+}
+
+.landing-div-two {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    width: 100%;
+}
+
+.landing-div-two>p {
+    text-align: center;
+    width: 100px;
+}
+
+.landing-div-three {
+    display: flex;
+}
+
+.landing-div-four {
+    display: flex;
+}

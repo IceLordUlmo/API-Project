@@ -2,9 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-import OpenModalMenuItem from '../Navigation/OpenModalMenuItem'
-import SignupFormModal from '../SignupFormModal'
-
 import './Landing.css'
 
 
@@ -14,11 +11,14 @@ export function Landing() {
     return (
         <div className='landing-container'>
             <div className='landing-div-one'>
-                <h2 className='landing-div-one-header'>
-                    Find a fleet group to join or a fleet event today!
-                </h2>
-                <p className='landing-div-one-text'>In EVE Online it can be tough to know who to fleet up with or what opportunities there are.
-                    Join a group with similar goals or find an event that matches your skills </p>
+                <div className='landing-div-one-texts'>
+                    <h2 className='landing-div-one-header'>
+                        Find a fleet group to join or a fleet event today!
+                    </h2>
+                    <p className='landing-div-one-p'>In EVE Online it can be tough to know who to fleet up with or what opportunities there are.
+                        Join a group with similar goals or find an event that matches your skills </p>
+
+                </div>
                 <div className='landing-div-one-image'>
                     coming soon
                 </div>

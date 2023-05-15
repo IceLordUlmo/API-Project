@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import * as groupActions from '../../../store/group';
 import { useDispatch } from 'react-redux';
-import { useModal } from '../../../context/Modal';
 import './GroupForm.css';
 
-export function GroupFormModal({ preexistingGroup, isCreateForm }) {
+export function GroupForm({ preexistingGroup, isCreateForm }) {
     const dispatch = useDispatch();
 
     //

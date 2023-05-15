@@ -6,7 +6,7 @@ import Navigation from "./components/Navigation";
 import { AllGroups } from "./components/Groups/AllGroups";
 import { CreateGroup } from "./components/Groups/CreateGroup"
 import { UpdateGroup } from "./components/Groups/UpdateGroup"
-
+import { Landing } from "./components/Landing"
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -29,6 +29,9 @@ function App() {
           </Route>
           <Route exact path="/groups">
             <AllGroups />
+          </Route>
+          <Route exact path='/'>
+            <Landing />
           </Route>
         </Switch>
       )
