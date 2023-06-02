@@ -6,7 +6,7 @@ export function Logo() {
     return (
         <div className='logo-container'>
             <Link exact to='/'>
-                <p className='logo-text'>FleetUp</p>
+                <h1 className='logo-text'>FleetUp</h1>
             </Link>
         </div>
     )

@@ -13,8 +13,10 @@ function Navigation({ isLoaded }) {
 
     return (
         <div className='navigation-container'>
-            <div className='navigation-top'>
+            <div className='navigation-logo'>
                 <Logo />
+            </div>
+            <div className='navigation-top'>
                 <ul className='navigation-top-right'>
                     {isLoaded && (
                         <li>
@@ -24,24 +26,7 @@ function Navigation({ isLoaded }) {
                 </ul>
 
             </div>
-            <div>
-                <NavLink to="/groups">See All Groups</NavLink>
-            </div>
-            <div>
-                <OpenModalMenuItem
-                    itemText="Create a Group"
-                    modalComponent={<CreateGroup />}
-                />
-            </div>
-            <div>
-                <OpenModalMenuItem
-                    itemText="Update a Group"
-                    modalComponent={<UpdateGroup />}
-                />
-            </div>
-            <div>
-                <NavLink to="/groups/delete">Delete a Group</NavLink>
-            </div>
+
         </div>
     );
 }

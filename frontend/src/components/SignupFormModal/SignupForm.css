@@ -63,3 +63,8 @@ p {
     margin-left: 32px;
     color: red;
 }
+
+.signup-form-button-inactive {
+    color: gray;
+    background: #090a66
+}
