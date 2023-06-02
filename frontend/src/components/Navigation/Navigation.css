@@ -1,32 +1,33 @@
-.navigation-container {
-    left: 70%;
-    position: flex;
-}
-
-.profile-dropdown {
-    right: 30px;
-    top: 30px;
-    position: fixed;
-    list-style-type: none;
-}
-
-.navigation-top {
-    display: flex;
-    align-items: center;
-    height: 75px;
-}
-
-.navigation-top-right {
-    display: flex;
-    align-items: center;
-    list-style-type: none;
-}
-
-
 .hidden {
     display: none;
 }
 
 .profile-dropdown>li>button:hover {
     cursor: pointer;
+}
+
+.navigation-container {
+    width: 100%;
+    position: flex;
+    align-items: right;
+    flex-direction: row;
+}
+
+.profile-dropdown {
+
+    list-style-type: none;
+}
+
+.navigation-top {
+    right: 0px;
+    top: 0px;
+    position: fixed;
+
+}
+
+.navigation-top-right {
+    display: flex;
+    align-items: center;
+    list-style-type: none;
+    margin: 0 0 0 0;
 }

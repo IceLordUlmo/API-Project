@@ -7,19 +7,22 @@
 .landing-div-one {
     align-items: center;
     display: flex;
-    width: 70%;
-    padding: 0% 20% 0% 20%;
+    flex-direction: row;
+    width: 80%;
+    padding: 0% 10% 0% 10%;
 }
 
 .landing-div-one-texts {
     display: flex;
     flex-direction: column;
-    width: 35%;
+    width: 45%;
+    padding: 0% 10% 0% 5%;
 }
 
 .landing-div-one-image {
     display: flex;
-    width: 25%;
+    align-items: center;
+    width: 45%;
 }
 
 .landing-div-two {
@@ -43,8 +46,10 @@
 
 .landing-div-three-link {
     display: flex;
-    flex-direction: row;
-    padding: 0% 10% 0% 10%
+    flex-direction: column;
+    padding: 0% 5% 0% 5%;
+    align-items: center;
+    width: 23%;
 }
 
 .landing-div-four {

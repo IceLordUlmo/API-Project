@@ -2,10 +2,14 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import fleetUpImage from './fleetup.jpg'
+import groupImage from './group.png'
+import startImage from './start.png'
+import eventImage from './event.png'
 import './Landing.css'
 
 
-export function Landing() {
+export function Landing()
+{
     const sessionUser = useSelector(state => state.session.user);
 
     return (
@@ -31,13 +35,29 @@ export function Landing() {
             </div>
             <div className='landing-div-three'>
                 <Link className='landing-div-three-link' to='/groups'>
-                    See all groups
+                    <div className='landing-div-three-image'>
+                        <div>
+                            <img src={groupImage} alt='image of a fleet in space'></img>
+                        </div>
+                    </div>
+                    <div>
+                        See all groups
+                    </div>
                 </Link>
                 <Link className='landing-div-three-link' to='/event'>
-                    Find an event
+                    <div className='landing-div-three-image'>
+                        <img src={eventImage} alt='image of a fleet event in space'></img>
+                    </div>
+                    <div>Find an event
+                    </div>
                 </Link>
                 <Link className='landing-div-three-link' to='/groups/new'>
-                    Start a group
+                    <div className='landing-div-three-image'>
+                        <img src={startImage} alt='image of two ships in space'></img>
+                    </div>
+                    <div>
+                        Start a group
+                    </div>
                 </Link>
             </div>
             <div className='landing-div-four'>
