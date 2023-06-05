@@ -54,3 +54,8 @@ button {
     color: white;
     border-radius: 12px;
 }
+
+.login-form-button-inactive {
+    color: gray;
+    background: #090a66
+}
