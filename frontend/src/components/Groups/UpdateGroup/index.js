@@ -1,4 +1,4 @@
-import { GroupFormModal } from '../GroupFormModal';
+import { GroupForm } from '../GroupForm';
 import { useParams } from 'react-router-dom'
 export const UpdateGroup = () => {
 
@@ -6,7 +6,7 @@ export const UpdateGroup = () => {
     const group = {};
 
     return (
-        <GroupFormModal isCreateForm={false} />
+        <GroupForm isCreateForm={false} />
 
     )
 }

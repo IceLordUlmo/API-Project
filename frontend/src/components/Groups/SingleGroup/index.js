@@ -12,7 +12,7 @@ export const SingleGroup = ({ group }) => {
             <div className="single-group-image-temp"></div>
             <div className="single-group-text">
                 <h2>
-                    <Link className="single-group-link">{group.name}</Link>
+                    <Link to={`/groups/${group.id}`} className="single-group-link">{group.name}</Link>
                 </h2>
                 <p className="single-group-location"></p>
                 <p className="single-group-about"></p>

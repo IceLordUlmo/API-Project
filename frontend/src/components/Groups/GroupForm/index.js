@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import * as groupActions from '../../../store/group';
 import { useDispatch } from 'react-redux';
-import { useModal } from '../../../context/Modal';
+import { useHistory } from 'react-router-dom';
 import './GroupForm.css';
 
-export function GroupFormModal({ preexistingGroup, isCreateForm }) {
+export function GroupForm({ preexistingGroup, isCreateForm }) {
     const dispatch = useDispatch();
 
     //
@@ -14,6 +14,8 @@ export function GroupFormModal({ preexistingGroup, isCreateForm }) {
     const [isPrivate, setIsPrivate] = useState('false');
     const [location, setLocation] = useState('');
     const [image, setImage] = useState('');
+    const history = useHistory();
+
     useEffect(() => {
         const errors = {};
 
@@ -34,7 +36,6 @@ export function GroupFormModal({ preexistingGroup, isCreateForm }) {
     }, [name, about, location, image])
 
     const [errors, setErrors] = useState({});
-    const { closeModal } = useModal();
     if (!isCreateForm) {
         if (Object.keys(preexistingGroup).length === 0) { return null; }
     }
@@ -70,26 +71,37 @@ export function GroupFormModal({ preexistingGroup, isCreateForm }) {
             "city": city,
             "state": state
         }
-        console.log('groupObject ', groupObject);
+
         const imageObject = {
             "url": image,
             "preview": true
         }
-        console.log('we got this far')
-        dispatch(groupActions.createGroupThunk(groupObject)).then((group) => {
 
-            console.log('but in the ennnnnnnnd', group)
+        if (isCreateForm) {
+            dispatch(groupActions.createGroupThunk(groupObject)).then((group) => {
 
-            return dispatch(groupActions.createImageThunk(imageObject, group.id))
-                .then(closeModal)
+                return dispatch(groupActions.createImageThunk(imageObject, group.id))
+                    .then(history.push(`/groups/${group.id}`))
+                    .catch(async (res) => {
+                        const data = await res.json();
+                        if (data && data.errors) {
+                            setErrors(data.errors);
+                        }
+                    })
+            });
+        }
+
+        else {
+            dispatch(groupActions.updateGroupThunk(groupObject)).then((group) => { history.push(`/groups/${group.id}`) })
                 .catch(async (res) => {
                     const data = await res.json();
                     if (data && data.errors) {
                         setErrors(data.errors);
                     }
                 })
-        });
+        };
     }
+
 
     const buttonText = isCreateForm ? 'Create Group' : 'Update Group'
 
