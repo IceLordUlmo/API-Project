@@ -46,7 +46,7 @@ export function Landing()
                 </Link>
                 <Link className='landing-div-three-link' to='/event'>
                     <div className='landing-div-three-image'>
-                        <img src={eventImage} alt='image of a fleet event in space'></img>
+                        <img src={eventImage} alt='image of a fleet battle in space'></img>
                     </div>
                     <div>Find an event
                     </div>
