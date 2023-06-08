@@ -8,11 +8,13 @@ import { CreateGroup } from "./components/Groups/CreateGroup"
 import { UpdateGroup } from "./components/Groups/UpdateGroup"
 import { Landing } from "./components/Landing"
 import { OneGroupDetails } from "./components/Groups/OneGroupDetails"
-function App() {
+function App()
+{
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
@@ -21,14 +23,14 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route path="/groups/:groupId">
-            <OneGroupDetails />
+          <Route exact path="/groups/new">
+            <CreateGroup />
           </Route>
           <Route path="/groups/:groupId/edit">
             <UpdateGroup />
           </Route>
-          <Route exact path="/groups/new">
-            <CreateGroup />
+          <Route path="/groups/:groupId">
+            <OneGroupDetails />
           </Route>
           <Route exact path="/groups">
             <AllGroups />
