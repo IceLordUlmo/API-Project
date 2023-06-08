@@ -4,60 +4,71 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import './GroupForm.css';
 
-export function GroupForm({ preexistingGroup, isCreateForm }) {
+export function GroupForm({ preexistingGroup, isCreateForm })
+{
     const dispatch = useDispatch();
 
     //
-    const [name, setName] = useState('');
-    const [about, setAbout] = useState('');
-    const [type, setType] = useState('');
+    const [name, setName] = useState(preexistingGroup ? preexistingGroup.name : '');
+    const [about, setAbout] = useState(preexistingGroup ? preexistingGroup.about : '');
+    const [type, setType] = useState(preexistingGroup ? preexistingGroup.type : '');
     const [isPrivate, setIsPrivate] = useState('false');
-    const [location, setLocation] = useState('');
-    const [image, setImage] = useState('');
+    const [location, setLocation] = useState(preexistingGroup ? preexistingGroup.city : '');
+    const [image, setImage] = useState(preexistingGroup ? preexistingGroup.GroupImages[0].url : '');
     const history = useHistory();
 
-    useEffect(() => {
+    console.log(preexistingGroup)
+
+    useEffect(() =>
+    {
         const errors = {};
 
-        if (!name.length) {
+        if (!name.length)
+        {
             errors.name = 'Please enter a name';
         }
-        if (about.length < 50) {
+        if (about.length < 50)
+        {
             errors.about = 'Please enter a description 50 characters or more';
         }
-        if (!location.length) {
+        if (!location.length)
+        {
             errors.location = 'Please enter a location';
         }
-        if (!image.length) {
+        if (!image.length)
+        {
             errors.image = 'Please enter an image URL';
         }
-
         setErrors(errors)
     }, [name, about, location, image])
 
     const [errors, setErrors] = useState({});
-    if (!isCreateForm) {
+    if (!isCreateForm)
+    {
         if (Object.keys(preexistingGroup).length === 0) { return null; }
     }
 
-    if (!isCreateForm) {
+    if (!isCreateForm)
+    {
         const joinedLocation = preexistingGroup.city + ', ' + preexistingGroup.state;
         const imageURL = preexistingGroup.image ? preexistingGroup.image.url : '';
 
-        setName(preexistingGroup.name);
-        setAbout(preexistingGroup.about);
-        setType(preexistingGroup.type);
-        setIsPrivate(preexistingGroup.private);
-        setLocation(joinedLocation);
-        setImage(imageURL);
+        // setName(preexistingGroup.name);
+        // setAbout(preexistingGroup.about);
+        // setType(preexistingGroup.type);
+        // setIsPrivate(preexistingGroup.private);
+        // setLocation(joinedLocation);
+        // setImage(imageURL);
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e) =>
+    {
         console.log('start of handleSubmit');
         e.preventDefault();
 
 
-        if (Object.keys(errors).length !== 0) {
+        if (Object.keys(errors).length !== 0)
+        {
             console.log('errors', errors)
             return errors;
         }
@@ -77,25 +88,32 @@ export function GroupForm({ preexistingGroup, isCreateForm }) {
             "preview": true
         }
 
-        if (isCreateForm) {
-            dispatch(groupActions.createGroupThunk(groupObject)).then((group) => {
+        if (isCreateForm)
+        {
+            dispatch(groupActions.createGroupThunk(groupObject)).then((group) =>
+            {
 
                 return dispatch(groupActions.createImageThunk(imageObject, group.id))
                     .then(history.push(`/groups/${group.id}`))
-                    .catch(async (res) => {
+                    .catch(async (res) =>
+                    {
                         const data = await res.json();
-                        if (data && data.errors) {
+                        if (data && data.errors)
+                        {
                             setErrors(data.errors);
                         }
                     })
             });
         }
 
-        else {
+        else
+        {
             dispatch(groupActions.updateGroupThunk(groupObject)).then((group) => { history.push(`/groups/${group.id}`) })
-                .catch(async (res) => {
+                .catch(async (res) =>
+                {
                     const data = await res.json();
-                    if (data && data.errors) {
+                    if (data && data.errors)
+                    {
                         setErrors(data.errors);
                     }
                 })

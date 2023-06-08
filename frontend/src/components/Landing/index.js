@@ -29,9 +29,9 @@ export function Landing()
             </div>
             <div className='landing-div-two'>
                 <h3 className='landing-div-two-subtitle'>
-                    Subtitle
+                    How Fleetup Works
                 </h3>
-                <p className='landing-div-two-caption'>Caption</p>
+                <p className='landing-div-two-caption'>Words about the workings of Fleetup</p>
             </div>
             <div className='landing-div-three'>
                 <Link className='landing-div-three-link' to='/groups'>
