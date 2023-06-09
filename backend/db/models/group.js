@@ -2,17 +2,21 @@
 const {
   Model
 } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Group extends Model {
+module.exports = (sequelize, DataTypes) =>
+{
+  class Group extends Model
+  {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate(models)
+    {
       // define association here
       Group.hasMany(models.Event, {
-        foreignKey: 'groupId'
+        foreignKey: 'groupId',
+        onDelete: 'cascade'
       })
       Group.hasMany(models.Venue, {
         foreignKey: 'groupId'
@@ -22,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'cascade'
       })
       Group.hasMany(models.Membership, {
-        foreignKey: 'groupId'
+        foreignKey: 'groupId',
+        onDelete: 'cascade'
       })
       Group.belongsTo(models.User, {
         onDelete: 'cascade',
