@@ -2,18 +2,20 @@
 const {
   Model
 } = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Membership extends Model {
+module.exports = (sequelize, DataTypes) =>
+{
+  class Membership extends Model
+  {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate(models)
+    {
       // define association here
       Membership.belongsTo(models.User, {
-        foreignKey: 'userId',
-        onDelete: 'cascade'
+        foreignKey: 'userId'
       })
       Membership.belongsTo(models.Group, {
         foreignKey: 'groupId',
@@ -23,7 +25,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   Membership.init({
     userId: DataTypes.INTEGER,
-    groupId: DataTypes.INTEGER,
+    groupId: {
+      type: DataTypes.INTEGER,
+      onDelete: 'cascade'
+    },
     status: DataTypes.ENUM("co-host", "member", "pending", 'organizer'),
     id: {
       type: DataTypes.INTEGER,

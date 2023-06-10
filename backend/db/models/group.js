@@ -15,8 +15,7 @@ module.exports = (sequelize, DataTypes) =>
     {
       // define association here
       Group.hasMany(models.Event, {
-        foreignKey: 'groupId',
-        onDelete: 'cascade'
+        foreignKey: 'groupId'
       })
       Group.hasMany(models.Venue, {
         foreignKey: 'groupId'
@@ -32,8 +31,7 @@ module.exports = (sequelize, DataTypes) =>
       Group.belongsTo(models.User, {
         onDelete: 'cascade',
         foreignKey: 'organizerId',
-        as: 'Organizer',
-        hooks: true
+        as: 'Organizer'
       })
     }
   }
@@ -41,7 +39,7 @@ module.exports = (sequelize, DataTypes) =>
     organizerId: DataTypes.INTEGER,
     name: DataTypes.STRING,
     about: DataTypes.STRING,
-    type: DataTypes.ENUM("Online", "In person"),
+    type: DataTypes.ENUM("Online", "In Person"),
     private: DataTypes.BOOLEAN,
     city: DataTypes.STRING,
     state: DataTypes.STRING,
