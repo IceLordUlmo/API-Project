@@ -3,13 +3,15 @@
 
 let options = {};
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production')
+{
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize)
+  {
     await queryInterface.createTable('Groups', {
       id: {
         allowNull: false,
@@ -22,8 +24,7 @@ module.exports = {
         references: {
           model: 'Users',
           key: 'id'
-        },
-        onDelete: 'cascade'
+        }
       },
       name: {
         type: Sequelize.STRING
@@ -55,7 +56,8 @@ module.exports = {
       }
     }, options);
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize)
+  {
     options.tableName = "Groups";
     await queryInterface.dropTable(options);
   }

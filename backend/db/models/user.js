@@ -1,24 +1,19 @@
 'use strict';
 const { Model, Validator } = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-    static associate(models) {
+module.exports = (sequelize, DataTypes) =>
+{
+  class User extends Model
+  {
+    static associate(models)
+    {
       // define association here
-      User.belongsToMany(models.Event, {
-        onDelete: 'cascade',
-        foreignKey: 'userId',
-        otherKey: 'eventId',
-        through: models.Attendance
-      })
-
       User.hasMany(models.Group, {
         foreignKey: 'organizerId'
       });
 
       User.hasMany(models.Attendance, {
-        foreignKey: 'userId',
-        onDelete: 'cascade'
+        foreignKey: 'userId'
       })
 
       User.hasMany(models.Membership, {
@@ -32,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       username: {
         type: DataTypes.STRING,
         validate: {
-          len: [0, 256]
+          len: [4, 256]
         }
       },
       firstName: {
@@ -46,8 +41,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         validate: {
           len: [4, 30],
-          isNotEmail(value) {
-            if (Validator.isEmail(value)) {
+          isNotEmail(value)
+          {
+            if (Validator.isEmail(value))
+            {
               throw new Error("Cannot be an email.");
             }
           }

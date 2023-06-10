@@ -3,13 +3,15 @@
 
 let options = {};
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production')
+{
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize)
+  {
     await queryInterface.createTable('Attendances', {
       id: {
         allowNull: false,
@@ -28,8 +30,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         references: {
           model: "Users"
-        },
-        onDelete: 'cascade'
+        }
       },
       status: {
         type: Sequelize.ENUM(['attending', 'waitlist', 'pending'])
@@ -46,7 +47,8 @@ module.exports = {
       }
     }, options);
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize)
+  {
     options.tableName = 'Attendances';
     await queryInterface.dropTable(options);
   }
