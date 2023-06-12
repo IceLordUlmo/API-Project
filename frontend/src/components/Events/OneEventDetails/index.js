@@ -49,6 +49,7 @@ export const OneEventDetails = () =>
     let endDisplayEventTime = timeFormatter(endEventTime);
 
     const canDelete = (thisUser && thisUser.id === group.Organizer.id);
+    const isFree = (event.price === 0 || event.price === "0");
 
     function deleteThis()
     {
@@ -83,6 +84,39 @@ export const OneEventDetails = () =>
                                 <p>{group.private ? "Private" : "Public"}</p>
                             </div>
                         </Link>
+                        <div className='one-event-details-details'>
+                            <div className='one-event-details-time'>
+                                <i className='fa-regular fa-clock' />
+                                <div className='one-event-detail-start-and-end'>
+                                    <p>
+                                        {eventDay} • {displayEventTime}
+                                    </p><p>
+                                        {endEventDay} • {endDisplayEventTime}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className='one-event-details-cost'>
+                                <p className='fa-circle-dollar'>
+                                    $
+                                </p>
+                                {isFree ? (
+                                    <p>
+                                        Free
+                                    </p>
+                                ) : (
+                                    <p>
+                                        {event.price}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className='one-event-details-location'>
+                                <i class="fa-sharp fa-solid fa-map-pin" />
+                                <div className='one-event-details-location-type'>
+                                    {event.type}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     {(canDelete)
                         &&
@@ -91,6 +125,14 @@ export const OneEventDetails = () =>
                         </button>)}
                 </div>
             </div>
-        </div>
+            <div className='one-event-details'>
+                <h3>
+                    Description
+                </h3>
+                <p>
+                    {event.description}
+                </p>
+            </div>
+        </div >
     )
 }
