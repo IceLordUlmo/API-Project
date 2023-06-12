@@ -44,7 +44,7 @@ export function Landing()
                         See all groups
                     </div>
                 </Link>
-                <Link className='landing-div-three-link' to='/event'>
+                <Link className='landing-div-three-link' to='/events'>
                     <div className='landing-div-three-image'>
                         <img src={eventImage} alt='image of a fleet battle in space'></img>
                     </div>
@@ -56,7 +56,7 @@ export function Landing()
                         <img src={startImage} alt='image of two ships in space'></img>
                     </div>
                     <div>
-                        Start a group
+                        Start a new group
                     </div>
                 </Link>
             </div>

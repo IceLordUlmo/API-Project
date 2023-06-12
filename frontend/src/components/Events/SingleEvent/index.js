@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-
-
-// import { getEventEventsThunk } from "../../store/events";
+import { timeFormatter } from "../../Utils/time";
 
 export const SingleEvent = ({ event }) =>
 {
-
-    const eventPublicity = event.private ? 'Private' : 'Public'
+    const eventTimeInfo = event.startDate.split("T");
+    let eventDay = eventTimeInfo[0];
+    let eventTime = eventTimeInfo[1];
+    let displayEventTime = timeFormatter(eventTime);
 
     return (
         <li className="all-events-single-event">
@@ -15,16 +15,14 @@ export const SingleEvent = ({ event }) =>
                 <h2>
                     <Link to={`/events/${event.id}`} className="single-event-link">{event.name}</Link>
                 </h2>
-                <p className="single-event-location"></p>
-                <p className="single-event-about"></p>
-                <div className="single-event-events">
-                    <h3 className="single-event-event-word">Events</h3>
-                    <p>
-
-                    </p>
-                    <p>
-                        {eventPublicity}
-                    </p>
+                <div className="single-event-text-container">
+                    <div className="single-event-sub-text-container">
+                        <p>
+                            {eventDay} • {displayEventTime}
+                        </p>
+                    </div>
+                    <h2 className="single-event-group-list-header">{event.name}</h2>
+                    <p className="single-event-event-type-text">{event.type}</p>
                 </div>
             </div>
         </li>

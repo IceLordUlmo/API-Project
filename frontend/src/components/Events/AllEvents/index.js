@@ -11,8 +11,8 @@ import "./AllEvents.css"
 export function AllEvents()
 {
     const dispatch = useDispatch();
-    let allEvents = useSelector(state => state.groups.allEvents);
-    let oneEvent = useSelector(state => state.groups.oneEvent);
+    let allEvents = useSelector(state => state.events.allEvents);
+    let oneEvent = useSelector(state => state.events.oneEvent);
     allEvents = Object.values(allEvents);
     useEffect(() =>
     {
