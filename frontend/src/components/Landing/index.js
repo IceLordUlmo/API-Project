@@ -6,7 +6,8 @@ import groupImage from './group.png'
 import startImage from './start.png'
 import eventImage from './event.png'
 import './Landing.css'
-
+import OpenModalMenuItem from '../Navigation/OpenModalMenuItem'
+import SignupFormModal from '../SignupFormModal';
 
 export function Landing()
 {
@@ -51,20 +52,34 @@ export function Landing()
                     <div>Find an event
                     </div>
                 </Link>
-                <Link className='landing-div-three-link' to='/groups/new'>
-                    <div className='landing-div-three-image'>
+                {sessionUser ? (
+                    <Link className='landing-div-three-link' to='/groups/new'>
+                        <div className='landing-div-three-image'>
+                            <img src={startImage} alt='image of two ships in space'></img>
+                        </div>
+                        <div>
+                            Start a new group
+                        </div>
+                    </Link>) : (<div className='landing-div-three-link'><div className='landing-div-three-image'>
                         <img src={startImage} alt='image of two ships in space'></img>
                     </div>
-                    <div>
-                        Start a new group
-                    </div>
-                </Link>
-            </div>
-            <div className='landing-div-four'>
-                <div className='join-fleetup'>
+                        <div className='landing-disabled'>
+                            Start a new group
+                        </div></div>)
 
-                </div>
+                }
             </div>
+            {!sessionUser ? (
+                <div className="landing-join-fleetup-button">
+                    <OpenModalMenuItem
+                        itemText="Join FleetUp"
+                        modalComponent={<SignupFormModal />}
+
+                    />
+                </div>
+            ) :
+                <div className='landing-no-join-spacer'>
+                </div>}
         </div>
     )
 }

@@ -55,3 +55,7 @@
 .landing-div-four {
     display: flex;
 }
+
+.landing-disabled {
+    color: lightgray
+}
