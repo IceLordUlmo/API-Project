@@ -1,0 +1,10 @@
+.group-breadcrumb {
+    height: 20%;
+    display: grid;
+    grid-template-rows: 4fr 1fr;
+}
+
+.group-breadcrumb-spacer {
+    height: 18%;
+    display: flex;
+}
