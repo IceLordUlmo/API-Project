@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import * as groupActions from '../../../store/group';
+import * as eventActions from '../../../store/event';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import './GroupForm.css';
+import './EventForm.css';
 
-export function GroupForm({ preexistingGroup, isCreateForm })
+export function EventForm({ preexistingEvent, isCreateForm })
 {
     const dispatch = useDispatch();
 
     //
-    const [name, setName] = useState(preexistingGroup ? preexistingGroup.name : '');
-    const [about, setAbout] = useState(preexistingGroup ? preexistingGroup.about : '');
-    const [type, setType] = useState(preexistingGroup ? preexistingGroup.type : '');
+    const [name, setName] = useState(preexistingEvent ? preexistingEvent.name : '');
+    const [about, setAbout] = useState(preexistingEvent ? preexistingEvent.about : '');
+    const [type, setType] = useState(preexistingEvent ? preexistingEvent.type : '');
     const [isPrivate, setIsPrivate] = useState('false');
-    const [location, setLocation] = useState(preexistingGroup ? preexistingGroup.city + ", " + preexistingGroup.state : '');
-    const [image, setImage] = useState(preexistingGroup.GroupImages[0] ? preexistingGroup.GroupImages[0].url : '');
+    const [location, setLocation] = useState(preexistingEvent ? preexistingEvent.city + ", " + preexistingEvent.state : '');
+    const [image, setImage] = useState(preexistingEvent.EventImages[0] ? preexistingEvent.EventImages[0].url : '');
     const [canSubmit, setCanSubmit] = useState(false);
     const history = useHistory();
 
-    console.log(preexistingGroup)
+    console.log(preexistingEvent)
 
     useEffect(() =>
     {
@@ -56,18 +56,18 @@ export function GroupForm({ preexistingGroup, isCreateForm })
     const [errors, setErrors] = useState({});
     if (!isCreateForm)
     {
-        if (Object.keys(preexistingGroup).length === 0) { return null; }
+        if (Object.keys(preexistingEvent).length === 0) { return null; }
     }
 
     if (!isCreateForm)
     {
-        const joinedLocation = preexistingGroup.city + ', ' + preexistingGroup.state;
-        const imageURL = preexistingGroup.image ? preexistingGroup.image.url : '';
+        const joinedLocation = preexistingEvent.city + ', ' + preexistingEvent.state;
+        const imageURL = preexistingEvent.image ? preexistingEvent.image.url : '';
 
-        // setName(preexistingGroup.name);
-        // setAbout(preexistingGroup.about);
-        // setType(preexistingGroup.type);
-        // setIsPrivate(preexistingGroup.private);
+        // setName(preexistingEvent.name);
+        // setAbout(preexistingEvent.about);
+        // setType(preexistingEvent.type);
+        // setIsPrivate(preexistingEvent.private);
         // setLocation(joinedLocation);
         // setImage(imageURL);
     }
@@ -85,7 +85,7 @@ export function GroupForm({ preexistingGroup, isCreateForm })
         }
         console.log(location);
         const [city, state] = location.split(", ");
-        const groupObject = {
+        const eventObject = {
             "name": name,
             "about": about,
             "type": type,
@@ -101,11 +101,11 @@ export function GroupForm({ preexistingGroup, isCreateForm })
 
         if (isCreateForm)
         {
-            dispatch(groupActions.createGroupThunk(groupObject)).then((group) =>
+            dispatch(eventActions.createEventThunk(eventObject)).then((event) =>
             {
 
-                return dispatch(groupActions.createImageThunk(imageObject, group.id))
-                    .then(history.push(`/groups/${group.id}`))
+                return dispatch(eventActions.createImageThunk(imageObject, event.id))
+                    .then(history.push(`/events/${event.id}`))
                     .catch(async (res) =>
                     {
                         const data = await res.json();
@@ -119,8 +119,8 @@ export function GroupForm({ preexistingGroup, isCreateForm })
 
         else
         {
-            console.log('about to dispatch', groupObject);
-            dispatch(groupActions.updateGroupThunk(groupObject, preexistingGroup.id)).then(history.push(`/groups/${preexistingGroup.id}`))
+            console.log('about to dispatch', eventObject);
+            dispatch(eventActions.updateEventThunk(eventObject, preexistingEvent.id)).then(history.push(`/events/${preexistingEvent.id}`))
                 .catch(async (res) =>
                 {
                     const data = await res.json();
@@ -133,29 +133,29 @@ export function GroupForm({ preexistingGroup, isCreateForm })
     }
 
 
-    const buttonText = isCreateForm ? 'Create Group' : 'Update Group'
+    const buttonText = isCreateForm ? 'Create Event' : 'Update Event'
 
     return (
         <>
-            <h1>Create Group</h1>
+            <h1>Create Event</h1>
             <form onSubmit={handleSubmit}>
-                <label className='group-form-name-container'>
+                <label className='event-form-name-container'>
                     <p>{errors.name}</p>
                     <input type='text' value={name} onChange={(event) => setName(event.target.value)}
-                        placeholder='Group name' />
+                        placeholder='Event name' />
                 </label>
-                <label className='group-form-about-container'>
+                <label className='event-form-about-container'>
                     <p>{errors.about}</p>
                     <input type='text' value={about} onChange={(event) => setAbout(event.target.value)}
-                        placeholder='About the group' />
+                        placeholder='About the event' />
                 </label>
-                <label className='group-form-type-container'>
+                <label className='event-form-type-container'>
                     <p>{errors.type}</p>
                     <input type='text' value={type} onChange={(event) => setType(event.target.value)}
                         placeholder='Online or In person' />
                 </label>
-                <label className='group-form-is-private-container'>
-                    <h3> Is this group private? </h3>
+                <label className='event-form-is-private-container'>
+                    <h3> Is this event private? </h3>
                     <select value={isPrivate} onChange={(event) => setIsPrivate(event.target.value === 'true')}>
 
                         <option value='false'>
@@ -166,19 +166,19 @@ export function GroupForm({ preexistingGroup, isCreateForm })
                         </option>
                     </select>
                 </label>
-                <label className='group-form-location-container'>
+                <label className='event-form-location-container'>
                     <p>{errors.location}</p>
                     <input type='text' value={location} onChange={(event) => setLocation(event.target.value)}
                         placeholder='System, Region' />
                 </label>
-                <label className='group-form-image-container'>
+                <label className='event-form-image-container'>
                     <p>{errors.image}</p>
                     <input type='text' value={image} onChange={(event) => setImage(event.target.value)}
                         placeholder='Image URL' />
                 </label>
                 <button type='submit'
                     disabled={!canSubmit}
-                    className={canSubmit ? 'group-form-button-active' : 'group-form-button-inactive'}>
+                    className={canSubmit ? 'event-form-button-active' : 'event-form-button-inactive'}>
                     {buttonText}
                 </button>
             </form>

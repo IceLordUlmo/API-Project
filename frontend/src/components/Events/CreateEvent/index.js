@@ -1,12 +1,11 @@
-import { GroupForm } from '../GroupForm';
+import { EventForm } from '../EventForm';
 
-export const CreateGroup = () => {
-    // make a dummy group name: '', about: '', type: '', private: '', city: '', state: ''
-    const group = {};
+export const CreateEvent = () =>
+{
 
     return (
         <div>
-            <GroupForm isCreateForm={true} />
+            <EventForm isCreateForm={true} />
         </div>
 
     )

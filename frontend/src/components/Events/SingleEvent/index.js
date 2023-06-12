@@ -1,28 +1,29 @@
 import { Link } from "react-router-dom";
 
 
-// import { getGroupEventsThunk } from "../../store/events";
+// import { getEventEventsThunk } from "../../store/events";
 
-export const SingleGroup = ({ group }) => {
+export const SingleEvent = ({ event }) =>
+{
 
-    const groupPublicity = group.private ? 'Private' : 'Public'
+    const eventPublicity = event.private ? 'Private' : 'Public'
 
     return (
-        <li className="all-groups-single-group">
-            <div className="single-group-image-temp"></div>
-            <div className="single-group-text">
+        <li className="all-events-single-event">
+            <div className="single-event-image-temp"></div>
+            <div className="single-event-text">
                 <h2>
-                    <Link to={`/groups/${group.id}`} className="single-group-link">{group.name}</Link>
+                    <Link to={`/events/${event.id}`} className="single-event-link">{event.name}</Link>
                 </h2>
-                <p className="single-group-location"></p>
-                <p className="single-group-about"></p>
-                <div className="single-group-events">
-                    <h3 className="single-group-event-word">Events</h3>
+                <p className="single-event-location"></p>
+                <p className="single-event-about"></p>
+                <div className="single-event-events">
+                    <h3 className="single-event-event-word">Events</h3>
                     <p>
 
                     </p>
                     <p>
-                        {groupPublicity}
+                        {eventPublicity}
                     </p>
                 </div>
             </div>

@@ -2,33 +2,35 @@ import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 
 
-import { getAllGroupsThunk } from "../../../store/group"
+import { getAllEventsThunk } from "../../../store/event"
 
-import { SingleGroup } from "../SingleGroup"
+import { SingleEvent } from "../SingleEvent"
 
-import "./AllGroups.css"
+import "./AllEvents.css"
 
-export function AllGroups() {
+export function AllEvents()
+{
     const dispatch = useDispatch();
-    let allGroups = useSelector(state => state.groups.allGroups);
-    let oneGroup = useSelector(state => state.groups.oneGroup);
-    allGroups = Object.values(allGroups);
-    useEffect(() => {
-        console.log("useEffect allGroups");
-        dispatch(getAllGroupsThunk())
+    let allEvents = useSelector(state => state.groups.allEvents);
+    let oneEvent = useSelector(state => state.groups.oneEvent);
+    allEvents = Object.values(allEvents);
+    useEffect(() =>
+    {
+        console.log("useEffect allEvents");
+        dispatch(getAllEventsThunk())
 
-    }, [dispatch, oneGroup])
+    }, [dispatch, oneEvent])
 
 
 
     return (
-        <div className="all-groups-external-div">
-            <h1 className='all-groups-events'>Events</h1>
-            <h1 className='all-groups-groups'>Groups</h1>
-            <ul className="all-groups-unordered-list-of-groups">
+        <div className="all-events-external-div">
+            <h1 className='all-events-events'>Events</h1>
+            <h1 className='all-events-groups'>Groups</h1>
+            <ul className="all-events-unordered-list-of-events">
                 {
-                    allGroups?.map((singleGroup) => (
-                        <SingleGroup key={singleGroup.id} group={singleGroup} />
+                    allEvents?.map((singleEvent) => (
+                        <SingleEvent key={singleEvent.id} event={singleEvent} />
                     ))}
             </ul>
         </div>

@@ -2,63 +2,63 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
 
-import "./OneGroupDetails.css";
-//import GroupDetailDescription from "./GroupDetailDescription";
+import "./OneEventDetails.css";
+//import EventDetailDescription from "./EventDetailDescription";
 
-//import GroupEventItem from "../GroupEventItem";
+//import EventEventItem from "../EventEventItem";
 
-import { getOneGroupThunk, deleteGroupThunk } from "../../../store/group";
+import { getOneEventThunk, deleteEventThunk } from "../../../store/event";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-//import { getGroupEventsThunk } from "../../store/events";
+//import { getEventEventsThunk } from "../../store/events";
 
-export const OneGroupDetails = () =>
+export const OneEventDetails = () =>
 {
-    const { groupId } = useParams();
+    const { eventId } = useParams();
     const dispatch = useDispatch();
-    const group = useSelector(state => state.groups.oneGroup);
+    const event = useSelector(state => state.events.oneEvent);
     const history = useHistory();
     useEffect(() =>
     {
-        console.log("useEffect oneGroup");
-        dispatch(getOneGroupThunk(groupId))
-    }, [dispatch, groupId])
+        console.log("useEffect oneEvent");
+        dispatch(getOneEventThunk(eventId))
+    }, [dispatch, eventId])
 
-    if (group === undefined) return;
+    if (event === undefined) return;
 
     function deleteThis()
     {
-        dispatch(deleteGroupThunk(groupId));
+        dispatch(deleteEventThunk(eventId));
     }
 
     function editThis()
     {
 
-        history.push(`/groups/${group.id}/edit`)
+        history.push(`/events/${event.id}/edit`)
     }
 
     return (
         <div>
-            <div className="group-breadcrumb">
-                <div className="group-breadcrumb-spacer">
+            <div className="event-breadcrumb">
+                <div className="event-breadcrumb-spacer">
 
                 </div>
-                <div className="group-breadcrumb-text">
-                    <Link to='/groups'>
-                        Groups
+                <div className="event-breadcrumb-text">
+                    <Link to='/events'>
+                        Events
                     </Link>
                 </div>
             </div>
-            <div className="group-details">
-                <div className="group-detail-text-top">
-                    <h1>{group.name}</h1>
-                    <p>{group.city}, {group.state}</p>
+            <div className="event-details">
+                <div className="event-detail-text-top">
+                    <h1>{event.name}</h1>
+                    <p>{event.city}, {event.state}</p>
                     <div className="event-public-container">
                         <p>Events</p>
                         <p>•</p>
-                        <p>{group.private ? "Private" : "Public"}</p>
+                        <p>{event.private ? "Private" : "Public"}</p>
                     </div>
-                    <p>Organized by {group.Organizer.firstName} {group.Organizer.lastName}</p>
+                    <p>Organized by {event.Organizer.firstName} {event.Organizer.lastName}</p>
                     <button onClick={deleteThis}>
                         Delete
                     </button>
