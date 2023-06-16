@@ -59,3 +59,8 @@
 .landing-disabled {
     color: lightgray
 }
+
+.landing-join-fleetup-button {
+    width: 15%;
+    padding: 5% 24% 0% 45%;
+}

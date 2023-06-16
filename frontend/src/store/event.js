@@ -6,14 +6,22 @@ const GET_ALL_EVENTS = "events/getEvents"
 const GET_ONE_EVENT = "events/getOneEvent"
 const CREATE_EVENT = "events/createOneEvent"
 const CREATE_IMAGE = "events/newImage"
-const UPDATE_EVENT = "events/updateEvent"
+//const UPDATE_EVENT = "events/updateEvent"
 const DELETE_EVENT = "events/deleteEvent"
+const GET_ONE_GROUPS_EVENTS = "events/getOneGroupsEvents"
 //const headers = { 'Content-Type': 'application/json' }
 const headers = { 'Content-Type': 'application/json' }
 // actions to export
 export const getAllEventsAction = events => (
     {
         type: GET_ALL_EVENTS,
+        events
+    }
+)
+
+export const getOneGroupsEventsAction = events => (
+    {
+        type: GET_ONE_GROUPS_EVENTS,
         events
     }
 )
@@ -38,13 +46,12 @@ export const createImageAction = (imageObject, eventObject) => (
     }
 )
 
-export const updateEventAction = (eventObject) => (
-    {
-        type: UPDATE_EVENT,
-        eventObject
-
-    }
-)
+// export const updateEventAction = (eventObject) => (
+//     {
+//         type: UPDATE_EVENT,
+//         eventObject
+//     }
+// )
 
 export const deleteEventAction = eventIdToDelete => (
     {
@@ -70,6 +77,25 @@ export const getAllEventsThunk = () => async (dispatch) =>
     {
         const error = await response.json();
         console.log("events thunk definitely NOT ok")
+        return error;
+    }
+}
+
+export const getOneGroupsEventsThunk = (groupId) => async (dispatch) =>
+{
+
+    const response = await fetch(`/api/groups/${groupId}/events`);
+
+    const oneGroupsEventsJson = await response.json();
+
+    if (response.ok)
+    {
+        await dispatch(getOneGroupsEventsAction(oneGroupsEventsJson));
+        console.log("one groups events thunk ok")
+    } else
+    {
+        const error = await response.json();
+        console.log("one groups events thunk definitely NOT ok")
         return error;
     }
 }
@@ -142,29 +168,29 @@ export const getOneEventThunk = (eventId) => async (dispatch) =>
     }
 }
 
-export const updateEventThunk = (eventObject, eventId) => async (dispatch) =>
-{
-    const updateURL = "/api/events/" + eventId
+// export const updateEventThunk = (eventObject, eventId) => async (dispatch) =>
+// {
+//     const updateURL = "/api/events/" + eventId
 
-    console.log(updateURL);
+//     console.log(updateURL);
 
-    const response = await csrfFetch(updateURL, {
-        method: 'PUT',
-        headers,
-        body: JSON.stringify(eventObject)
-    })
+//     const response = await csrfFetch(updateURL, {
+//         method: 'PUT',
+//         headers,
+//         body: JSON.stringify(eventObject)
+//     })
 
-    if (response.ok)
-    {
-        const jsonResponse = await response.json();
-        dispatch(updateEventAction(eventObject));
-        return jsonResponse;
-    }
-    else
-    {
-        return await response.json();
-    }
-}
+//     if (response.ok)
+//     {
+//         const jsonResponse = await response.json();
+//         dispatch(updateEventAction(eventObject));
+//         return jsonResponse;
+//     }
+//     else
+//     {
+//         return await response.json();
+//     }
+// }
 
 export const deleteEventThunk = (eventIdToDelete) => async (dispatch) =>
 {
@@ -188,7 +214,7 @@ export const deleteEventThunk = (eventIdToDelete) => async (dispatch) =>
     }
 }
 
-const initialState = { allEvents: {}, singleEvent: {} };
+const initialState = { allEvents: {}, singleEvent: {}, oneGroupsEvents: {} };
 const eventReducer = (state = initialState, action) =>
 {
 
@@ -212,6 +238,12 @@ const eventReducer = (state = initialState, action) =>
 
             oneEventState.oneEvent = action.eventObject;
             return oneEventState;
+        case GET_ONE_GROUPS_EVENTS:
+            console.log("get one groups events reducer")
+            const oneGroupsEventsState = { ...state, oneGroupsEvents: {} }
+
+            oneGroupsEventsState.oneGroupsEvents = action.events;
+            return oneGroupsEventsState;
         default:
             return state;
     }

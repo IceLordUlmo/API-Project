@@ -8,12 +8,14 @@ import { SingleGroup } from "../SingleGroup"
 
 import "./AllGroups.css"
 
-export function AllGroups() {
+export function AllGroups()
+{
     const dispatch = useDispatch();
     let allGroups = useSelector(state => state.groups.allGroups);
     let oneGroup = useSelector(state => state.groups.oneGroup);
     allGroups = Object.values(allGroups);
-    useEffect(() => {
+    useEffect(() =>
+    {
         console.log("useEffect allGroups");
         dispatch(getAllGroupsThunk())
 
@@ -25,6 +27,7 @@ export function AllGroups() {
         <div className="all-groups-external-div">
             <h1 className='all-groups-events'>Events</h1>
             <h1 className='all-groups-groups'>Groups</h1>
+            <h2 className='all-groups-caption'>Groups in FleetUp</h2>
             <ul className="all-groups-unordered-list-of-groups">
                 {
                     allGroups?.map((singleGroup) => (

@@ -35,32 +35,32 @@ export function Landing()
                 <p className='landing-div-two-caption'>Words about the workings of Fleetup</p>
             </div>
             <div className='landing-div-three'>
-                <Link className='landing-div-three-link' to='/groups'>
+                <div className='landing-div-three-link' >
                     <div className='landing-div-three-image'>
                         <div>
                             <img src={groupImage} alt='image of a fleet in space'></img>
                         </div>
                     </div>
-                    <div>
+                    <Link to='/groups'>
                         See all groups
-                    </div>
-                </Link>
-                <Link className='landing-div-three-link' to='/events'>
+                    </Link>
+                </div>
+                <div className='landing-div-three-link' >
                     <div className='landing-div-three-image'>
                         <img src={eventImage} alt='image of a fleet battle in space'></img>
                     </div>
-                    <div>Find an event
-                    </div>
-                </Link>
+                    <Link to='/events'>Find an event
+                    </Link>
+                </div>
                 {sessionUser ? (
-                    <Link className='landing-div-three-link' to='/groups/new'>
+                    <div className='landing-div-three-link'>
                         <div className='landing-div-three-image'>
                             <img src={startImage} alt='image of two ships in space'></img>
                         </div>
-                        <div>
+                        <Link to='/groups/new'>
                             Start a new group
-                        </div>
-                    </Link>) : (<div className='landing-div-three-link'><div className='landing-div-three-image'>
+                        </Link>
+                    </div>) : (<div className='landing-div-three-link'><div className='landing-div-three-image'>
                         <img src={startImage} alt='image of two ships in space'></img>
                     </div>
                         <div className='landing-disabled'>

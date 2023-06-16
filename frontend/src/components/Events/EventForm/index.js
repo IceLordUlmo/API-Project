@@ -117,19 +117,19 @@ export function EventForm({ preexistingEvent, isCreateForm })
             });
         }
 
-        else
-        {
-            console.log('about to dispatch', eventObject);
-            dispatch(eventActions.updateEventThunk(eventObject, preexistingEvent.id)).then(history.push(`/events/${preexistingEvent.id}`))
-                .catch(async (res) =>
-                {
-                    const data = await res.json();
-                    if (data && data.errors)
-                    {
-                        setErrors(data.errors);
-                    }
-                })
-        };
+        // else
+        // {
+        //     console.log('about to dispatch', eventObject);
+        //     dispatch(eventActions.updateEventThunk(eventObject, preexistingEvent.id)).then(history.push(`/events/${preexistingEvent.id}`))
+        //         .catch(async (res) =>
+        //         {
+        //             const data = await res.json();
+        //             if (data && data.errors)
+        //             {
+        //                 setErrors(data.errors);
+        //             }
+        //         })
+        // };
     }
 
 
