@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
+import './SingleGroup.css';
 
-
-// import { getGroupEventsThunk } from "../../store/events";
-
-export const SingleGroup = ({ group }) => {
+export const SingleGroup = ({ group }) =>
+{
 
     const groupPublicity = group.private ? 'Private' : 'Public'
 

@@ -6,8 +6,13 @@ import Navigation from "./components/Navigation";
 import { AllGroups } from "./components/Groups/AllGroups";
 import { CreateGroup } from "./components/Groups/CreateGroup"
 import { UpdateGroup } from "./components/Groups/UpdateGroup"
-import { Landing } from "./components/Landing"
 import { OneGroupDetails } from "./components/Groups/OneGroupDetails"
+
+import { AllEvents } from "./components/Events/AllEvents";
+import { CreateEvent } from "./components/Events/CreateEvent"
+import { OneEventDetails } from "./components/Events/OneEventDetails"
+
+import { Landing } from "./components/Landing"
 function App()
 {
   const dispatch = useDispatch();
@@ -23,6 +28,16 @@ function App()
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
+          <Route exact path="/events/new">
+            <CreateEvent />
+          </Route>
+
+          <Route path="/events/:eventId">
+            <OneEventDetails />
+          </Route>
+          <Route exact path="/events">
+            <AllEvents />
+          </Route>
           <Route exact path="/groups/new">
             <CreateGroup />
           </Route>
