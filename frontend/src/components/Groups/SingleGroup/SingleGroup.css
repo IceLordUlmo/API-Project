@@ -9,5 +9,5 @@
 
 .single-group-grid-setup {
     display: grid;
-    grid-auto-columns: 1fl 3fl;
+    grid-template-columns: 30% 70%;
 }
