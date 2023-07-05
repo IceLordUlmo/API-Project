@@ -8,23 +8,28 @@ export const SingleGroup = ({ group }) =>
 
     return (
         <li className="all-groups-single-group">
-            <div className="single-group-image-temp"></div>
-            <div className="single-group-text">
-                <h2>
-                    <Link to={`/groups/${group.id}`} className="single-group-link">{group.name}</Link>
-                </h2>
-                <p className="single-group-location"></p>
-                <p className="single-group-about"></p>
-                <div className="single-group-events">
-                    <h3 className="single-group-event-word">Events</h3>
-                    <p>
+            <Link to={`/groups/${group.id}`} className='single-group-grid-setup'>
+                <img src={group.previewImage} className="single-group-image-temp">
 
-                    </p>
-                    <p>
-                        {groupPublicity}
-                    </p>
+                </img>
+
+                <div className="single-group-text">
+                    <h2>
+                        <p className="single-group-link">{group.name}</p>
+                    </h2>
+                    <p className="single-group-location">{group.city}, {group.state}</p>
+                    <p className="single-group-about">{group.about}</p>
+                    <div className="single-group-events">
+                        <h3 className="single-group-event-word">Events</h3>
+                        <p>
+
+                        </p>
+                        <p>
+                            {groupPublicity}
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </li>
+            </Link>
+        </li >
     )
 }

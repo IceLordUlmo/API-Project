@@ -30,7 +30,7 @@ export function Landing()
             </div>
             <div className='landing-div-two'>
                 <h3 className='landing-div-two-subtitle'>
-                    How Fleetup Works
+                    How FleetUp Works
                 </h3>
                 <p className='landing-div-two-caption'>Words about the workings of Fleetup</p>
             </div>
@@ -41,23 +41,30 @@ export function Landing()
                             <img src={groupImage} alt='image of a fleet in space'></img>
                         </div>
                     </div>
-                    <Link to='/groups'>
+                    <Link to='/groups' className='landing-hover-link'>
                         See all groups
                     </Link>
+                    <p>
+                        Text about the warm fuzziness of finding a group.
+                    </p>
                 </div>
                 <div className='landing-div-three-link' >
                     <div className='landing-div-three-image'>
                         <img src={eventImage} alt='image of a fleet battle in space'></img>
                     </div>
-                    <Link to='/events'>Find an event
+                    <Link to='/events' className='landing-hover-link'>
+                        Find an event
                     </Link>
+                    <p>
+                        Events are wonderful and you should do them!
+                    </p>
                 </div>
                 {sessionUser ? (
                     <div className='landing-div-three-link'>
                         <div className='landing-div-three-image'>
                             <img src={startImage} alt='image of two ships in space'></img>
                         </div>
-                        <Link to='/groups/new'>
+                        <Link to='/groups/new' className='landing-hover-link'>
                             Start a new group
                         </Link>
                     </div>) : (<div className='landing-div-three-link'><div className='landing-div-three-image'>
@@ -65,9 +72,14 @@ export function Landing()
                     </div>
                         <div className='landing-disabled'>
                             Start a new group
-                        </div></div>)
+                        </div>
+                        <p>
+                            Becoming a Fleet Commander for an Event is easier than you think!
+                        </p>
+                    </div>)
 
                 }
+
             </div>
             {!sessionUser ? (
                 <div className="landing-join-fleetup-button">

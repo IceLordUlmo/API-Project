@@ -6,3 +6,31 @@
     color: teal;
     text-decoration: underline;
 }
+
+.all-groups-unordered-list-of-groups {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.all-groups-events-and-groups {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.all-groups-headers {
+    width: 180px;
+}
+
+.all-groups-external-div {
+    width: 40%;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+}
+
+.all-groups-constraint {
+    justify-content: center;
+    display: flex;
+}

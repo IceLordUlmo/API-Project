@@ -24,16 +24,28 @@ export function AllGroups()
 
 
     return (
-        <div className="all-groups-external-div">
-            <h1 className='all-groups-events'>Events</h1>
-            <h1 className='all-groups-groups'>Groups</h1>
-            <h2 className='all-groups-caption'>Groups in FleetUp</h2>
-            <ul className="all-groups-unordered-list-of-groups">
-                {
-                    allGroups?.map((singleGroup) => (
-                        <SingleGroup key={singleGroup.id} group={singleGroup} />
-                    ))}
-            </ul>
+        <div className="all-groups-constraint">
+            <div className="all-groups-external-div">
+                <div className="all-groups-events-and-groups">
+                    <div className='all-groups-headers'>
+                        <h1 className=' all-groups-events'>Events</h1>
+                    </div>
+                    <div className='all-groups-headers'>
+                        <h1 className='all-groups-headers all-groups-groups'>Groups</h1>
+                    </div>
+                </div>
+                <h2 className='all-groups-caption'>Groups in FleetUp</h2>
+                <ul className="all-groups-unordered-list-of-groups">
+                    {
+                        allGroups?.map((singleGroup) => (
+                            <div>
+                                <SingleGroup key={singleGroup.id} group={singleGroup} />
+                                {allGroups.indexOf(singleGroup) !== (allGroups.length - 1) ?
+                                    <div></div> : <div></div>}
+                            </div>
+                        ))}
+                </ul>
+            </div>
         </div>
     )
 }
