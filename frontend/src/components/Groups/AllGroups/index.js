@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 
 import { getAllGroupsThunk } from "../../../store/group"
-
+import { getAllEventsThunk } from "../../../store/event"
 import { SingleGroup } from "../SingleGroup"
 
 import "./AllGroups.css"
@@ -13,12 +13,13 @@ export function AllGroups()
     const dispatch = useDispatch();
     let allGroups = useSelector(state => state.groups.allGroups);
     let oneGroup = useSelector(state => state.groups.oneGroup);
+    let allEvents = useSelector(state => state.events.allEvents);
     allGroups = Object.values(allGroups);
     useEffect(() =>
     {
         console.log("useEffect allGroups");
         dispatch(getAllGroupsThunk())
-
+        dispatch(getAllEventsThunk());
     }, [dispatch, oneGroup])
 
 
@@ -39,9 +40,7 @@ export function AllGroups()
                     {
                         allGroups?.map((singleGroup) => (
                             <div>
-                                <SingleGroup key={singleGroup.id} group={singleGroup} />
-                                {allGroups.indexOf(singleGroup) !== (allGroups.length - 1) ?
-                                    <div></div> : <div></div>}
+                                <SingleGroup key={singleGroup.id} group={singleGroup} events={allEvents} />
                             </div>
                         ))}
                 </ul>

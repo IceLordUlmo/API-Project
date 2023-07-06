@@ -67,6 +67,9 @@ export function Landing()
                         <Link to='/groups/new' className='landing-hover-link'>
                             Start a new group
                         </Link>
+                        <p>
+                            Becoming a Fleet Commander for an Event is easier than you think!
+                        </p>
                     </div>) : (<div className='landing-div-three-link'><div className='landing-div-three-image'>
                         <img src={startImage} alt='image of two ships in space'></img>
                     </div>

@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
 import './SingleGroup.css';
 
-export const SingleGroup = ({ group }) =>
+export const SingleGroup = ({ group, events }) =>
 {
 
     const groupPublicity = group.private ? 'Private' : 'Public'
+    const eventsArray = Object.values(events);
+    const eventCount = eventsArray.reduce(
+        (accumulator, currentValue) => currentValue.groupId === group.id ? accumulator + 1 : accumulator,
+        0
+    )
 
     return (
         <li className="all-groups-single-group">
@@ -22,7 +27,7 @@ export const SingleGroup = ({ group }) =>
                     <div className="single-group-events">
                         <h3 className="single-group-event-word">Events</h3>
                         <p>
-
+                            {eventCount}
                         </p>
                         <p>
                             {groupPublicity}
