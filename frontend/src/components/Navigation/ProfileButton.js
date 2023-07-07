@@ -61,6 +61,9 @@ function ProfileButton({ user })
                         <li>
                             <button onClick={logout}>Log Out</button>
                         </li>
+                        <li>
+                            <NavLink to="/groups">See All Groups</NavLink>
+                        </li>
                     </>
                 ) : (
                     <>

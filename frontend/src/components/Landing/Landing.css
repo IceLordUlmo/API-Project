@@ -57,10 +57,20 @@
 }
 
 .landing-disabled {
-    color: lightgray
+    color: lightgray;
+    font-size: 20px;
 }
 
 .landing-join-fleetup-button {
     width: 15%;
     padding: 5% 24% 0% 45%;
+}
+
+.landing-hover-link {
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.landing-hover-link:hover {
+    text-decoration: underline;
 }

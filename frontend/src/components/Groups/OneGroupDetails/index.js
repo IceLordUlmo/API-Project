@@ -30,17 +30,6 @@ export const OneGroupDetails = () =>
     const weCanJoinThis = (user && user.id !== group.Organizer.id)
     const weCreatedThis = (user && user.id === group.Organizer.id)
 
-    function deleteThis()
-    {
-        dispatch(deleteGroupThunk(groupId));
-    }
-
-    function editThis()
-    {
-
-        history.push(`/groups/${group.id}/edit`)
-    }
-
     const joinButton = (e) =>
     {
         return alert('Feature coming soon!')

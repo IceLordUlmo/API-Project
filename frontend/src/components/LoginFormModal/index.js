@@ -4,7 +4,8 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "./LoginForm.css";
 
-function LoginFormModal() {
+function LoginFormModal()
+{
     const dispatch = useDispatch();
     const [credential, setCredential] = useState("");
     const [password, setPassword] = useState("");
@@ -12,28 +13,35 @@ function LoginFormModal() {
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e) =>
+    {
         e.preventDefault();
         setErrors({});
         return dispatch(sessionActions.login({ credential, password }))
             .then(closeModal)
-            .catch(async (res) => {
+            .catch(async (res) =>
+            {
                 const data = await res.json();
-                if (data && data.errors) {
+                if (data && data.errors)
+                {
                     setErrors(data.errors);
                 }
             });
     };
 
-    useEffect(() => {
-        if (credential.length < 4 || password.length < 6) {
+    useEffect(() =>
+    {
+        if (credential.length < 4 || password.length < 6)
+        {
             setCanLogIn(false);
-        } else {
+        } else
+        {
             setCanLogIn(true);
         }
     }, [credential, password])
 
-    function LoginDemoUser() {
+    function LoginDemoUser()
+    {
         const demoUserInfo = {
             credential: 'Demo-lition',
             password: 'password'
@@ -52,6 +60,11 @@ function LoginFormModal() {
             </div>
 
             <form onSubmit={handleSubmit}>
+                {errors.message &&
+                    (
+                        <p>{errors.message}</p>
+                    )
+                }
                 <label>
                     Username or Email
                     <input
