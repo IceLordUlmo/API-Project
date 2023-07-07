@@ -9,12 +9,14 @@ export function GroupForm({ preexistingGroup, isCreateForm })
     const dispatch = useDispatch();
 
     //
+    const gi = preexistingGroup ? preexistingGroup.GroupImages : null;
+    const giURL = gi ? preexistingGroup.GroupImages[0].url : '';
     const [name, setName] = useState(preexistingGroup ? preexistingGroup.name : '');
     const [about, setAbout] = useState(preexistingGroup ? preexistingGroup.about : '');
     const [type, setType] = useState(preexistingGroup ? preexistingGroup.type : '');
     const [isPrivate, setIsPrivate] = useState('false');
     const [location, setLocation] = useState(preexistingGroup ? preexistingGroup.city + ", " + preexistingGroup.state : '');
-    const [image, setImage] = useState(preexistingGroup.GroupImages[0] ? preexistingGroup.GroupImages[0].url : '');
+    const [image, setImage] = useState(giURL);
     const [canSubmit, setCanSubmit] = useState(false);
     const history = useHistory();
 
@@ -32,10 +34,10 @@ export function GroupForm({ preexistingGroup, isCreateForm })
         {
             errors.about = 'Please enter a description 50 characters or more';
         }
-        console.log('in person', type !== 'In person', 'onlinxe', type !== 'Online', 'type', type)
-        if (type !== 'In person' && type !== 'Online')
+        console.log('in person', type !== 'In Person', 'online', type !== 'Online', 'type', type)
+        if (type !== 'In Person' && type !== 'Online')
         {
-            errors.type = 'Type must be In person or Online';
+            errors.type = 'Type must be In Person or Online';
         }
         if (!location.length)
         {

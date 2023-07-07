@@ -84,7 +84,7 @@ export const createGroupThunk = (groupObject) => async (dispatch) =>
         body: JSON.stringify(groupObject)
     }
     console.log(request);
-    const response = await csrfFetch('api/groups', request)
+    const response = await csrfFetch('/api/groups', request)
     console.log('stage 2 of create group thunk')
     if (response.ok)
     {
