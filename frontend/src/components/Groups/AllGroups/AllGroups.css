@@ -1,5 +1,10 @@
-.all-groups-events {
-    color: gray
+.all-groups-events-link {
+    color: gray;
+    text-decoration: none;
+}
+
+.all-groups-events-link:hover {
+    text-decoration: underline;
 }
 
 .all-groups-groups {
@@ -33,4 +38,13 @@
 .all-groups-constraint {
     justify-content: center;
     display: flex;
+}
+
+.all-groups-single-group {
+    border-top: 3px solid black;
+    padding: 30%, 30%, 30%, 30%;
+}
+
+.all-groups-last-group {
+    border-bottom: 3px solid black;
 }

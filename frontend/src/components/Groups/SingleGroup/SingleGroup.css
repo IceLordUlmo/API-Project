@@ -2,11 +2,6 @@
     cursor: pointer;
 }
 
-.all-groups-single-group {
-    border-top: 3px solid black;
-    padding: 30%, 30%, 30%, 30%;
-}
-
 .single-group-grid-setup {
     display: grid;
     grid-template-columns: 30% 70%;

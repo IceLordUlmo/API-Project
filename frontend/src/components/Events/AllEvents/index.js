@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { SortEvents } from "../../Utils/sort"
-
+import { NavLink } from 'react-router-dom'
 import { getAllEventsThunk } from "../../../store/event"
 
 import MiniEvent from "../../Shared/GroupEvent"
@@ -31,10 +31,10 @@ export function AllEvents()
             <h2>Events in Meetup</h2>
             <div className="all-groups-events-and-groups">
                 <div className='all-groups-headers'>
-                    <h1 className=' all-groups-events'>Events</h1>
+                    <h1 className=' all-events-events'>Events</h1>
                 </div>
                 <div className='all-groups-headers'>
-                    <h1 className='all-groups-headers all-groups-groups'>Groups</h1>
+                    <h1 className='all-events-groups'><NavLink to='/Groups' className='all-events-groups-link'>Groups</NavLink></h1>
                 </div>
             </div>
             <ul className="all-events-unordered-list-of-events">
