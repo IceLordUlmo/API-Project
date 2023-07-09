@@ -1,13 +1,15 @@
 'use strict';
 
 let options = {};
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production')
+{
     options.schema = process.env.SCHEMA;
 }
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-    async up(queryInterface, Sequelize) {
+    async up(queryInterface, Sequelize)
+    {
         options.tableName = 'Events';
         await queryInterface.bulkInsert(options, [
             {
@@ -15,7 +17,7 @@ module.exports = {
                 groupId: 1,
                 name: "Refit ships",
                 description: "Get better modules",
-                type: "In person",
+                type: "In Person",
                 capacity: 15,
                 price: 10,
                 startDate: new Date(2023, 4, 29),
@@ -26,7 +28,7 @@ module.exports = {
                 groupId: 3,
                 name: "Laser show",
                 description: "Load all the different ones on purpose",
-                type: "In person",
+                type: "In Person",
                 capacity: 6,
                 price: 149,
                 startDate: new Date(2023, 6, 30),
@@ -69,7 +71,8 @@ module.exports = {
         ], {})
     },
 
-    async down(queryInterface, Sequelize) {
+    async down(queryInterface, Sequelize)
+    {
         options.tableName = 'Events';
         const Op = Sequelize.Op;
         await queryInterface.bulkDelete(options);
