@@ -6,17 +6,21 @@ import './GroupForm.css';
 
 export function GroupForm({ preexistingGroup, isCreateForm })
 {
+    const types = ['In Person', 'Online']
     const dispatch = useDispatch();
 
     //
-    const gi = preexistingGroup ? preexistingGroup.GroupImages : null;
-    const giURL = gi ? preexistingGroup.GroupImages[0].url : '';
+
     const [name, setName] = useState(preexistingGroup ? preexistingGroup.name : '');
     const [about, setAbout] = useState(preexistingGroup ? preexistingGroup.about : '');
     const [type, setType] = useState(preexistingGroup ? preexistingGroup.type : '');
     const [isPrivate, setIsPrivate] = useState('false');
     const [location, setLocation] = useState(preexistingGroup ? preexistingGroup.city + ", " + preexistingGroup.state : '');
-    const [image, setImage] = useState(giURL);
+
+    const groupImages = preexistingGroup ? preexistingGroup.GroupImages : null;
+    const groupImagesURL = groupImages ? preexistingGroup.GroupImages[0].url : '';
+    const [image, setImage] = useState(groupImagesURL);
+
     const [canSubmit, setCanSubmit] = useState(false);
     const history = useHistory();
 
@@ -35,10 +39,6 @@ export function GroupForm({ preexistingGroup, isCreateForm })
             errors.about = 'Please enter a description 50 characters or more';
         }
         console.log('in person', type !== 'In Person', 'online', type !== 'Online', 'type', type)
-        if (type !== 'In Person' && type !== 'Online')
-        {
-            errors.type = 'Type must be In Person or Online';
-        }
         if (!location.length)
         {
             errors.location = 'Please enter a location';
@@ -88,10 +88,11 @@ export function GroupForm({ preexistingGroup, isCreateForm })
         console.log(location);
         const [city, state] = location.split(", ");
         const groupObject = {
+            ...preexistingGroup,
             "name": name,
             "about": about,
             "type": type,
-            "private": (isPrivate === 'true'),
+            "private": isPrivate,
             "city": city,
             "state": state
         }
@@ -152,13 +153,18 @@ export function GroupForm({ preexistingGroup, isCreateForm })
                         placeholder='About the group' />
                 </label>
                 <label className='group-form-type-container'>
-                    <p>{errors.type}</p>
-                    <input type='text' value={type} onChange={(event) => setType(event.target.value)}
-                        placeholder='Online or In person' />
+                    <select value={type} onChange={(event) => setType(event.target.value)}>
+                        <option value='' disabled>(select one)</option>
+                        {types.map(singleType => (
+                            <option key={singleType} value={singleType}>
+                                {singleType}
+                            </option>
+                        ))}
+                    </select>
                 </label>
                 <label className='group-form-is-private-container'>
                     <h3> Is this group private? </h3>
-                    <select value={isPrivate} onChange={(event) => setIsPrivate(event.target.value === 'true')}>
+                    <select value={isPrivate} onChange={(event) => setIsPrivate(event.target.value)}>
 
                         <option value='false'>
                             Public

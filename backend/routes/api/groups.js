@@ -13,7 +13,8 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 // get all groups
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res, next) =>
+{
     const allGroups = await Group.findAll({
         attributes: ["id",
             "organizerId",
@@ -27,7 +28,8 @@ router.get('/', async (req, res, next) => {
             "updatedAt"]
     });
 
-    for (let group of allGroups) {
+    for (let group of allGroups)
+    {
         const groupId = group.id;
 
         const memberCount = await Membership.count({
@@ -57,7 +59,8 @@ router.get('/', async (req, res, next) => {
 
 // get all groups joined or organized by currentuser
 
-router.get('/current', requireAuth, async (req, res) => {
+router.get('/current', requireAuth, async (req, res) =>
+{
     const userId = req.user.id;
     const organizedGroups = await Group.findAll({
         attributes: ["id", "organizerId", "name", "about", "type", "private", "city", "state", "createdAt", "updatedAt"],
@@ -77,11 +80,13 @@ router.get('/current', requireAuth, async (req, res) => {
     });
 
     // combine membership groups with organized groups
-    for (let membership of allMembershipGroups) {
+    for (let membership of allMembershipGroups)
+    {
         organizedGroups.push(membership.Group);
     }
 
-    for (let group of organizedGroups) {
+    for (let group of organizedGroups)
+    {
         const id = group.id;
         const membershipCount = await Membership.count({
             where: {
@@ -112,7 +117,8 @@ router.get('/current', requireAuth, async (req, res) => {
 
 // get group details by id
 
-router.get('/:groupId', async (req, res, next) => {
+router.get('/:groupId', async (req, res, next) =>
+{
     const { groupId } = req.params;
 
     // for readability
@@ -135,7 +141,8 @@ router.get('/:groupId', async (req, res, next) => {
         ],
     });
 
-    if (!groupById) {
+    if (!groupById)
+    {
         res.status(404);
         return res.json({ "message": "Group couldn't be found" })
     }
@@ -154,7 +161,8 @@ router.get('/:groupId', async (req, res, next) => {
 
 // create a group
 
-router.post("/", requireAuth, async (req, res) => {
+router.post("/", requireAuth, async (req, res) =>
+{
     const { name, about, type, private, city, state } = req.body;
     const organizerId = req.user.id;
 
@@ -163,38 +171,48 @@ router.post("/", requireAuth, async (req, res) => {
 
     let errorFlag = false;
 
-    if (name.length > 60) {
+    if (name.length > 60)
+    {
         errorList.name = "Name must be 60 characters or less"
         errorFlag = true;
     }
-    if (about.length < 50) {
+    if (about.length < 50)
+    {
         errorList.about = "About must be 50 characters or more"
         errorFlag = true;
     }
-    if (type != 'Online' && type != 'In person') {
-        errorList.type = "Type must be 'Online' or 'In person'"
+    if (type != 'Online' && type != 'In Person')
+    {
+        errorList.type = "Type must be 'Online' or 'In Person'"
         errorFlag = true;
     }
-    if (typeof private != 'boolean') {
+    if (private != 'true' && private != 'false')
+    {
         errorList.private = "Private must be a boolean"
         errorFlag = true;
     }
-    if (!city) {
+    if (!city)
+    {
         errorList.city = "City is required"
         errorFlag = true;
     }
-    if (!state) {
+    if (!state)
+    {
         errorList.state = "State is required"
         errorFlag = true;
     }
 
-    if (errorFlag) {
+    if (errorFlag)
+    {
+        console.log('error in the flag', errorList)
         res.status(400)
         return res.json({
-            "message": "Bad Request",
+            "message": errorList,
             errorList
         })
     }
+
+    console.log('error not in the flag')
 
     const groupToAdd = await Group.create({
         organizerId: organizerId,
@@ -212,7 +230,8 @@ router.post("/", requireAuth, async (req, res) => {
 
 // add image to group based on groupId
 
-router.post('/:groupId/images', requireAuth, async (req, res) => {
+router.post('/:groupId/images', requireAuth, async (req, res) =>
+{
     const { url, preview } = req.body;
 
     const { groupId } = req.params;
@@ -223,7 +242,8 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
         }
     })
 
-    if (!groupToAddImageTo) {
+    if (!groupToAddImageTo)
+    {
         res.status(404)
         return res.json({ 'message': "Group couldn't be found" })
     }
@@ -231,7 +251,8 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
     let currentUserId = req.user.id
     let organizerId = groupToAddImageTo.organizerId
 
-    if (currentUserId != organizerId) {
+    if (currentUserId != organizerId)
+    {
         let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
         res.status(403);
         return res.json(error)
@@ -249,7 +270,8 @@ router.post('/:groupId/images', requireAuth, async (req, res) => {
 })
 
 // edit a group
-router.put('/:groupId', requireAuth, async (req, res) => {
+router.put('/:groupId', requireAuth, async (req, res) =>
+{
     const { name, about, type, private, city, state } = req.body;
     const { groupId } = req.params;
 
@@ -258,32 +280,39 @@ router.put('/:groupId', requireAuth, async (req, res) => {
 
     let errorFlag = false;
 
-    if (name.length > 60) {
+    if (name.length > 60)
+    {
         errorList.name = "Name must be 60 characters or less"
         errorFlag = true;
     }
-    if (about.length < 50) {
+    if (about.length < 50)
+    {
         errorList.about = "About must be 50 characters or more"
         errorFlag = true;
     }
-    if (type != 'Online' && type != 'In person') {
+    if (type != 'Online' && type != 'In person')
+    {
         errorList.type = "Type must be 'Online' or 'In person'"
         errorFlag = true;
     }
-    if (typeof private != 'boolean') {
+    if (typeof private != 'boolean')
+    {
         errorList.private = "Private must be a boolean"
         errorFlag = true;
     }
-    if (!city) {
+    if (!city)
+    {
         errorList.city = "City is required"
         errorFlag = true;
     }
-    if (!state) {
+    if (!state)
+    {
         errorList.state = "State is required"
         errorFlag = true;
     }
 
-    if (errorFlag) {
+    if (errorFlag)
+    {
         res.status(400)
         return res.json({
             "message": "Bad Request",
@@ -297,7 +326,8 @@ router.put('/:groupId', requireAuth, async (req, res) => {
         }
     });
 
-    if (!groupToEdit) {
+    if (!groupToEdit)
+    {
         res.status(404);
         return res.json({ 'message': "Group couldn't be found" })
     }
@@ -305,7 +335,8 @@ router.put('/:groupId', requireAuth, async (req, res) => {
     let currentUserId = req.user.id
     let organizerId = groupToEdit.organizerId
 
-    if (currentUserId != organizerId) {
+    if (currentUserId != organizerId)
+    {
         let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
         res.status(403);
         return res.json(error)
@@ -325,7 +356,8 @@ router.put('/:groupId', requireAuth, async (req, res) => {
 
 // delete a group
 
-router.delete('/:groupId', requireAuth, async (req, res) => {
+router.delete('/:groupId', requireAuth, async (req, res) =>
+{
     const { groupId } = req.params;
     const groupToBeDeleted = await Group.findOne({
         where: {
@@ -333,7 +365,8 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
         }
     })
 
-    if (!groupToBeDeleted) {
+    if (!groupToBeDeleted)
+    {
         res.status(404);
         return res.json({ 'message': "Group couldn't be found" })
     }
@@ -341,7 +374,8 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
     let currentUserId = req.user.id
     let organizerId = groupToBeDeleted.organizerId
 
-    if (currentUserId != organizerId) {
+    if (currentUserId != organizerId)
+    {
         let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
         res.status(403);
         return res.json(error)
@@ -359,7 +393,8 @@ router.delete('/:groupId', requireAuth, async (req, res) => {
 
 // get all venues for a group by groupId
 
-router.get("/:groupId/venues", requireAuth, async (req, res) => {
+router.get("/:groupId/venues", requireAuth, async (req, res) =>
+{
     const { groupId } = req.params;
     const requestedGroup = await Group.findOne({
         where: {
@@ -367,7 +402,8 @@ router.get("/:groupId/venues", requireAuth, async (req, res) => {
         }
     });
 
-    if (!requestedGroup) {
+    if (!requestedGroup)
+    {
         res.status(404);
         return res.json({ 'message': "Group couldn't be found" })
     };
@@ -384,8 +420,10 @@ router.get("/:groupId/venues", requireAuth, async (req, res) => {
     let currentUserId = req.user.id
     let organizerId = requestedGroup.organizerId
 
-    if (currentUserId != organizerId) {
-        if (!cohostedGroups.includes(groupId)) {
+    if (currentUserId != organizerId)
+    {
+        if (!cohostedGroups.includes(groupId))
+        {
             let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
             res.status(403);
             return res.json(error)
@@ -409,34 +447,41 @@ router.get("/:groupId/venues", requireAuth, async (req, res) => {
 
 // create new venue by groupId
 
-router.post('/:groupId/venues', requireAuth, async (req, res) => {
+router.post('/:groupId/venues', requireAuth, async (req, res) =>
+{
     const { address, city, state, lat, lng } = req.body;
     const { groupId } = req.params;
 
     let errorFlag = false;
     const errorList = {};
-    if (!address) {
+    if (!address)
+    {
         errorList.address = 'Street address is required';
         errorFlag = true;
     }
-    if (!city) {
+    if (!city)
+    {
         errorList.city = 'City is required';
         errorFlag = true;
     }
-    if (!state) {
+    if (!state)
+    {
         errorList.state = "State is required";
         errorFlag = true;
     }
-    if (isNaN(lat)) {
+    if (isNaN(lat))
+    {
         errorList.lat = 'Latitude is not valid'
         errorFlag = true;
     }
-    if (isNaN(lng)) {
+    if (isNaN(lng))
+    {
         errorList.lng = 'Longitude is not valid'
         errorFlag = true;
     }
 
-    if (errorFlag) {
+    if (errorFlag)
+    {
         res.status(400)
         return res.json({
             "message": "Bad Request",
@@ -450,7 +495,8 @@ router.post('/:groupId/venues', requireAuth, async (req, res) => {
         }
     })
 
-    if (!requestedGroup) {
+    if (!requestedGroup)
+    {
         res.status(404)
         return res.json(
             {
@@ -471,8 +517,10 @@ router.post('/:groupId/venues', requireAuth, async (req, res) => {
     let currentUserId = req.user.id
     let organizerId = requestedGroup.organizerId
 
-    if (currentUserId != organizerId) {
-        if (!cohostedGroups.includes(groupId)) {
+    if (currentUserId != organizerId)
+    {
+        if (!cohostedGroups.includes(groupId))
+        {
             let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
             res.status(403);
             return res.json(error)
@@ -503,7 +551,8 @@ router.post('/:groupId/venues', requireAuth, async (req, res) => {
 
 
 // get all events from a group by groupId
-router.get('/:groupId/events', async (req, res) => {
+router.get('/:groupId/events', async (req, res) =>
+{
     const { groupId } = req.params;
     const requestedGroupId = groupId;
     const requestedGroup = await Group.findAll({
@@ -512,7 +561,8 @@ router.get('/:groupId/events', async (req, res) => {
         }
     });
 
-    if (requestedGroup.length === 0) {
+    if (requestedGroup.length === 0)
+    {
         // didn't find the group
         res.status(404)
         return res.json(
@@ -538,7 +588,8 @@ router.get('/:groupId/events', async (req, res) => {
         ]
     })
 
-    if (groupEvents.length === 0) {
+    if (groupEvents.length === 0)
+    {
         res.status(404);
         return res.json(
             {
@@ -546,7 +597,8 @@ router.get('/:groupId/events', async (req, res) => {
             })
     }
 
-    for (let event of groupEvents) {
+    for (let event of groupEvents)
+    {
         // attach the image
         let eventId = event.id
 
@@ -576,7 +628,8 @@ router.get('/:groupId/events', async (req, res) => {
 
 
 // create an event for a group by groupId
-router.post("/:groupId/events", requireAuth, async (req, res) => {
+router.post("/:groupId/events", requireAuth, async (req, res) =>
+{
     const { groupId } = req.params;
     const requestedGroupId = groupId;
     const userId = req.user.id;
@@ -586,7 +639,8 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
         where: { id: requestedGroupId }
     })
 
-    if (!destinationGroup) {
+    if (!destinationGroup)
+    {
         res.status(404)
         return res.json(
             {
@@ -607,7 +661,8 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
 
     // if there's no cohost membership and we're not the organizer
     if (!cohostMembershipOfTheUser &&
-        organizerId !== userId) {
+        organizerId !== userId)
+    {
         let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
         res.status(403);
         return res.json(error)
@@ -623,42 +678,51 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
     let errorFlag = false;
     let now = Date.now();
 
-    if (!venueLookup) {
+    if (!venueLookup)
+    {
         errorList.venueId = "Venue does not exist"
         errorFlag = true;
     }
     const startDateComparable = new Date(startDate).toDateString();
     const endDateComparable = new Date(endDate).toDateString();
-    if (now > (new Date(startDate).getTime())) {
+    if (now > (new Date(startDate).getTime()))
+    {
         errorList.startDate = "Start date must be in the future"
         errorFlag = true;
     }
-    if (startDateComparable > endDateComparable) {
+    if (startDateComparable > endDateComparable)
+    {
         errorList.endDate = "End date is less than start date"
         errorFlag = true;
     }
-    if (name.length < 5) {
+    if (name.length < 5)
+    {
         errorList.name = "Name must be at least 5 characters"
         errorFlag = true;
     }
-    if (type !== "Online" && type !== "In person") {
+    if (type !== "Online" && type !== "In person")
+    {
         errorList.type = "Type must be Online or In person"
         errorFlag = true;
     }
-    if (!Number.isInteger(capacity)) {
+    if (!Number.isInteger(capacity))
+    {
         errorList.capacity = "Capacity must be an integer"
         errorFlag = true;
     }
-    if (typeof price !== 'number') {
+    if (typeof price !== 'number')
+    {
         errorList.price = "Price is invalid"
         errorFlag = true;
     }
-    if (!description) {
+    if (!description)
+    {
         errorList.description = "Description is required"
         errorFlag = true;
     }
 
-    if (errorFlag) {
+    if (errorFlag)
+    {
         res.status(400)
         return res.json({
             "message": "Bad Request",
@@ -697,7 +761,8 @@ router.post("/:groupId/events", requireAuth, async (req, res) => {
 })
 
 // get all members of a group by groupId
-router.get("/:groupId/members", async (req, res) => {
+router.get("/:groupId/members", async (req, res) =>
+{
     const { groupId } = req.params;
     const userId = req.user.id;
     const groupIdToGetMembersOf = groupId
@@ -707,7 +772,8 @@ router.get("/:groupId/members", async (req, res) => {
         }
     });
 
-    if (!groupToGetMembersOf) {
+    if (!groupToGetMembersOf)
+    {
         res.status(404);
         return res.json(
             {
@@ -731,7 +797,8 @@ router.get("/:groupId/members", async (req, res) => {
 
     // if we are a co-host or the organizer, add pending visibility as well
     if (cohostMembership ||
-        groupToGetMembersOf.organizerId === userId) {
+        groupToGetMembersOf.organizerId === userId)
+    {
         statusesAuthorizedToSee.push('pending')
     }
 
@@ -746,7 +813,8 @@ router.get("/:groupId/members", async (req, res) => {
     })
 
     const memberArray = []
-    for (let membership of membershipsOfGroup) {
+    for (let membership of membershipsOfGroup)
+    {
         const membershipInfo = {};
         membershipInfo.id = membership.User.id;
         membershipInfo.firstName = membership.User.firstName;
@@ -767,7 +835,8 @@ router.get("/:groupId/members", async (req, res) => {
 })
 
 // request a membership for a group by groupId
-router.post("/:groupId/membership", requireAuth, async (req, res) => {
+router.post("/:groupId/membership", requireAuth, async (req, res) =>
+{
     const { groupId } = req.params;
     const groupIdRequestingMembershipFor = groupId;
     const userId = req.user.id;
@@ -779,7 +848,8 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
         }
     })
 
-    if (!groupRequestingMembershipFor) {
+    if (!groupRequestingMembershipFor)
+    {
         res.status(404)
         return res.json(
             {
@@ -798,9 +868,11 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
         }
     )
 
-    if (userMembership) {
+    if (userMembership)
+    {
         // if we already have one pending
-        if (userMembership.status == "pending") {
+        if (userMembership.status == "pending")
+        {
             res.status(400)
             return res.json(
                 {
@@ -811,7 +883,8 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
 
         // if we're already in
         if (userMembership.status == "member" ||
-            userMembership.status == "co-host") {
+            userMembership.status == "co-host")
+        {
             res.status(400)
             return res.json(
                 {
@@ -838,7 +911,8 @@ router.post("/:groupId/membership", requireAuth, async (req, res) => {
 
 // Change the status of a membership for a group by groupId
 
-router.put('/:groupId/membership', requireAuth, async (req, res) => {
+router.put('/:groupId/membership', requireAuth, async (req, res) =>
+{
     const { memberId, status } = req.body;
     const { groupId } = req.params;
     const groupIdChangingMembershipOf = groupId;
@@ -851,7 +925,8 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
         }
     })
 
-    if (status == 'pending') {
+    if (status == 'pending')
+    {
         res.status(400)
         return res.json(
             {
@@ -863,7 +938,8 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
         )
     }
 
-    if (!groupChangingMembershipOf) {
+    if (!groupChangingMembershipOf)
+    {
         res.status(404)
         return res.json(
             {
@@ -878,7 +954,8 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
             }
         }
     )
-    if (!userToChange) {
+    if (!userToChange)
+    {
         res.status(400);
         return res.json({
             "message": "Validation Error",
@@ -894,7 +971,8 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
         }
     })
 
-    if (!membershipToChange) {
+    if (!membershipToChange)
+    {
         res.status(404);
         return res.json({
             "message": "Membership between the user and the group does not exist"
@@ -913,14 +991,17 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
     })
 
     // if there's no cohost membership and we're not the organizer
-    if (!isOrganizer) {
-        if (!(membership.status == "co-host")) {
+    if (!isOrganizer)
+    {
+        if (!(membership.status == "co-host"))
+        {
             let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
             res.status(403);
             return res.json(error)
         }
 
-        if (status == "co-host") {
+        if (status == "co-host")
+        {
             let error = { 'message': 'To change the status from "member" to "co-host, Current User must already be the organizer' }
             res.status(403);
             return res.json(error)
@@ -941,7 +1022,8 @@ router.put('/:groupId/membership', requireAuth, async (req, res) => {
 
 
 // delete a membership by groupId and memberId
-router.delete("/:groupId/membership", requireAuth, async (req, res) => {
+router.delete("/:groupId/membership", requireAuth, async (req, res) =>
+{
     const userId = req.user.id;
     const { memberId } = req.body;
     const { groupId } = req.params;
@@ -968,7 +1050,8 @@ router.delete("/:groupId/membership", requireAuth, async (req, res) => {
     })
 
     // see if they exist
-    if (!groupToDeleteFrom) {
+    if (!groupToDeleteFrom)
+    {
         res.status(404)
         return res.json(
             {
@@ -977,7 +1060,8 @@ router.delete("/:groupId/membership", requireAuth, async (req, res) => {
         )
     }
 
-    if (!userToDeleteFrom) {
+    if (!userToDeleteFrom)
+    {
         res.status(400)
         return res.json(
             {
@@ -989,7 +1073,8 @@ router.delete("/:groupId/membership", requireAuth, async (req, res) => {
         )
     }
 
-    if (!membershipToDelete) {
+    if (!membershipToDelete)
+    {
         res.status(404)
         return res.json(
             {
@@ -1001,7 +1086,8 @@ router.delete("/:groupId/membership", requireAuth, async (req, res) => {
     let isCurrentUser = (memberIdToDeleteFrom == userId)
     let isOrganizer = (groupToDeleteFrom.organizerId == userId)
 
-    if (!isCurrentUser && !isOrganizer) {
+    if (!isCurrentUser && !isOrganizer)
+    {
         // 403 forbidden
         let error = { 'message': 'Current User must be the host of the group, or the user whose membership is being deleted' }
         res.status(403);

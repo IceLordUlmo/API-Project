@@ -8,7 +8,6 @@ const CREATE_GROUP = "groups/createOneGroup"
 const CREATE_IMAGE = "groups/newImage"
 const UPDATE_GROUP = "groups/updateGroup"
 const DELETE_GROUP = "groups/deleteGroup"
-//const headers = { 'Content-Type': 'application/json' }
 const headers = { 'Content-Type': 'application/json' }
 // actions to export
 export const getAllGroupsAction = groups => (
