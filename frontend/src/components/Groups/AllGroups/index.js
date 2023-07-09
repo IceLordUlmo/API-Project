@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-
+import { NavLink } from 'react-router-dom'
 
 import { getAllGroupsThunk } from "../../../store/group"
 import { getAllEventsThunk } from "../../../store/event"
@@ -29,7 +29,7 @@ export function AllGroups()
             <div className="all-groups-external-div">
                 <div className="all-groups-events-and-groups">
                     <div className='all-groups-headers'>
-                        <h1 className=' all-groups-events'>Events</h1>
+                        <h1 className='all-groups-events'><NavLink to='/events' className='all-groups-events-link'>Events</ NavLink></h1>
                     </div>
                     <div className='all-groups-headers'>
                         <h1 className='all-groups-headers all-groups-groups'>Groups</h1>
@@ -39,7 +39,9 @@ export function AllGroups()
                 <ul className="all-groups-unordered-list-of-groups">
                     {
                         allGroups?.map((singleGroup) => (
-                            <div>
+                            <div className={"all-groups-single-group " +
+                                (allGroups.indexOf(singleGroup) === allGroups.length - 1
+                                    ? "all-groups-last-group" : '')}>
                                 <SingleGroup key={singleGroup.id} group={singleGroup} events={allEvents} />
                             </div>
                         ))}

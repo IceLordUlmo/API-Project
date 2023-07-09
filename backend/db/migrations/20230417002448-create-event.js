@@ -3,12 +3,14 @@
 
 let options = {};
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production')
+{
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize)
+  {
     await queryInterface.createTable('Events', {
       id: {
         allowNull: false,
@@ -37,7 +39,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       type: {
-        type: Sequelize.ENUM(['Online', 'In person'])
+        type: Sequelize.ENUM(['Online', 'In Person'])
       },
       capacity: {
         type: Sequelize.INTEGER
@@ -63,7 +65,8 @@ module.exports = {
       }
     }, options);
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize)
+  {
     options.tableName = 'Events';
     await queryInterface.dropTable(options);
   }

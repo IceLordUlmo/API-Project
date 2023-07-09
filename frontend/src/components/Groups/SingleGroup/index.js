@@ -25,12 +25,8 @@ export const SingleGroup = ({ group, events }) =>
                     <p className="single-group-location">{group.city}, {group.state}</p>
                     <p className="single-group-about">{group.about}</p>
                     <div className="single-group-events">
-                        <h3 className="single-group-event-word">Events</h3>
                         <p>
-                            {eventCount}
-                        </p>
-                        <p>
-                            {groupPublicity}
+                            {eventCount} {eventCount === 1 ? 'Event' : 'Events'}  • {groupPublicity}
                         </p>
                     </div>
                 </div>

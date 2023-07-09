@@ -1,10 +1,10 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-
-
+import { SortEvents } from "../../Utils/sort"
+import { NavLink } from 'react-router-dom'
 import { getAllEventsThunk } from "../../../store/event"
 
-import { SingleEvent } from "../SingleEvent"
+import MiniEvent from "../../Shared/GroupEvent"
 
 import "./AllEvents.css"
 
@@ -14,6 +14,7 @@ export function AllEvents()
     let allEvents = useSelector(state => state.events.allEvents);
     let oneEvent = useSelector(state => state.events.oneEvent);
     allEvents = Object.values(allEvents);
+
     useEffect(() =>
     {
         console.log("useEffect allEvents");
@@ -21,16 +22,28 @@ export function AllEvents()
 
     }, [dispatch, oneEvent])
 
+    if (allEvents === undefined) return;
 
+    allEvents = SortEvents(allEvents);
 
     return (
         <div className="all-events-external-div">
-            <h1 className='all-events-events'>Events</h1>
-            <h1 className='all-events-groups'>Groups</h1>
+            <h2>Events in Meetup</h2>
+            <div className="all-groups-events-and-groups">
+                <div className='all-groups-headers'>
+                    <h1 className=' all-events-events'>Events</h1>
+                </div>
+                <div className='all-groups-headers'>
+                    <h1 className='all-events-groups'><NavLink to='/Groups' className='all-events-groups-link'>Groups</NavLink></h1>
+                </div>
+            </div>
             <ul className="all-events-unordered-list-of-events">
                 {
-                    allEvents?.map((singleEvent) => (
-                        <SingleEvent key={singleEvent.id} event={singleEvent} />
+                    allEvents?.map((singleEvent) => (<div className={"all-events-single-event " +
+                        (allEvents.indexOf(singleEvent) === allEvents.length - 1
+                            ? "all-events-last-event" : '')} >
+                        <MiniEvent key={singleEvent.id} event={singleEvent} />
+                    </div>
                     ))}
             </ul>
         </div>

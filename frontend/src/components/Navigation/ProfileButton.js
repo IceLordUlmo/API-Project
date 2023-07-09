@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 import OpenModalMenuItem from './OpenModalMenuItem';
-import LoginFormModal from '../LoginFormModal';
-import SignupFormModal from '../SignupFormModal';
+import LoginFormModal from '../Modals/LoginFormModal';
+import SignupFormModal from '../Modals/SignupFormModal';
 import { useHistory, NavLink } from "react-router-dom";
 
 function ProfileButton({ user })
@@ -61,9 +61,7 @@ function ProfileButton({ user })
                         <li>
                             <button onClick={logout}>Log Out</button>
                         </li>
-                        <li>
-                            <NavLink to="/groups">See All Groups</NavLink>
-                        </li>
+
                     </>
                 ) : (
                     <>
@@ -77,9 +75,13 @@ function ProfileButton({ user })
                             onItemClick={closeMenu}
                             modalComponent={<SignupFormModal />}
                         />
-                        <NavLink to="/groups">See All Groups</NavLink>
                     </>
                 )}
+                <li>
+                    <NavLink to="/groups">See All Groups</NavLink>
+                </li><li>
+                    <NavLink to="/events">See All Events</NavLink>
+                </li>
             </ul>
         </>
     );

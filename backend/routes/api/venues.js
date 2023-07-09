@@ -14,39 +14,44 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 
 // edit venue specified by id
-router.put("/:venueId", requireAuth, async (req, res) => {
+router.put("/:venueId", requireAuth, async (req, res) =>
+{
     const { venueId } = req.params;
     const venueIdToEdit = venueId;
     const { address, city, state, lat, lng } = req.body;
 
     let errorFlag = false;
     const errorList = {};
-    if (!address) {
+    if (!address)
+    {
         errorList.address = 'Street address is required';
         errorFlag = true;
     }
-    if (!city) {
+    if (!city)
+    {
         errorList.city = 'City is required';
         errorFlag = true;
     }
-    if (!state) {
+    if (!state)
+    {
         errorList.state = "State is required";
         errorFlag = true;
     }
     if (lat < -90 ||
-        lat > 90 ||
-        typeof lat != "number") {
+        lat > 90)
+    {
         errorList.lat = 'Latitude is not valid'
         errorFlag = true;
     }
     if (lng < -180 ||
-        lng > 180 ||
-        typeof lng != "number") {
+        lng > 180)
+    {
         errorList.lng = 'Longitude is not valid'
         errorFlag = true;
     }
 
-    if (errorFlag) {
+    if (errorFlag)
+    {
         res.status(400)
         return res.json({
             "message": "Bad Request",
@@ -64,7 +69,8 @@ router.put("/:venueId", requireAuth, async (req, res) => {
         }
     })
 
-    if (!venueToEdit) {
+    if (!venueToEdit)
+    {
         res.status(404)
         return res.json({ 'message': "Venue couldn't be found" })
     }
@@ -82,8 +88,10 @@ router.put("/:venueId", requireAuth, async (req, res) => {
 
     const cohostedGroups = cohostMemberships.map(membership => { return membership.groupId })
 
-    if (currentUserId != organizerId) {
-        if (!cohostedGroups.includes(venueToEdit.groupId)) {
+    if (currentUserId != organizerId)
+    {
+        if (!cohostedGroups.includes(venueToEdit.groupId))
+        {
             let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
             res.status(403);
             return res.json(error)

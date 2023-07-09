@@ -10,6 +10,8 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 import { timeFormatter } from "../../Utils/time";
 
+import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem'
+import DeleteModal from "../DeleteModal";
 export const OneEventDetails = () =>
 {
 
@@ -18,26 +20,33 @@ export const OneEventDetails = () =>
     const dispatch = useDispatch();
     const event = useSelector(state => state.events.oneEvent);
     const group = useSelector(state => state.groups.oneGroup);
-    const thisUser = useSelector(state => state.session.user);
-    const history = useHistory();
+    const user = useSelector(state => state.session.user);
 
+    useEffect(() =>
+    {
+        console.log("useEffect oneEvent", event);
+        if (!event || event.id != eventId)
+        {
+            dispatch(getOneEventThunk(eventId))
+        }
+        if (event.id !== undefined)
+        {
+            dispatch(getOneGroupThunk(event.Group.id))
+        }
+    }, [dispatch, eventId, event])
+
+    const history = useHistory();
+    if (event === undefined || group === undefined) return;
+    if (event.id === undefined || group.id === undefined) return;
     const eventImage = event?.EventImages?.find(image => image.preview === true);
     const groupImage = group?.GroupImages.find(image => image.preview === true);
     let organizer = '';
     organizer = organizer + group?.Organizer?.firstName + ' ' + group?.Organizer?.lastName;
 
-    useEffect(() =>
-    {
-        console.log("useEffect oneEvent");
-        dispatch(getOneEventThunk(eventId))
-        if (event !== undefined)
-        {
-            dispatch(getOneGroupThunk(event.Group.id))
-        }
-    }, [dispatch, eventId])
 
-    if (event === undefined || group === undefined) return;
 
+
+    console.log('looking for a startDate', event);
     const eventTimeInfo = event.startDate.split("T");
     let eventDay = eventTimeInfo[0];
     let eventTime = eventTimeInfo[1];
@@ -48,14 +57,15 @@ export const OneEventDetails = () =>
     let endEventTime = endEventTimeInfo[1];
     let endDisplayEventTime = timeFormatter(endEventTime);
 
-    const canDelete = (thisUser && thisUser.id === group.Organizer.id);
     const isFree = (event.price === 0 || event.price === "0");
 
-    function deleteThis()
-    {
-        dispatch(deleteEventThunk(eventId));
-    }
+    const weCanJoinThis = (user && user.id !== group.Organizer.id)
+    const weCreatedThis = (user && user.id === group.Organizer.id)
 
+    const joinButton = (e) =>
+    {
+        return alert('Feature coming soon!')
+    }
     // Update goes in here later
 
     return (
@@ -111,18 +121,34 @@ export const OneEventDetails = () =>
                             </div>
 
                             <div className='one-event-details-location'>
-                                <i class="fa-sharp fa-solid fa-map-pin" />
+                                <i className="fa-sharp fa-solid fa-map-pin" />
                                 <div className='one-event-details-location-type'>
                                     {event.type}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {(canDelete)
-                        &&
-                        (<button onClick={deleteThis}>
-                            Delete
-                        </button>)}
+                    {(weCreatedThis) &&
+                        (<div>
+                            <Link to={`/events/${group.id}/edit`} className="one-event-details-button one-event-details-dg">
+                                Update
+                            </Link>
+
+                            <div className="one-event-details-button one-group-details-dg">
+                                <OpenModalMenuItem
+                                    itemText="Delete"
+                                    modalComponent={<DeleteModal className="modal-container-delete" eventId={event.id} groupId={group.id} />}
+                                /></div>
+                        </div>
+                        )
+                    }
+                    {(weCanJoinThis) &&
+                        (
+                            <button className="one-group-details-join-button"
+                                onClick={joinButton}
+                            >Join this group</button>
+                        )
+                    }
                 </div>
             </div>
             <div className='one-event-details'>

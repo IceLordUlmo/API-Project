@@ -7,7 +7,7 @@ import startImage from './start.png'
 import eventImage from './event.png'
 import './Landing.css'
 import OpenModalMenuItem from '../Navigation/OpenModalMenuItem'
-import SignupFormModal from '../SignupFormModal';
+import SignupFormModal from '../Modals/SignupFormModal';
 
 export function Landing()
 {

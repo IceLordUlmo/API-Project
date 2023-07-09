@@ -94,13 +94,12 @@ export const getOneGroupsEventsThunk = (groupId) => async (dispatch) =>
         console.log("one groups events thunk ok")
     } else
     {
-        const error = await response.json();
         console.log("one groups events thunk definitely NOT ok")
-        return error;
+        return { oneGroupsEventsJson };
     }
 }
 
-export const createEventThunk = (eventObject) => async (dispatch) =>
+export const createEventThunk = (eventObject, groupId) => async (dispatch) =>
 {
 
     console.log('we got to create event thunk: ', eventObject)
@@ -110,7 +109,7 @@ export const createEventThunk = (eventObject) => async (dispatch) =>
         body: JSON.stringify(eventObject)
     }
     console.log(request);
-    const response = await csrfFetch('api/events', request)
+    const response = await csrfFetch(`/api/groups/${groupId}/events`, request)
     console.log('stage 2 of create event thunk')
     if (response.ok)
     {
@@ -152,7 +151,7 @@ export const getOneEventThunk = (eventId) => async (dispatch) =>
 {
     const getURL = "/api/events/" + eventId;
 
-    console.log(getURL);
+    console.log('get one event thunk', getURL);
 
     const response = await csrfFetch(getURL);
 
@@ -196,7 +195,7 @@ export const deleteEventThunk = (eventIdToDelete) => async (dispatch) =>
 {
     const deleteURL = "/api/events/" + eventIdToDelete
 
-    console.log(deleteURL);
+    console.log('delete url:', deleteURL);
 
     const response = await csrfFetch(deleteURL, {
         method: 'DELETE',
@@ -214,7 +213,7 @@ export const deleteEventThunk = (eventIdToDelete) => async (dispatch) =>
     }
 }
 
-const initialState = { allEvents: {}, singleEvent: {}, oneGroupsEvents: {} };
+const initialState = { allEvents: {}, oneEvent: {}, oneGroupsEvents: {} };
 const eventReducer = (state = initialState, action) =>
 {
 

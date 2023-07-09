@@ -8,7 +8,6 @@ const CREATE_GROUP = "groups/createOneGroup"
 const CREATE_IMAGE = "groups/newImage"
 const UPDATE_GROUP = "groups/updateGroup"
 const DELETE_GROUP = "groups/deleteGroup"
-//const headers = { 'Content-Type': 'application/json' }
 const headers = { 'Content-Type': 'application/json' }
 // actions to export
 export const getAllGroupsAction = groups => (
@@ -126,7 +125,7 @@ export const getOneGroupThunk = (groupId) => async (dispatch) =>
 {
     const getURL = "/api/groups/" + groupId;
 
-    console.log(getURL);
+    console.log('get one group thunk', getURL);
 
     const response = await csrfFetch(getURL);
 
@@ -188,7 +187,7 @@ export const deleteGroupThunk = (groupIdToDelete) => async (dispatch) =>
     }
 }
 
-const initialState = { allGroups: {}, singleGroup: {} };
+const initialState = { allGroups: {}, oneGroup: {} };
 const groupReducer = (state = initialState, action) =>
 {
 

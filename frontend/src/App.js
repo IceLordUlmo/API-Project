@@ -28,18 +28,12 @@ function App()
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route exact path="/events/new">
-            <CreateEvent />
-          </Route>
 
-          <Route path="/events/:eventId">
-            <OneEventDetails />
-          </Route>
-          <Route exact path="/events">
-            <AllEvents />
-          </Route>
           <Route exact path="/groups/new">
             <CreateGroup />
+          </Route>
+          <Route path="/groups/:groupId/events/new">
+            <CreateEvent />
           </Route>
           <Route path="/groups/:groupId/edit">
             <UpdateGroup />
@@ -47,11 +41,17 @@ function App()
           <Route path="/groups/:groupId">
             <OneGroupDetails />
           </Route>
-          <Route exact path="/groups">
-            <AllGroups />
+          <Route exact path="/events/:eventId">
+            <OneEventDetails />
           </Route>
           <Route exact path='/'>
             <Landing />
+          </Route>
+          <Route path="/groups">
+            <AllGroups />
+          </Route>
+          <Route path="/events">
+            <AllEvents />
           </Route>
         </Switch>
       )

@@ -1,8 +1,23 @@
-.all-groups-events {
-    color: gray
+.all-events-groups-link {
+    color: gray;
+    text-decoration: none;
 }
 
-.all-groups-groups {
+.all-events-groups-link:hover {
+
+    text-decoration: underline;
+}
+
+.all-events-events {
     color: teal;
     text-decoration: underline;
+}
+
+.all-events-single-event {
+    border-top: 3px solid black;
+    padding: 30%, 30%, 30%, 30%;
+}
+
+.all-events-last-event {
+    border-bottom: 3px solid black;
 }
