@@ -123,14 +123,14 @@ export const OneEventDetails = () =>
                     </div>
                     {(weCreatedThis) &&
                         (<div>
-                            <Link to={`/groups/${group.id}/edit`} className="one-group-details-button one-group-details-dg">
+                            <Link to={`/events/${group.id}/edit`} className="one-event-details-button one-event-details-dg">
                                 Update
                             </Link>
 
-                            <div className="one-group-details-button one-group-details-dg">
+                            <div className="one-event-details-button one-group-details-dg">
                                 <OpenModalMenuItem
                                     itemText="Delete"
-                                    modalComponent={<DeleteModal className="modal-container-delete" groupId={group.id} />}
+                                    modalComponent={<DeleteModal className="modal-container-delete" eventId={event.id} />}
                                 /></div>
                         </div>
                         )

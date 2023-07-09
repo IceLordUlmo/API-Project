@@ -6,3 +6,12 @@
     color: teal;
     text-decoration: underline;
 }
+
+.all-events-single-event {
+    border-top: 3px solid black;
+    padding: 30%, 30%, 30%, 30%;
+}
+
+.all-events-last-event {
+    border-bottom: 3px solid black;
+}

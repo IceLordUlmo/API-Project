@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 import { getAllEventsThunk } from "../../../store/event"
 
-import { SingleEvent } from "../SingleEvent"
+import MiniEvent from "../../Shared/GroupEvent"
 
 import "./AllEvents.css"
 
@@ -21,16 +21,26 @@ export function AllEvents()
 
     }, [dispatch, oneEvent])
 
-
+    if (allEvents === undefined) return;
 
     return (
         <div className="all-events-external-div">
-            <h1 className='all-events-events'>Events</h1>
-            <h1 className='all-events-groups'>Groups</h1>
+            <h2>Events in Meetup</h2>
+            <div className="all-groups-events-and-groups">
+                <div className='all-groups-headers'>
+                    <h1 className=' all-groups-events'>Events</h1>
+                </div>
+                <div className='all-groups-headers'>
+                    <h1 className='all-groups-headers all-groups-groups'>Groups</h1>
+                </div>
+            </div>
             <ul className="all-events-unordered-list-of-events">
                 {
-                    allEvents?.map((singleEvent) => (
-                        <SingleEvent key={singleEvent.id} event={singleEvent} />
+                    allEvents?.map((singleEvent) => (<div className={"all-events-single-event " +
+                        (allEvents.indexOf(singleEvent) === allEvents.length - 1
+                            ? "all-events-last-event" : '')} >
+                        <MiniEvent key={singleEvent.id} event={singleEvent} />
+                    </div>
                     ))}
             </ul>
         </div>

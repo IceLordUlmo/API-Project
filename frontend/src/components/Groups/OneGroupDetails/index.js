@@ -7,7 +7,7 @@ import "./OneGroupDetails.css";
 import { getOneGroupThunk, deleteGroupThunk } from "../../../store/group";
 import { getOneGroupsEventsThunk } from "../../../store/event";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import GroupEvent from "../GroupEvent"
+import MiniEvent from "../../Shared/GroupEvent"
 import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem'
 import DeleteModal from "../DeleteModal";
 
@@ -68,7 +68,7 @@ export const OneGroupDetails = () =>
 
                     <div>
                         <h3>Events ({groupEvents.length})</h3>
-                        {groupEvents.map(event => <GroupEvent event={event} key={event.id} />)}
+                        {groupEvents.map(event => <MiniEvent event={event} key={event.id} />)}
                     </div>
 
                     {(weCreatedThis) &&
