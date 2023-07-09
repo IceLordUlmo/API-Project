@@ -140,7 +140,7 @@ export function GroupForm({ preexistingGroup, isCreateForm })
 
     return (
         <>
-            <h1>Create Group</h1>
+            {isCreateForm ? <h1>Start A New Group</h1> : <h1>Update Group</h1>}
             <form onSubmit={handleSubmit}>
                 <label className='group-form-name-container'>
                     <p>{errors.name}</p>

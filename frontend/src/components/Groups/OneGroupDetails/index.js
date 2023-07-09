@@ -48,6 +48,9 @@ export const OneGroupDetails = () =>
                 </div>
             </div>
             <div className="group-details">
+                <img src={group.previewImage} className="one-group-image-temp">
+
+                </img>
                 <div className="group-detail-text-top">
                     <h1>{group.name}</h1>
                     <p>{group.city}, {group.state}</p>
