@@ -187,7 +187,7 @@ export const deleteGroupThunk = (groupIdToDelete) => async (dispatch) =>
     }
 }
 
-const initialState = { allGroups: {}, singleGroup: {} };
+const initialState = { allGroups: {}, oneGroup: {} };
 const groupReducer = (state = initialState, action) =>
 {
 

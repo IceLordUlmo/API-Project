@@ -99,7 +99,7 @@ export const getOneGroupsEventsThunk = (groupId) => async (dispatch) =>
     }
 }
 
-export const createEventThunk = (eventObject) => async (dispatch) =>
+export const createEventThunk = (eventObject, groupId) => async (dispatch) =>
 {
 
     console.log('we got to create event thunk: ', eventObject)
@@ -109,7 +109,7 @@ export const createEventThunk = (eventObject) => async (dispatch) =>
         body: JSON.stringify(eventObject)
     }
     console.log(request);
-    const response = await csrfFetch('api/events', request)
+    const response = await csrfFetch(`/api/groups/${groupId}/events`, request)
     console.log('stage 2 of create event thunk')
     if (response.ok)
     {
@@ -213,7 +213,7 @@ export const deleteEventThunk = (eventIdToDelete) => async (dispatch) =>
     }
 }
 
-const initialState = { allEvents: {}, singleEvent: {}, oneGroupsEvents: {} };
+const initialState = { allEvents: {}, oneEvent: {}, oneGroupsEvents: {} };
 const eventReducer = (state = initialState, action) =>
 {
 

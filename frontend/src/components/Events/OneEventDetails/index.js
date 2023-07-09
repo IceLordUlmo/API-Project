@@ -21,25 +21,29 @@ export const OneEventDetails = () =>
     const event = useSelector(state => state.events.oneEvent);
     const group = useSelector(state => state.groups.oneGroup);
     const user = useSelector(state => state.session.user);
-    const history = useHistory();
-
-    const eventImage = event?.EventImages?.find(image => image.preview === true);
-    const groupImage = group?.GroupImages.find(image => image.preview === true);
-    let organizer = '';
-    organizer = organizer + group?.Organizer?.firstName + ' ' + group?.Organizer?.lastName;
 
     useEffect(() =>
     {
         console.log("useEffect oneEvent");
         dispatch(getOneEventThunk(eventId))
-        if (event !== undefined)
+        if (event.Group !== undefined)
         {
             dispatch(getOneGroupThunk(event.Group.id))
         }
     }, [dispatch, eventId])
 
+    const history = useHistory();
     if (event === undefined || group === undefined) return;
+    if (event.id === undefined || group.id === undefined) return;
+    const eventImage = event?.EventImages?.find(image => image.preview === true);
+    const groupImage = group?.GroupImages.find(image => image.preview === true);
+    let organizer = '';
+    organizer = organizer + group?.Organizer?.firstName + ' ' + group?.Organizer?.lastName;
 
+
+
+
+    console.log('looking for a startDate', event);
     const eventTimeInfo = event.startDate.split("T");
     let eventDay = eventTimeInfo[0];
     let eventTime = eventTimeInfo[1];

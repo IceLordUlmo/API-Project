@@ -176,9 +176,9 @@ router.post("/", requireAuth, async (req, res) =>
         errorList.name = "Name must be 60 characters or less"
         errorFlag = true;
     }
-    if (about.length < 50)
+    if (about.length < 30)
     {
-        errorList.about = "About must be 50 characters or more"
+        errorList.about = "About must be 30 characters or more"
         errorFlag = true;
     }
     if (type != 'Online' && type != 'In Person')
@@ -285,17 +285,17 @@ router.put('/:groupId', requireAuth, async (req, res) =>
         errorList.name = "Name must be 60 characters or less"
         errorFlag = true;
     }
-    if (about.length < 50)
+    if (about.length < 30)
     {
-        errorList.about = "About must be 50 characters or more"
+        errorList.about = "About must be 30 characters or more"
         errorFlag = true;
     }
-    if (type != 'Online' && type != 'In person')
+    if (type != 'Online' && type != 'In Person')
     {
-        errorList.type = "Type must be 'Online' or 'In person'"
+        errorList.type = "Type must be 'Online' or 'In Person'"
         errorFlag = true;
     }
-    if (typeof private != 'boolean')
+    if (private != 'true' && private != 'false')
     {
         errorList.private = "Private must be a boolean"
         errorFlag = true;
@@ -313,6 +313,7 @@ router.put('/:groupId', requireAuth, async (req, res) =>
 
     if (errorFlag)
     {
+        console.log(errorList)
         res.status(400)
         return res.json({
             "message": "Bad Request",
@@ -670,21 +671,21 @@ router.post("/:groupId/events", requireAuth, async (req, res) =>
         return res.json(error)
     }
 
-    let venueLookup = await Venue.findOne({
-        where: {
-            id: venueId
-        }
-    })
+    // let venueLookup = await Venue.findOne({
+    //     where: {
+    //         id: venueId
+    //     }
+    // })
 
     let errorList = {};
     let errorFlag = false;
     let now = Date.now();
 
-    if (!venueLookup)
-    {
-        errorList.venueId = "Venue does not exist"
-        errorFlag = true;
-    }
+    // if (!venueLookup)
+    // {
+    //     errorList.venueId = "Venue does not exist"
+    //     errorFlag = true;
+    // }
     const startDateComparable = new Date(startDate).toDateString();
     const endDateComparable = new Date(endDate).toDateString();
     if (now > (new Date(startDate).getTime()))
@@ -702,21 +703,21 @@ router.post("/:groupId/events", requireAuth, async (req, res) =>
         errorList.name = "Name must be at least 5 characters"
         errorFlag = true;
     }
-    if (type !== "Online" && type !== "In person")
+    if (type !== "Online" && type !== "In Person")
     {
-        errorList.type = "Type must be Online or In person"
+        errorList.type = "Type must be Online or In Person"
         errorFlag = true;
     }
-    if (!Number.isInteger(capacity))
-    {
-        errorList.capacity = "Capacity must be an integer"
-        errorFlag = true;
-    }
-    if (typeof price !== 'number')
-    {
-        errorList.price = "Price is invalid"
-        errorFlag = true;
-    }
+    // if (!Number.isInteger(capacity))
+    // {
+    //     errorList.capacity = "Capacity must be an integer"
+    //     errorFlag = true;
+    // }
+    // if (typeof price !== 'number')
+    // {
+    //     errorList.price = "Price is invalid"
+    //     errorFlag = true;
+    // }
     if (!description)
     {
         errorList.description = "Description is required"
@@ -726,6 +727,7 @@ router.post("/:groupId/events", requireAuth, async (req, res) =>
     if (errorFlag)
     {
         res.status(400)
+        console.log(errorList)
         return res.json({
             "message": "Bad Request",
             errorList
@@ -749,10 +751,10 @@ router.post("/:groupId/events", requireAuth, async (req, res) =>
     objectifyCreatedEvent = {
         id: createdEvent.dataValues.id,
         groupId: createdEvent.dataValues.groupId,
-        venueId: createdEvent.dataValues.venueId,
+        //venueId: createdEvent.dataValues.venueId,
         name: createdEvent.dataValues.name,
         type: createdEvent.dataValues.type,
-        capacity: createdEvent.dataValues.capacity,
+        //capacity: createdEvent.dataValues.capacity,
         price: createdEvent.dataValues.price,
         description: createdEvent.dataValues.description,
         startDate: createdEvent.dataValues.startDate,

@@ -4,19 +4,31 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import './EventForm.css';
 
-export function EventForm({ preexistingEvent, isCreateForm })
+export function EventForm({ event, group, isCreateForm })
 {
-    const dispatch = useDispatch();
 
+    const [errors, setErrors] = useState({});
+    const types = ['In Person', 'Online']
+    const dispatch = useDispatch();
+    const preexistingEvent = event;
     //
-    const [name, setName] = useState(preexistingEvent ? preexistingEvent.name : '');
-    const [about, setAbout] = useState(preexistingEvent ? preexistingEvent.about : '');
-    const [type, setType] = useState(preexistingEvent ? preexistingEvent.type : '');
-    const [isPrivate, setIsPrivate] = useState('false');
-    const [location, setLocation] = useState(preexistingEvent ? preexistingEvent.city + ", " + preexistingEvent.state : '');
-    const [image, setImage] = useState(preexistingEvent.EventImages[0] ? preexistingEvent.EventImages[0].url : '');
+    const [name, setName] = useState(preexistingEvent.name);
+    const [description, setDescription] = useState(preexistingEvent.description);
+    const [type, setType] = useState(preexistingEvent.type);
+    const [price, setPrice] = useState(preexistingEvent.price);
+    const [startDate, setStartDate] = useState(preexistingEvent.startDate);
+    const [endDate, setEndDate] = useState(preexistingEvent.endDate);
+    //const [isPrivate, setIsPrivate] = useState('false');
+    //const [location, setLocation] = useState(preexistingEvent ? preexistingEvent.city + ", " + preexistingEvent.state : '');
+    const eventImages = preexistingEvent ? preexistingEvent.EventImages : null;
+    const eventImagesURL = eventImages ? preexistingEvent.EventImages[0].url : '';
+    const [image, setImage] = useState(eventImagesURL);
     const [canSubmit, setCanSubmit] = useState(false);
     const history = useHistory();
+
+    const dateNow = new Date();
+    const dateStartDate = new Date(startDate);
+    const dateEndDate = new Date(endDate);
 
     console.log(preexistingEvent)
 
@@ -24,74 +36,82 @@ export function EventForm({ preexistingEvent, isCreateForm })
     {
         const errors = {};
         setCanSubmit(true);
-        if (!name.length)
+        if (name.length < 5)
         {
-            errors.name = 'Please enter a name';
+            errors.name = 'Please enter a name of at least 5 characters';
         }
-        if (about.length < 50)
-        {
-            errors.about = 'Please enter a description 50 characters or more';
-        }
-        console.log('in person', type !== 'In person', 'onlinxe', type !== 'Online', 'type', type)
-        if (type !== 'In person' && type !== 'Online')
-        {
-            errors.type = 'Type must be In person or Online';
-        }
-        if (!location.length)
-        {
-            errors.location = 'Please enter a location';
-        }
+
         if (!image.length)
         {
             errors.image = 'Please enter an image URL';
         }
+
+        if (price === '')
+        {
+            errors.price = 'Price is required (but can be zero).'
+        }
+
+        if (startDate === '')
+        {
+            errors.startDate = 'Start date is required';
+        }
+
+        if (endDate === '')
+        {
+            errors.endDate = 'End date is required';
+        }
+
+        if (dateStartDate < dateNow)
+        {
+            errors.startDate = 'Start date must be after current date.'
+        }
+
+        if (dateEndDate < dateStartDate)
+        {
+            errors.endDate = 'End date must be after start date.'
+        }
         setErrors(errors)
+
+        if (description.length < 30)
+        {
+            errors.description = 'Description must be at least 30 characters.'
+        }
+
         if (Object.keys(errors).length > 0)
         {
             setCanSubmit(false);
         }
 
-    }, [name, about, location, image, type])
-
-    const [errors, setErrors] = useState({});
-    if (!isCreateForm)
-    {
-        if (Object.keys(preexistingEvent).length === 0) { return null; }
-    }
+    }, [name, description, price, image, type, startDate, endDate])
 
     if (!isCreateForm)
     {
-        const joinedLocation = preexistingEvent.city + ', ' + preexistingEvent.state;
-        const imageURL = preexistingEvent.image ? preexistingEvent.image.url : '';
-
-        // setName(preexistingEvent.name);
-        // setAbout(preexistingEvent.about);
-        // setType(preexistingEvent.type);
-        // setIsPrivate(preexistingEvent.private);
-        // setLocation(joinedLocation);
-        // setImage(imageURL);
+        if (Object.keys(preexistingEvent).length === 0)
+        {
+            console.log('returning because null in Event Form')
+            return null;
+        }
     }
 
     const handleSubmit = async (e) =>
     {
-        console.log('start of handleSubmit');
+        console.log('start of handleSubmit in EventForm');
         e.preventDefault();
-
 
         if (Object.keys(errors).length !== 0)
         {
             console.log('errors', errors)
             return errors;
         }
-        console.log(location);
-        const [city, state] = location.split(", ");
+
         const eventObject = {
+            ...preexistingEvent,
             "name": name,
-            "about": about,
+            "description": description,
+            "price": price,
             "type": type,
-            "private": (isPrivate === 'true'),
-            "city": city,
-            "state": state
+            "startDate": startDate,
+            "endDate": endDate
         }
 
         const imageObject = {
@@ -101,13 +121,14 @@ export function EventForm({ preexistingEvent, isCreateForm })
 
         if (isCreateForm)
         {
-            dispatch(eventActions.createEventThunk(eventObject)).then((event) =>
+            dispatch(eventActions.createEventThunk(eventObject, group.id)).then((event) =>
             {
-
+                console.log('event created');
                 return dispatch(eventActions.createImageThunk(imageObject, event.id))
                     .then(history.push(`/events/${event.id}`))
                     .catch(async (res) =>
                     {
+                        console.log('mysterious error');
                         const data = await res.json();
                         if (data && data.errors)
                         {
@@ -137,45 +158,60 @@ export function EventForm({ preexistingEvent, isCreateForm })
 
     return (
         <>
-            <h1>Create Event</h1>
+            <h1>Create a new event for {group.name}</h1>
             <form onSubmit={handleSubmit}>
                 <label className='event-form-name-container'>
+                    <h3>What is the name of your event?</h3>
                     <p>{errors.name}</p>
                     <input type='text' value={name} onChange={(event) => setName(event.target.value)}
-                        placeholder='Event name' />
+                        placeholder='Event Name' />
                 </label>
-                <label className='event-form-about-container'>
-                    <p>{errors.about}</p>
-                    <input type='text' value={about} onChange={(event) => setAbout(event.target.value)}
-                        placeholder='About the event' />
-                </label>
-                <label className='event-form-type-container'>
-                    <p>{errors.type}</p>
-                    <input type='text' value={type} onChange={(event) => setType(event.target.value)}
-                        placeholder='Online or In person' />
-                </label>
-                <label className='event-form-is-private-container'>
-                    <h3> Is this event private? </h3>
-                    <select value={isPrivate} onChange={(event) => setIsPrivate(event.target.value === 'true')}>
+                <div>
+                    <h3>Is this an in-person or online group?</h3>
+                    <select value={type} onChange={(event) => setType(event.target.value)}>
 
-                        <option value='false'>
-                            Public
-                        </option>
-                        <option value='true'>
-                            Private
-                        </option>
+                        <option value='' disabled>(select one)</option>
+                        {types.map(singleType => (
+                            <option key={singleType} value={singleType}>
+                                {singleType}
+                            </option>
+                        ))}
                     </select>
+                </div>
+                <label className='event-form-name-container'>
+                    <h3>What is the price for your event?</h3>
+                    <p>{errors.price}</p>
+                    <input type='text' value={price} onChange={(event) => setPrice(event.target.value)}
+                        placeholder='0' />
                 </label>
-                <label className='event-form-location-container'>
-                    <p>{errors.location}</p>
-                    <input type='text' value={location} onChange={(event) => setLocation(event.target.value)}
-                        placeholder='System, Region' />
+
+                <label className='event-form-start-container'>
+                    <h3>When does your event start?</h3>
+                    <p>{errors.startDate}</p>
+                    <input type='text' value={startDate} onChange={(event) => setStartDate(event.target.value)}
+                        placeholder='MM/DD/YYYY, HH/mm AM' />
                 </label>
+                <label className='event-form-end-container'>
+                    <h3>When does your event end?</h3>
+                    <p>{errors.endDate}</p>
+                    <input type='text' value={endDate} onChange={(event) => setEndDate(event.target.value)}
+                        placeholder='MM/DD/YYYY, HH/mm PM' />
+                </label>
+
                 <label className='event-form-image-container'>
+                    <h3>Please add an image url for your event below:</h3>
                     <p>{errors.image}</p>
                     <input type='text' value={image} onChange={(event) => setImage(event.target.value)}
                         placeholder='Image URL' />
                 </label>
+
+                <label className='event-form-description-container'>
+                    <h3>Please describe your event</h3>
+                    <p>{errors.description}</p>
+                    <input type='text' value={description} onChange={(event) => setDescription(event.target.value)}
+                        placeholder='Please include at least 30 characters' />
+                </label>
+
                 <button type='submit'
                     disabled={!canSubmit}
                     className={canSubmit ? 'event-form-button-active' : 'event-form-button-inactive'}>

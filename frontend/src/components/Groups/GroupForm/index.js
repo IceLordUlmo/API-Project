@@ -17,8 +17,8 @@ export function GroupForm({ preexistingGroup, isCreateForm })
     const [isPrivate, setIsPrivate] = useState('false');
 
     // the variables previously known as location
-    const [city, setCity] = useState(preexistingGroup ? preexistingGroup.city + ", " + preexistingGroup.state : '');
-    const [state, setState] = useState(preexistingGroup ? preexistingGroup.city + ", " + preexistingGroup.state : '');
+    const [city, setCity] = useState(preexistingGroup ? preexistingGroup.city : '');
+    const [state, setState] = useState(preexistingGroup ? preexistingGroup.state : '');
 
     const groupImages = preexistingGroup ? preexistingGroup.GroupImages : null;
     const groupImagesURL = groupImages ? preexistingGroup.GroupImages[0].url : '';
@@ -37,9 +37,9 @@ export function GroupForm({ preexistingGroup, isCreateForm })
         {
             errors.name = 'Please enter a name';
         }
-        if (about.length < 50)
+        if (about.length < 30)
         {
-            errors.about = 'Please enter a description 50 characters or more';
+            errors.about = 'Please enter a description 30 characters or more';
         }
         console.log('in person', type !== 'In Person', 'online', type !== 'Online', 'type', type)
         // if (!location.length)
@@ -151,51 +151,73 @@ export function GroupForm({ preexistingGroup, isCreateForm })
         <>
             {isCreateForm ? <h1>Start A New Group</h1> : <h1>Update Group</h1>}
             <form onSubmit={handleSubmit}>
-                <label className='group-form-name-container'>
-                    <p>{errors.name}</p>
-                    <input type='text' value={name} onChange={(event) => setName(event.target.value)}
-                        placeholder='Group name' />
-                </label>
-                <label className='group-form-about-container'>
-                    <p>{errors.about}</p>
-                    <input type='text' value={about} onChange={(event) => setAbout(event.target.value)}
-                        placeholder='About the group' />
-                </label>
-                <label className='group-form-type-container'>
-                    <select value={type} onChange={(event) => setType(event.target.value)}>
-                        <option value='' disabled>(select one)</option>
-                        {types.map(singleType => (
-                            <option key={singleType} value={singleType}>
-                                {singleType}
-                            </option>
-                        ))}
-                    </select>
-                </label>
-                <label className='group-form-is-private-container'>
-                    <h3> Is this group private? </h3>
-                    <select value={isPrivate} onChange={(event) => setIsPrivate(event.target.value)}>
-
-                        <option value='false'>
-                            Public
-                        </option>
-                        <option value='true'>
-                            Private
-                        </option>
-                    </select>
-                </label>
                 <label className='group-form-location-container'>
+                    <h3>Set your group's location</h3>
+                    <h4>Fleetup groups meet locally, in person, and online. We'll connect you with people in your area.</h4>
+
                     <p>{errors.city}</p>
                     <input type='text' value={city} onChange={(event) => setCity(event.target.value)}
                         placeholder='City' />
                     <p>{errors.state}</p>
                     <input type='text' value={state} onChange={(event) => setState(event.target.value)}
-                        placeholder='State' />
+                        placeholder='STATE' />
                 </label>
-                <label className='group-form-image-container'>
-                    <p>{errors.image}</p>
-                    <input type='text' value={image} onChange={(event) => setImage(event.target.value)}
-                        placeholder='Image URL' />
+                <label className='group-form-name-container'>
+                    <h3>What will your group's name be?</h3>
+                    <h4>Choose a name that will give people a clear idea of what the group is about. Feel free to get creative! You can edit this later if you change your mind.</h4>
+
+                    <p>{errors.name}</p>
+                    <input type='text' value={name} onChange={(event) => setName(event.target.value)}
+                        placeholder='What is your group name?' />
                 </label>
+                <label className='group-form-about-container'>
+                    <h3>Describe the purpose of your group.</h3>
+                    <h4>People will see this when we promote your group, but you'll be able to add to it later, too.
+                        <ol>
+                            <li>What's the purpose of the group?</li>
+                            <li>Who should join?</li>
+                            <li>What will you do at your events?</li>
+                        </ol>
+                    </h4>
+
+                    <p>{errors.about}</p>
+                    <input type='text' value={about} onChange={(event) => setAbout(event.target.value)}
+                        placeholder='Please write at least 30 characters' />
+                </label>
+                <div className='group-form-section-four'>
+                    <label className='group-form-type-container'>
+                        <h3>Is this an in-person or online group?</h3>
+
+                        <select value={type} onChange={(event) => setType(event.target.value)}>
+                            <option value='' disabled>(select one)</option>
+                            {types.map(singleType => (
+                                <option key={singleType} value={singleType}>
+                                    {singleType}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
+                    <label className='group-form-is-private-container'>
+                        <h3>Is this group private or public?</h3>
+
+                        <select value={isPrivate} onChange={(event) => setIsPrivate(event.target.value)}>
+
+                            <option value='false'>
+                                Public
+                            </option>
+                            <option value='true'>
+                                Private
+                            </option>
+                        </select>
+                    </label>
+
+                    <label className='group-form-image-container'>
+                        <h3>Please add an image URL for your group below:</h3>
+                        <p>{errors.image}</p>
+                        <input type='text' value={image} onChange={(event) => setImage(event.target.value)}
+                            placeholder='Image Url' />
+                    </label>
+                </div>
                 <button type='submit'
                     disabled={!canSubmit}
                     className={canSubmit ? 'group-form-button-active' : 'group-form-button-inactive'}>

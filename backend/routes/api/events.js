@@ -15,7 +15,8 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 // get all events
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res, next) =>
+{
 
     let { name, type, startDate, page, size } = req.query;
     const errorList = {};
@@ -30,28 +31,33 @@ router.get('/', async (req, res, next) => {
     page = Number.isInteger(page) ? page : 1
     size = Number.isInteger(size) ? size : 20;
 
-    if (page < 1) {
+    if (page < 1)
+    {
         errorList.page = "Page must be greater than or equal to 1";
         errorFlag = true;
     }
-    if (size < 1) {
+    if (size < 1)
+    {
         errorList.size = "Size must be greater than or equal to 1";
         errorFlag = true;
     }
-    if (startDate && !Number.isInteger(Date.parse(startDate))) {
+    if (startDate && !Number.isInteger(Date.parse(startDate)))
+    {
         errorList.startDate = "Start date must be in date format";
         errorFlag = true;
     }
-    if (type && type !== 'Online' && type !== 'In person') {
+    if (type && type !== 'Online' && type !== 'In person')
+    {
         errorList.type = "Type must be 'Online' or 'In person'";
         errorFlag = true;
     }
-    if (name && typeof name !== 'string') {
-        errorList.name = "Name has to be a string";
-        errorFlag = true;
-    }
+    // if (name && typeof name !== 'string') {
+    //     errorList.name = "Name has to be a string";
+    //     errorFlag = true;
+    // }
 
-    if (errorFlag) {
+    if (errorFlag)
+    {
         res.status(400)
         return res.json({
             "message": "Bad Request",
@@ -59,25 +65,30 @@ router.get('/', async (req, res, next) => {
         })
     }
 
-    if (page > 10) {
+    if (page > 10)
+    {
         page = 10;
     }
-    if (size > 20) {
+    if (size > 20)
+    {
         size = 20;
     }
     pagination.limit = size;
     pagination.offset = size * (page - 1);
 
 
-    if (startDate) {
+    if (startDate)
+    {
         where.startDate = new Date(startDate);
     }
 
-    if (name) {
+    if (name)
+    {
         where.name = name;
     }
 
-    if (type) {
+    if (type)
+    {
         where.type = type;
     }
 
@@ -96,7 +107,8 @@ router.get('/', async (req, res, next) => {
         ]
     })
 
-    for (let event of allEvents) {
+    for (let event of allEvents)
+    {
 
         const eventId = event.id;
 
@@ -108,10 +120,12 @@ router.get('/', async (req, res, next) => {
             }
         })
 
-        if (!previewImage) {
+        if (!previewImage)
+        {
             event.dataValues.previewImage = null;
         }
-        else {
+        else
+        {
             event.dataValues.previewImage = previewImage.url;
         }
 
@@ -132,7 +146,8 @@ router.get('/', async (req, res, next) => {
 
 // get event details by eventId
 
-router.get("/:eventId", async (req, res) => {
+router.get("/:eventId", async (req, res) =>
+{
     const { eventId } = req.params;
     const requestedEventId = eventId;
     const requestedEvent = await Event.findOne({
@@ -154,7 +169,8 @@ router.get("/:eventId", async (req, res) => {
         attributes: ["id", "groupId", "venueId", "name", "description", "type", "capacity", "price", "startDate", "endDate"]
     })
 
-    if (!requestedEvent) {
+    if (!requestedEvent)
+    {
         res.status(404)
         res.json(
             {
@@ -173,7 +189,8 @@ router.get("/:eventId", async (req, res) => {
 })
 
 // add an image to an event by its eventId
-router.post("/:eventId/images", requireAuth, async (req, res) => {
+router.post("/:eventId/images", requireAuth, async (req, res) =>
+{
     const { eventId } = req.params;
     const { url, preview } = req.body;
     const userId = req.user.id;
@@ -186,7 +203,8 @@ router.post("/:eventId/images", requireAuth, async (req, res) => {
         }
     })
 
-    if (!eventToAddTo) {
+    if (!eventToAddTo)
+    {
         res.status(404);
 
         return res.json(
@@ -218,7 +236,8 @@ router.post("/:eventId/images", requireAuth, async (req, res) => {
 
     // if there's no cohost membership and we're not the organizer
     if (!cohostMembershipOfTheUser &&
-        organizerId !== userId) {
+        organizerId !== userId)
+    {
         let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
         res.status(403);
         return res.json(error)
@@ -242,7 +261,8 @@ router.post("/:eventId/images", requireAuth, async (req, res) => {
 
 // edit event by eventId
 
-router.put("/:eventId", requireAuth, async (req, res) => {
+router.put("/:eventId", requireAuth, async (req, res) =>
+{
     const { eventId } = req.params;
     const userId = req.user.id;
     const eventIdToEdit = eventId;
@@ -257,7 +277,8 @@ router.put("/:eventId", requireAuth, async (req, res) => {
         }
     })
 
-    if (!eventToEdit) {
+    if (!eventToEdit)
+    {
         res.status(404);
         return res.json(
             {
@@ -285,7 +306,8 @@ router.put("/:eventId", requireAuth, async (req, res) => {
 
     // if there's no cohost membership and we're not the organizer
     if (!cohostMembershipOfTheUser &&
-        organizerId !== userId) {
+        organizerId !== userId)
+    {
         let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
         res.status(403);
         return res.json(error)
@@ -304,43 +326,52 @@ router.put("/:eventId", requireAuth, async (req, res) => {
             id: venueId
         }
     })
-    if (!venueId || !Number.isInteger(venueId) || venueFinder) {
+    if (!venueId || !Number.isInteger(venueId) || venueFinder)
+    {
         errorList.venueId = "Venue does not exist";
         errorFlag = true;
     }
 
-    if (!name || name.length < 5) {
+    if (!name || name.length < 5)
+    {
         errorList.name = "Name must be at least 5 characters";
         errorFlag = true;
     }
-    if (type !== "Online" && type !== "In person") {
+    if (type !== "Online" && type !== "In person")
+    {
         errorList.type = "Type must be Online or In person";
         errorFlag = true;
     }
-    if (!Number.isInteger(capacity)) {
+    if (!Number.isInteger(capacity))
+    {
         errorList.capacity = "Capacity must be an integer";
         errorFlag = true;
     }
-    if (!description) {
+    if (!description)
+    {
         errorList.description = "Description is required";
         errorFlag = true;
     }
-    if (now > (new Date(startDate).getTime())) {
+    if (now > (new Date(startDate).getTime()))
+    {
         errorList.startDate = "Start date must be in the future";
         errorFlag = true;
     }
-    if (startDateString > endDateString) {
+    if (startDateString > endDateString)
+    {
         errorList.endDate = "End date is less than start date";
         errorFlag = true;
     }
-    if (!price || price < 0 || isNaN(price)) {
+    if (!price || price < 0 || isNaN(price))
+    {
         errorList.price = "Price is invalid";
         errorFlag = true;
     }
 
 
     //errorflag
-    if (errorFlag) {
+    if (errorFlag)
+    {
         res.status(400)
         return res.json({
             "message": "Bad Request",
@@ -351,7 +382,8 @@ router.put("/:eventId", requireAuth, async (req, res) => {
     // don't just see if the numbers exist, see if the venue is real
     const venue = await Venue.findByPk(venueId);
 
-    if (!venue) {
+    if (!venue)
+    {
         res.status(404)
         return res.json({
             "message": "Venue couldn't be found",
@@ -389,7 +421,8 @@ router.put("/:eventId", requireAuth, async (req, res) => {
 })
 
 // delete event specified by eventId
-router.delete("/:eventId", requireAuth, async (req, res) => {
+router.delete("/:eventId", requireAuth, async (req, res) =>
+{
     const { eventId } = req.params;
     const userId = req.user.id;
     const eventIdToBeDeleted = eventId;
@@ -404,7 +437,8 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
         }
     })
 
-    if (!eventToDelete) {
+    if (!eventToDelete)
+    {
         res.status(404);
         return res.json(
             {
@@ -426,7 +460,8 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
 
     // if there's no cohost membership and we're not the organizer
     if (!cohostMembershipOfTheUser &&
-        organizerId !== userId) {
+        organizerId !== userId)
+    {
         let error = { 'message': 'Current User must be the organizer of the group or a member of the group with a status of "co-host"' }
         res.status(403);
         return res.json(error)
@@ -450,7 +485,8 @@ router.delete("/:eventId", requireAuth, async (req, res) => {
 
 // get all attendees of an event by eventId
 
-router.get("/:eventId/attendees", async (req, res) => {
+router.get("/:eventId/attendees", async (req, res) =>
+{
 
     const { eventId } = req.params;
     const userId = req.user ? req.user.id : null; // hope this works if we're not logged in
@@ -467,7 +503,8 @@ router.get("/:eventId/attendees", async (req, res) => {
         }
     })
 
-    if (!eventAttended) {
+    if (!eventAttended)
+    {
         res.status(404);
         return res.json(
             {
@@ -488,7 +525,8 @@ router.get("/:eventId/attendees", async (req, res) => {
 
     // if we are a co-host or the organizer, add pending visibility as well
     if (cohostMembership ||
-        eventAttended.Group.organizerId === userId) {
+        eventAttended.Group.organizerId === userId)
+    {
         statusesAuthorizedToSee.push('pending')
     }
 
@@ -506,7 +544,8 @@ router.get("/:eventId/attendees", async (req, res) => {
     })
 
     const attendeeArray = []
-    for (attendee of attendeesOfEvent) {
+    for (attendee of attendeesOfEvent)
+    {
         const attendeeInfo = {};
         attendeeInfo.id = attendee.User.id;
         attendeeInfo.firstName = attendee.User.firstName;
@@ -527,7 +566,8 @@ router.get("/:eventId/attendees", async (req, res) => {
 
 // request to attend an event based on eventId
 
-router.post("/:eventId/attendance", requireAuth, async (req, res) => {
+router.post("/:eventId/attendance", requireAuth, async (req, res) =>
+{
     const userId = req.user.id;
     const { eventId } = req.params;
     const eventIdBeingRequested = eventId;
@@ -543,7 +583,8 @@ router.post("/:eventId/attendance", requireAuth, async (req, res) => {
         }
     )
 
-    if (!eventBeingRequested) {
+    if (!eventBeingRequested)
+    {
         res.status(404);
         return res.json(
             {
@@ -562,7 +603,8 @@ router.post("/:eventId/attendance", requireAuth, async (req, res) => {
         }
     )
 
-    if (!authorizedMembership) {
+    if (!authorizedMembership)
+    {
         let error = { 'message': 'Current User must be a member of the group' }
         res.status(403);
         return res.json(error)
@@ -578,9 +620,11 @@ router.post("/:eventId/attendance", requireAuth, async (req, res) => {
 
 
     // if we already have an entry
-    if (eventAttendance) {
+    if (eventAttendance)
+    {
         const attendanceStatus = eventAttendance.status;
-        if (attendanceStatus == 'pending') {
+        if (attendanceStatus == 'pending')
+        {
             res.status(400);
             return res.json(
                 {
@@ -588,7 +632,8 @@ router.post("/:eventId/attendance", requireAuth, async (req, res) => {
                 }
             )
         }
-        else {
+        else
+        {
             return res.json(
                 {
                     "message": "User is already an attendee of the event"
@@ -614,13 +659,15 @@ router.post("/:eventId/attendance", requireAuth, async (req, res) => {
 
 // change the status of an attendance specified by eventId and userId
 
-router.put('/:eventId/attendance', requireAuth, async (req, res) => {
+router.put('/:eventId/attendance', requireAuth, async (req, res) =>
+{
     const loggedInUserId = req.user.id;
     const { eventId } = req.params;
     const { userId, status } = req.body;
     const userIdToChangeAttendanceOf = userId;
 
-    if (status == 'pending') {
+    if (status == 'pending')
+    {
         res.status(400)
         return res.json(
             {
@@ -640,7 +687,8 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
         }
     })
 
-    if (!eventToAlter) {
+    if (!eventToAlter)
+    {
         res.status(404);
         return res.json(
             {
@@ -662,7 +710,8 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
     let isCoHost = (attendanceCohostMembership) ? true : false;
     let isOrganizer = (eventToAlter.Group.id == userId)
 
-    if (!isCoHost && !isOrganizer) {
+    if (!isCoHost && !isOrganizer)
+    {
         // 403 forbidden
         let error = { 'message': 'Current User must already be the organizer or have a membership to the group with the status of "co-host"' }
         res.status(403);
@@ -677,7 +726,8 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
         }
     )
 
-    if (!attendingUser) {
+    if (!attendingUser)
+    {
         res.status(400);
         return res.json(
             {
@@ -696,7 +746,8 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
         }
     })
 
-    if (!attendanceToChange) {
+    if (!attendanceToChange)
+    {
         res.status(404)
         return res.json(
             {
@@ -726,7 +777,8 @@ router.put('/:eventId/attendance', requireAuth, async (req, res) => {
 
 // delete attendance to an event specified by eventId and userId
 
-router.delete('/:eventId/attendance', requireAuth, async (req, res) => {
+router.delete('/:eventId/attendance', requireAuth, async (req, res) =>
+{
     const { eventId } = req.params;
     const { userId } = req.body;
     const userIdToUseForDeletion = userId;
@@ -738,7 +790,8 @@ router.delete('/:eventId/attendance', requireAuth, async (req, res) => {
         }
     })
 
-    if (!userBeingDeletedFrom) {
+    if (!userBeingDeletedFrom)
+    {
         res.status(400);
         return res.json(
             {
@@ -763,7 +816,8 @@ router.delete('/:eventId/attendance', requireAuth, async (req, res) => {
         }
     )
 
-    if (!eventThatHasTheAttendanceToDelete) {
+    if (!eventThatHasTheAttendanceToDelete)
+    {
         res.status(404);
         return res.json(
             {
@@ -775,7 +829,8 @@ router.delete('/:eventId/attendance', requireAuth, async (req, res) => {
     let isCurrentUser = (userIdToUseForDeletion == loggedInUserId)
     let isOrganizer = (eventThatHasTheAttendanceToDelete.Group.organizerId == loggedInUserId)
 
-    if (!isCurrentUser && !isOrganizer) {
+    if (!isCurrentUser && !isOrganizer)
+    {
         // 403 forbidden
         let error = {
             "message": "Only the User or organizer may delete an Attendance"
@@ -793,7 +848,8 @@ router.delete('/:eventId/attendance', requireAuth, async (req, res) => {
         }
     })
 
-    if (!attendanceToDelete) {
+    if (!attendanceToDelete)
+    {
         res.status(404);
         return res.json(
             {
