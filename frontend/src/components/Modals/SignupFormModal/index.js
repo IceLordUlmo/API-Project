@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useModal } from "../../context/Modal";
-import * as sessionActions from "../../store/session";
+import { useModal } from "../../../context/Modal";
+import * as sessionActions from "../../../store/session";
 import "./SignupForm.css";
 
-function SignupFormModal() {
+function SignupFormModal()
+{
     const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
@@ -16,9 +17,11 @@ function SignupFormModal() {
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e) =>
+    {
         e.preventDefault();
-        if (password === confirmPassword) {
+        if (password === confirmPassword)
+        {
             setErrors({});
             return dispatch(
                 sessionActions.signup({
@@ -30,9 +33,11 @@ function SignupFormModal() {
                 })
             )
                 .then(closeModal)
-                .catch(async (res) => {
+                .catch(async (res) =>
+                {
                     const data = await res.json();
-                    if (data && data.errors) {
+                    if (data && data.errors)
+                    {
                         setErrors(data.errors);
                     }
                 });
@@ -42,16 +47,19 @@ function SignupFormModal() {
         });
     };
 
-    useEffect(() => {
+    useEffect(() =>
+    {
         // when any field is empty
         if ((email.length < 1 ||
             username.length < 1 ||
             firstName.length < 1 ||
             lastName.length < 1 ||
             password.length < 1) ||
-            (username.length < 4 || password.length < 6)) {
+            (username.length < 4 || password.length < 6))
+        {
             setCanSignUp(false);
-        } else {
+        } else
+        {
             setCanSignUp(true);
         }
     }, [email, username, firstName, lastName, password])
