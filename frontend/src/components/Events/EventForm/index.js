@@ -51,6 +51,11 @@ export function EventForm({ event, group, isCreateForm })
             errors.price = 'Price is required (but can be zero).'
         }
 
+        if (type != 'Online' && type != 'In Person')
+        {
+            errors.type = 'Choose a type.'
+        }
+
         if (startDate === '')
         {
             errors.startDate = 'Start date is required';
@@ -168,6 +173,7 @@ export function EventForm({ event, group, isCreateForm })
                 </label>
                 <div>
                     <h3>Is this an in-person or online group?</h3>
+                    <p>{errors.type}</p>
                     <select value={type} onChange={(event) => setType(event.target.value)}>
 
                         <option value='' disabled>(select one)</option>

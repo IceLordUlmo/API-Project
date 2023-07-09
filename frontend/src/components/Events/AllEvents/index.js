@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-
+import { SortEvents } from "../../Utils/sort"
 
 import { getAllEventsThunk } from "../../../store/event"
 
@@ -14,6 +14,7 @@ export function AllEvents()
     let allEvents = useSelector(state => state.events.allEvents);
     let oneEvent = useSelector(state => state.events.oneEvent);
     allEvents = Object.values(allEvents);
+
     useEffect(() =>
     {
         console.log("useEffect allEvents");
@@ -22,6 +23,8 @@ export function AllEvents()
     }, [dispatch, oneEvent])
 
     if (allEvents === undefined) return;
+
+    allEvents = SortEvents(allEvents);
 
     return (
         <div className="all-events-external-div">

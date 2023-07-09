@@ -125,7 +125,7 @@ export const getOneGroupThunk = (groupId) => async (dispatch) =>
 {
     const getURL = "/api/groups/" + groupId;
 
-    console.log(getURL);
+    console.log('get one group thunk', getURL);
 
     const response = await csrfFetch(getURL);
 

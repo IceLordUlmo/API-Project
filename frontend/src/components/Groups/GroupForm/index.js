@@ -42,10 +42,10 @@ export function GroupForm({ preexistingGroup, isCreateForm })
             errors.about = 'Please enter a description 30 characters or more';
         }
         console.log('in person', type !== 'In Person', 'online', type !== 'Online', 'type', type)
-        // if (!location.length)
-        // {
-        //     errors.location = 'Please enter a location';
-        // }
+        if (type != 'Online' && type != 'In Person')
+        {
+            errors.type = 'Choose a type.'
+        }
         if (!city.length)
         {
             errors["city"] = "City is required.";
@@ -187,7 +187,7 @@ export function GroupForm({ preexistingGroup, isCreateForm })
                 <div className='group-form-section-four'>
                     <label className='group-form-type-container'>
                         <h3>Is this an in-person or online group?</h3>
-
+                        <p>{errors.type}</p>
                         <select value={type} onChange={(event) => setType(event.target.value)}>
                             <option value='' disabled>(select one)</option>
                             {types.map(singleType => (

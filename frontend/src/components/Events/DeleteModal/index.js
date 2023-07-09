@@ -12,7 +12,7 @@ function DeleteModal({ eventId, groupId })
     const history = useHistory();
 
     const { closeModal } = useModal();
-
+    console.log('delete modal groupId', groupId);
     const handleDelete = () =>
     {
         return dispatch(deleteEventThunk(eventId)).then(history.push(`/groups/${groupId}`)).then(closeModal);

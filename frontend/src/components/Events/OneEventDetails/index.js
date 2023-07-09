@@ -24,13 +24,16 @@ export const OneEventDetails = () =>
 
     useEffect(() =>
     {
-        console.log("useEffect oneEvent");
-        dispatch(getOneEventThunk(eventId))
-        if (event.Group !== undefined)
+        console.log("useEffect oneEvent", event);
+        if (!event || event.id != eventId)
+        {
+            dispatch(getOneEventThunk(eventId))
+        }
+        if (event.id !== undefined)
         {
             dispatch(getOneGroupThunk(event.Group.id))
         }
-    }, [dispatch, eventId])
+    }, [dispatch, eventId, event])
 
     const history = useHistory();
     if (event === undefined || group === undefined) return;
@@ -118,7 +121,7 @@ export const OneEventDetails = () =>
                             </div>
 
                             <div className='one-event-details-location'>
-                                <i class="fa-sharp fa-solid fa-map-pin" />
+                                <i className="fa-sharp fa-solid fa-map-pin" />
                                 <div className='one-event-details-location-type'>
                                     {event.type}
                                 </div>
@@ -134,7 +137,7 @@ export const OneEventDetails = () =>
                             <div className="one-event-details-button one-group-details-dg">
                                 <OpenModalMenuItem
                                     itemText="Delete"
-                                    modalComponent={<DeleteModal className="modal-container-delete" eventId={event.id} />}
+                                    modalComponent={<DeleteModal className="modal-container-delete" eventId={event.id} groupId={group.id} />}
                                 /></div>
                         </div>
                         )

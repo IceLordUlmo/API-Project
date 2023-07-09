@@ -151,7 +151,7 @@ export const getOneEventThunk = (eventId) => async (dispatch) =>
 {
     const getURL = "/api/events/" + eventId;
 
-    console.log(getURL);
+    console.log('get one event thunk', getURL);
 
     const response = await csrfFetch(getURL);
 
@@ -195,7 +195,7 @@ export const deleteEventThunk = (eventIdToDelete) => async (dispatch) =>
 {
     const deleteURL = "/api/events/" + eventIdToDelete
 
-    console.log(deleteURL);
+    console.log('delete url:', deleteURL);
 
     const response = await csrfFetch(deleteURL, {
         method: 'DELETE',
