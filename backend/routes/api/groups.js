@@ -575,7 +575,7 @@ router.get('/:groupId/events', async (req, res) =>
         where: {
             groupId: requestedGroupId
         },
-        attributes: ["id", "groupId", "venueId", "name", "type", "startDate", "endDate"],
+        attributes: ["id", "groupId", "venueId", "name", "type", "startDate", "endDate", "description"],
         include: [
             {
                 model: Venue,
@@ -588,14 +588,16 @@ router.get('/:groupId/events', async (req, res) =>
         ]
     })
 
-    if (groupEvents.length === 0)
-    {
-        res.status(404);
-        return res.json(
-            {
-                'message': "No events found for group"
-            })
-    }
+    console.log(groupEvents);
+
+    // if (groupEvents.length === 0)
+    // {
+    //     res.status(404);
+    //     return res.json(
+    //         {
+    //             'message': "No events found for group"
+    //         })
+    // }
 
     for (let event of groupEvents)
     {

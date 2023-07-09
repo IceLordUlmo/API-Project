@@ -94,9 +94,8 @@ export const getOneGroupsEventsThunk = (groupId) => async (dispatch) =>
         console.log("one groups events thunk ok")
     } else
     {
-        const error = await response.json();
         console.log("one groups events thunk definitely NOT ok")
-        return error;
+        return { oneGroupsEventsJson };
     }
 }
 

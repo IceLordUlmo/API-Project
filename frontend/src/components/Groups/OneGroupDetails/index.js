@@ -7,6 +7,7 @@ import "./OneGroupDetails.css";
 import { getOneGroupThunk, deleteGroupThunk } from "../../../store/group";
 import { getOneGroupsEventsThunk } from "../../../store/event";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import GroupEvent from "../GroupEvent"
 import OpenModalMenuItem from '../../Navigation/OpenModalMenuItem'
 import DeleteModal from "../DeleteModal";
 
@@ -16,7 +17,7 @@ export const OneGroupDetails = () =>
     const dispatch = useDispatch();
     const group = useSelector(state => state.groups.oneGroup);
     const user = useSelector(state => state.session.user);
-    const groupEvents = useSelector(state => state.events.oneGroupsEvents);
+    const groupEvents = Object.values(useSelector(state => state.events.oneGroupsEvents))[0];
     const history = useHistory();
     useEffect(() =>
     {
@@ -26,6 +27,7 @@ export const OneGroupDetails = () =>
     }, [dispatch, groupId])
 
     if (group === undefined) return;
+    if (groupEvents === undefined) return;
 
     const weCanJoinThis = (user && user.id !== group.Organizer.id)
     const weCreatedThis = (user && user.id === group.Organizer.id)
@@ -35,6 +37,7 @@ export const OneGroupDetails = () =>
         return alert('Feature coming soon!')
     }
 
+    console.log('in 1', groupEvents)
     return (
         <div>
             <div className="group-breadcrumb">
@@ -60,8 +63,14 @@ export const OneGroupDetails = () =>
                         <p>{group.private ? "Private" : "Public"}</p>
                     </div>
                     <p>
-                        Organized by {group.Organizer.firstName} {group.Organizer.lastName}
+                        Organized by: {group.Organizer.firstName} {group.Organizer.lastName}
                     </p>
+
+                    <div>
+                        <h3>Events ({groupEvents.length})</h3>
+                        {groupEvents.map(event => <GroupEvent event={event} key={event.id} />)}
+                    </div>
+
                     {(weCreatedThis) &&
                         (<div>
                             <Link to={`/groups/${group.id}/events/new`} className="one-group-details-button">

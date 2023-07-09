@@ -15,7 +15,10 @@ export function GroupForm({ preexistingGroup, isCreateForm })
     const [about, setAbout] = useState(preexistingGroup ? preexistingGroup.about : '');
     const [type, setType] = useState(preexistingGroup ? preexistingGroup.type : '');
     const [isPrivate, setIsPrivate] = useState('false');
-    const [location, setLocation] = useState(preexistingGroup ? preexistingGroup.city + ", " + preexistingGroup.state : '');
+
+    // the variables previously known as location
+    const [city, setCity] = useState(preexistingGroup ? preexistingGroup.city + ", " + preexistingGroup.state : '');
+    const [state, setState] = useState(preexistingGroup ? preexistingGroup.city + ", " + preexistingGroup.state : '');
 
     const groupImages = preexistingGroup ? preexistingGroup.GroupImages : null;
     const groupImagesURL = groupImages ? preexistingGroup.GroupImages[0].url : '';
@@ -39,9 +42,17 @@ export function GroupForm({ preexistingGroup, isCreateForm })
             errors.about = 'Please enter a description 50 characters or more';
         }
         console.log('in person', type !== 'In Person', 'online', type !== 'Online', 'type', type)
-        if (!location.length)
+        // if (!location.length)
+        // {
+        //     errors.location = 'Please enter a location';
+        // }
+        if (!city.length)
         {
-            errors.location = 'Please enter a location';
+            errors["city"] = "City is required.";
+        }
+        if (!state.length)
+        {
+            errors["state"] = "State is required.";
         }
         if (!image.length)
         {
@@ -53,7 +64,7 @@ export function GroupForm({ preexistingGroup, isCreateForm })
             setCanSubmit(false);
         }
 
-    }, [name, about, location, image, type])
+    }, [name, about, city, state, image, type])
 
     const [errors, setErrors] = useState({});
     if (!isCreateForm)
@@ -85,8 +96,6 @@ export function GroupForm({ preexistingGroup, isCreateForm })
             console.log('errors', errors)
             return errors;
         }
-        console.log(location);
-        const [city, state] = location.split(", ");
         const groupObject = {
             ...preexistingGroup,
             "name": name,
@@ -175,9 +184,12 @@ export function GroupForm({ preexistingGroup, isCreateForm })
                     </select>
                 </label>
                 <label className='group-form-location-container'>
-                    <p>{errors.location}</p>
-                    <input type='text' value={location} onChange={(event) => setLocation(event.target.value)}
-                        placeholder='System, Region' />
+                    <p>{errors.city}</p>
+                    <input type='text' value={city} onChange={(event) => setCity(event.target.value)}
+                        placeholder='City' />
+                    <p>{errors.state}</p>
+                    <input type='text' value={state} onChange={(event) => setState(event.target.value)}
+                        placeholder='State' />
                 </label>
                 <label className='group-form-image-container'>
                     <p>{errors.image}</p>
