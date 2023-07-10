@@ -9,26 +9,26 @@ export default function MiniEvent({ event })
 
     //console.log('event is:', event.startDate);
     return (
-        <Link to={`/events/${event.id}`} className="event-item-container-box">
-            <div className="event-item-top-half">
-                <img className="group-event-image" src={event.previewImage} />
-                <div className="group-event-top-text">
-                    <p className="group-event-date">
+        <Link to={`/events/${event.id}`} className="mini-event-item-container-box">
+            <div className="mini-event-item-top-half">
+                <img className="mini-event-image" src={event.previewImage} />
+                <div className="mini-event-top-text">
+                    <h3 className="mini-event-date">
                         {dateString(dateTransformer(event.startDate))}
-                    </p>
-                    <h3 className="group-event-list-title">
+                    </h3>
+                    <h3 className="mini-event-title">
                         {event.name}
                     </h3>
-                    <h3 className="group-event-list-location">
+                    <h3 className="mini-event-location">
                         {event.Venue?.city}, {event.Venue?.state}
                     </h3>
-                    <h3 className="group-event-type">
+                    <h3 className="mini-event-type">
                         {event.type}
                     </h3>
                 </div>
-                <div>
-                    <h3>{event.description}</h3>
-                </div>
+            </div>
+            <div className='mini-event-bottom-half'>
+                <h3>{event.description}</h3>
             </div>
         </Link>
     )

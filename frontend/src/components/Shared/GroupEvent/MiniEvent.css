@@ -1,8 +1,9 @@
-.group-event-date {
+.mini-event-date {
     display: flex;
+    color: darkgray;
 }
 
-.group-event-image {
+.mini-event-image {
     width: 160px;
     height: 160px;
     border-radius: 15px;
@@ -10,11 +11,15 @@
     object-fit: cover;
 }
 
-.event-item-top-half {
+.mini-event-title {
+    margin: 10px 0px 10px 0px;
+}
+
+.mini-event-item-top-half {
     display: flex;
 }
 
-.event-item-container-box {
+.mini-event-item-container-box {
     display: flex;
     flex-direction: column;
 
@@ -29,8 +34,54 @@
     margin-bottom: 15px;
 }
 
-.group-event-top-text {
+.mini-event-top-text {
     display: flex;
     flex-direction: column;
     margin-left: 15px;
+}
+
+.mini-events-single-event:hover {
+    cursor: pointer;
+}
+
+.mini-event-grid-setup {
+    display: grid;
+    grid-template-columns: 33% 67%;
+    text-decoration: none;
+    color: black;
+}
+
+.mini-event-image {
+    width: 200px;
+    height: 150px;
+    object-fit: scale-down;
+}
+
+.mini-event-single-event-container {
+    margin: 10px 0px 10px 0px;
+    list-style: none;
+}
+
+.mini-event-text {
+    text-decoration: none;
+    border: none;
+}
+
+.mini-event-location {
+    color: darkgray;
+    margin: 0px 0px 12px 0px;
+}
+
+.mini-event-about {
+    height: 50px;
+}
+
+.mini-event-name {
+    font-size: 32px;
+}
+
+.all-events-single-event {
+    display: flex;
+    flex-direction: column;
+
 }
