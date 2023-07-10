@@ -125,12 +125,15 @@
     display: flex;
     flex-direction: row;
     background-color: white;
-    width: 80%;
+    width: 100%;
+    height: 33%;
+    border-radius: 15px;
+    margin: 15px;
 }
 
 .one-event-top-third-image {
-    width: 25%;
-    height: 15%;
+    width: 150px;
+    height: 100px;
     object-fit: scale-down;
 }
 
@@ -139,6 +142,9 @@
     margin: 3% 0px 0px 0px;
     display: flex;
     flex-direction: row;
+    border-radius: 15px;
+    margin: 15px;
+    width: 100%;
 }
 
 .one-event-column-one {
