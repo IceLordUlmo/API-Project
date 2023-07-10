@@ -46,7 +46,7 @@ export const OneEventDetails = () =>
 
 
 
-    console.log('looking for a startDate', event);
+    console.log('looking for a groupImage', groupImage.url);
     const eventTimeInfo = event.startDate.split("T");
     let eventDay = eventTimeInfo[0];
     let eventTime = eventTimeInfo[1];
@@ -95,7 +95,7 @@ export const OneEventDetails = () =>
                             <img className='one-event-image' src={eventImage?.url} />
                             <div className='one-event-thirds'>
                                 <div className='one-event-top-third'>
-                                    <img className='one-event-top-third-image' src={eventImage?.url} />
+                                    <img className='one-event-top-third-image' src={groupImage?.url} />
                                     <div className='one-event-top-third-text'>
                                         <Link to={`/groups/${event.groupId}`} className="event-group-chunk">
                                             <h4 className='one-event-top-third-name'>{group.name}</h4>

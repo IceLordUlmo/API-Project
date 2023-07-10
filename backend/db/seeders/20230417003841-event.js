@@ -59,6 +59,7 @@ module.exports = {
             }
             ,
             {
+                venueId: 3,
                 groupId: 4,
                 name: "Magic again",
                 description: "the second Gathering",
