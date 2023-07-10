@@ -67,6 +67,11 @@ export function EventForm({ event, group, isCreateForm })
             errors.endDate = 'End date is required';
         }
 
+        if (isNaN(+price))
+        {
+            errors.price = 'Price must be a number'
+        }
+
         if (dateStartDate == 'Invalid Date')
         {
             errors.startDate = 'Start date is invalid';
