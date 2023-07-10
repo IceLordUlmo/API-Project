@@ -12,22 +12,22 @@ export const SingleGroup = ({ group, events }) =>
     )
 
     return (
-        <li className="all-groups-single-group">
+        <li className="all-groups-single-group-container">
             <Link to={`/groups/${group.id}`} className='single-group-grid-setup'>
-                <img src={group.previewImage} className="single-group-image-temp">
+                <img src={group.previewImage} className="single-group-image">
 
                 </img>
 
                 <div className="single-group-text">
                     <h2>
-                        <p className="single-group-link">{group.name}</p>
+                        <div className="single-group-name">{group.name}</div>
                     </h2>
-                    <p className="single-group-location">{group.city}, {group.state}</p>
-                    <p className="single-group-about">{group.about}</p>
+                    <div className="single-group-location">{group.city}, {group.state}</div>
+                    <div className="single-group-about">{group.about}</div>
                     <div className="single-group-events">
-                        <p>
+                        <div>
                             {eventCount} {eventCount === 1 ? 'Event' : 'Events'}  • {groupPublicity}
-                        </p>
+                        </div>
                     </div>
                 </div>
             </Link>

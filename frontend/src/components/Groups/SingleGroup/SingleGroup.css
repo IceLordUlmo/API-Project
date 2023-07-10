@@ -4,5 +4,36 @@
 
 .single-group-grid-setup {
     display: grid;
-    grid-template-columns: 30% 70%;
+    grid-template-columns: 33% 67%;
+    text-decoration: none;
+    color: black;
+}
+
+.single-group-image {
+    width: 200px;
+    height: 150px;
+    object-fit: scale-down;
+}
+
+.all-groups-single-group-container {
+    margin: 10px 0px 10px 0px;
+    list-style: none;
+}
+
+.single-group-text {
+    text-decoration: none;
+    border: none;
+}
+
+.single-group-location {
+    color: gray;
+    margin: 0px 0px 12px 0px;
+}
+
+.single-group-about {
+    height: 50px;
+}
+
+.single-group-name {
+    font-size: 32px;
 }

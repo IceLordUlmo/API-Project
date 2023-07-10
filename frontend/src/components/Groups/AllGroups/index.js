@@ -29,13 +29,13 @@ export function AllGroups()
             <div className="all-groups-external-div">
                 <div className="all-groups-events-and-groups">
                     <div className='all-groups-headers'>
-                        <h1 className='all-groups-events'><NavLink to='/events' className='all-groups-events-link'>Events</ NavLink></h1>
+                        <h2 className='all-groups-events'><NavLink to='/events' className='all-groups-events-link'>Events</ NavLink></h2>
                     </div>
                     <div className='all-groups-headers'>
-                        <h1 className='all-groups-headers all-groups-groups'>Groups</h1>
+                        <h2 className='all-groups-headers all-groups-groups'>Groups</h2>
                     </div>
                 </div>
-                <h2 className='all-groups-caption'>Groups in FleetUp</h2>
+                <h3 className='all-groups-caption'>Groups in FleetUp</h3>
                 <ul className="all-groups-unordered-list-of-groups">
                     {
                         allGroups?.map((singleGroup) => (
