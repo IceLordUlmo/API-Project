@@ -1,10 +1,213 @@
-.group-breadcrumb {
+.event-breadcrumb {
     height: 20%;
-    display: grid;
-    grid-template-rows: 4fr 1fr;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    width: 70%;
+    margin: 0px 0px 0px 15%;
 }
 
-.group-breadcrumb-spacer {
+.event-details {
+    height: 40%;
+
+}
+
+.event-breadcrumb-spacer {
     height: 18%;
     display: flex;
+}
+
+.event-breadcrumb-text {
+    margin: 80px 0px 0px 0px;
+}
+
+.one-event-name {
+    font-size: 36px;
+}
+
+.one-event-details-join-button {
+    color: white;
+    background-color: red;
+    margin: 100px 0px 0px 0px;
+}
+
+
+
+.one-event-right-text {
+    margin: 10px 0px 10px 0px;
+    color: darkgray;
+}
+
+.one-event-details-dg {
+    color: darkgray;
+}
+
+.one-event-gray {
+    background-color: lightgray;
+}
+
+.one-event-image {
+    width: 55%;
+    height: 95%;
+    object-fit: scale-down;
+    margin: 3% 0px 0px 0px;
+}
+
+.one-event-top-half {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    width: 70%;
+    margin: 0px 0px 0px 15%;
+    background-color: lightgray;
+}
+
+.event-detail-text-top {
+    display: flex;
+    flex-direction: row;
+}
+
+.one-event-horizontal-buttons {
+    display: flex;
+    flex-direction: row;
+}
+
+.one-event-details-button {
+    margin: 35px 3px 10px 3px;
+    width: 100px;
+    align-self: center;
+    background-color: gray;
+    color: white;
+    border: none;
+    text-align: center;
+    border-radius: 10px;
+    padding: 0px 0% 0px 0%;
+    list-style: none;
+    padding: 0px;
+}
+
+.one-event-details-button:hover {
+    background-color: #606060;
+}
+
+.one-event-bottom-organizer {
+    font-size: 36px;
+    margin: 15px 0px 10px 0px;
+}
+
+.one-event-bottom-name {
+    color: gray;
+    margin: 0px 0px 30px 0px;
+}
+
+.one-event-bottom-about {
+    margin: 0px 0px 30px 0px;
+}
+
+.one-event-breadcrumb-name {
+    font-size: 36px;
+    margin: 20px 0px 8px 0px;
+}
+
+.one-event-breadcrumb-organizer {
+    color: gray;
+}
+
+.one-event-thirds {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    margin: 3% 0px 0px 0px;
+}
+
+.one-event-top-third {
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    width: 80%;
+}
+
+.one-event-top-third-image {
+    width: 25%;
+    height: 15%;
+    object-fit: scale-down;
+}
+
+.one-event-bottom-two-thirds {
+    background-color: white;
+    margin: 3% 0px 0px 0px;
+    display: flex;
+    flex-direction: row;
+}
+
+.one-event-column-one {
+    width: 75%;
+}
+
+.one-event-detail-start-and-end {
+    display: flex;
+    flex-direction: row;
+    margin: 5px 0px 0px 0px;
+    padding: 0px;
+}
+
+.fa-clock {
+    margin: 10px 0px 0px 10px;
+    font-size: 140%;
+}
+
+.one-event-details-cost {
+    display: flex;
+    flex-direction: row;
+    margin: 0px;
+    padding: 0px;
+}
+
+.fa-circle-dollar {
+    margin: 10px 0px 0px 10px;
+    display: flex;
+    border: 2px solid darkgrey;
+    border-radius: 100%;
+    width: 19px;
+    height: 19px;
+    justify-content: center;
+    align-items: center;
+}
+
+.one-event-details-details * {
+    color: darkgray;
+}
+
+.one-event-price {
+    margin: 12px 0px 0px 0px;
+}
+
+.one-event-details-location {
+    display: flex;
+    flex-direction: row;
+    margin: 15px 0px 0px 15px;
+    padding: 0px;
+}
+
+.fa-sharp {
+    font-size: 130%;
+    margin: 0px 5px 0px 0px;
+}
+
+.one-event-details-location-type {
+    margin: 0px;
+}
+
+.one-event-details-button {
+    margin: 85px 0px 0px 0px;
+}
+
+.one-event-description {
+    font-size: 32px;
+}
+
+.one-event-details-join-button:hover {
+    background-color: darkred;
+    cursor: pointer;
 }

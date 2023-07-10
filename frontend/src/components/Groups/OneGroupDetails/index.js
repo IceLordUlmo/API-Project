@@ -47,7 +47,7 @@ export const OneGroupDetails = () =>
 
                     </div>
                     <div className="group-breadcrumb-text">
-                        {'<'}<Link to='/groups'>
+                        {'<'} <Link to='/groups'>
                             Groups
                         </Link>
                     </div>
