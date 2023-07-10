@@ -104,12 +104,15 @@ export const OneGroupDetails = () =>
             </div>
             <div className="one-group-events-wide">
                 <div className="one-group-events">
-                    <h3 className="one-group-bottom-organizer">
-                        Organized by: {group.Organizer.firstName} {group.Organizer.lastName}
+                    <h2 className="one-group-bottom-organizer">
+                        Organizer
+                    </h2>
+                    <h3 className='one-group-bottom-name'>
+                        {group.Organizer.firstName} {group.Organizer.lastName}
                     </h3>
                     <div>
-                        <h3>What we're about:</h3>
-                        <p>{group.about}</p>
+                        <h3 className="one-group-bottom-organizer">What we're about:</h3>
+                        <h4 className='one-group-bottom-about'>{group.about}</h4>
                     </div>
                     {groupEvents.length > 0 ? (<div>
                         <h3>Events ({groupEvents.length})</h3>
