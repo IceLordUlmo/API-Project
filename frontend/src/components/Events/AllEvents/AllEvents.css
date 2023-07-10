@@ -1,16 +1,46 @@
 .all-events-groups-link {
     color: gray;
     text-decoration: none;
+    background-color: white;
 }
 
 .all-events-groups-link:hover {
-
     text-decoration: underline;
 }
 
 .all-events-events {
     color: teal;
     text-decoration: underline;
+}
+
+.all-events-unordered-list-of-events {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.all-events-events-and-groups {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin: 0px 0px 10px 0px;
+}
+
+.all-events-headers {
+    width: 100px;
+}
+
+.all-events-external-div {
+    width: 80%;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+}
+
+.all-events-constraint {
+    justify-content: left;
+    display: flex;
+    margin: 80px 0px 0px 20%;
 }
 
 .all-events-single-event {

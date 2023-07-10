@@ -20,8 +20,8 @@ module.exports = {
                 type: "In Person",
                 capacity: 15,
                 price: 10,
-                startDate: new Date(2023, 4, 29),
-                endDate: new Date(2023, 4, 29)
+                startDate: new Date(2023, 3, 29),
+                endDate: new Date(2023, 3, 29)
             },
             {
                 venueId: 2,
@@ -42,8 +42,8 @@ module.exports = {
                 type: "Online",
                 capacity: 300,
                 price: 1,
-                startDate: new Date(2023, 4, 30),
-                endDate: new Date(2023, 4, 30)
+                startDate: new Date(2023, 3, 30),
+                endDate: new Date(2023, 3, 30)
             }
             ,
             {

@@ -56,10 +56,19 @@ function ProfileButton({ user })
             <ul className={ulClassName} ref={ulRef}>
                 {user ? (
                     <>
-                        <li>Hello, {user.firstName}</li>
-                        <li>{user.email}</li>
+                        <div className='profile-button-welcome'>
+                            <li>Hello, {user.firstName}</li>
+                            <li>{user.email}</li>
+                        </div>
+                        <div className='profile-button-see-all'>
+                            <li>
+                                <NavLink to="/groups">See All Groups</NavLink>
+                            </li><li>
+                                <NavLink to="/events">See All Events</NavLink>
+                            </li>
+                        </div>
                         <li>
-                            <button onClick={logout}>Log Out</button>
+                            <button className='profile-button-logout' onClick={logout}>Log Out</button>
                         </li>
 
                     </>
@@ -75,13 +84,16 @@ function ProfileButton({ user })
                             onItemClick={closeMenu}
                             modalComponent={<SignupFormModal />}
                         />
+                        <div className='profile-button-see-all'>
+                            <li>
+                                <NavLink to="/groups">See All Groups</NavLink>
+                            </li><li>
+                                <NavLink to="/events">See All Events</NavLink>
+                            </li>
+                        </div>
                     </>
                 )}
-                <li>
-                    <NavLink to="/groups">See All Groups</NavLink>
-                </li><li>
-                    <NavLink to="/events">See All Events</NavLink>
-                </li>
+
             </ul>
         </>
     );

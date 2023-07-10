@@ -83,7 +83,8 @@ export const dateTransformer = (date) =>
 
     return {
         year: yearUTC,
-        month: months[month],
+        month: month + 1,
+        monthName: months[month],
         day: day,
         dayName: daysOfWeek[dayOfWeekUTC],
         hour: hour,
@@ -94,7 +95,7 @@ export const dateTransformer = (date) =>
 
 export const dateString = (dateStr) =>
 {
-    const returnDate = `${dateStr.dayName}, ${dateStr.month} ${dateStr.day} • ${dateStr.hour}:${dateStr.minutes} ${dateStr.amPm}`;
+    const returnDate = `${dateStr.year}-${dateStr.month}-${dateStr.day} • ${dateStr.hour}:${dateStr.minutes} ${dateStr.amPm}`;
 
     return returnDate;
 }

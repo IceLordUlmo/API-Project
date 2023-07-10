@@ -1,6 +1,7 @@
 .all-groups-events-link {
     color: gray;
     text-decoration: none;
+    background-color: white;
 }
 
 .all-groups-events-link:hover {
@@ -21,23 +22,25 @@
 .all-groups-events-and-groups {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: left;
+    margin: 0px 0px 10px 0px;
 }
 
 .all-groups-headers {
-    width: 180px;
+    width: 100px;
 }
 
 .all-groups-external-div {
-    width: 40%;
+    width: 80%;
     flex-direction: column;
     justify-content: center;
     display: flex;
 }
 
 .all-groups-constraint {
-    justify-content: center;
+    justify-content: left;
     display: flex;
+    margin: 80px 0px 0px 20%;
 }
 
 .all-groups-single-group {

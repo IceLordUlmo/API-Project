@@ -30,7 +30,8 @@ export function EventForm({ event, group, isCreateForm })
     const dateStartDate = new Date(startDate);
     const dateEndDate = new Date(endDate);
 
-    console.log(preexistingEvent)
+    console.log('pre existing ', preexistingEvent);
+    console.log('dates ', dateStartDate, dateEndDate);
 
     useEffect(() =>
     {
@@ -66,6 +67,21 @@ export function EventForm({ event, group, isCreateForm })
             errors.endDate = 'End date is required';
         }
 
+        if (isNaN(+price))
+        {
+            errors.price = 'Price must be a number'
+        }
+
+        if (dateStartDate == 'Invalid Date')
+        {
+            errors.startDate = 'Start date is invalid';
+        }
+
+        if (dateEndDate == 'Invalid Date')
+        {
+            errors.endDate = 'End date is invalid';
+        }
+
         if (dateStartDate < dateNow)
         {
             errors.startDate = 'Start date must be after current date.'
@@ -75,12 +91,13 @@ export function EventForm({ event, group, isCreateForm })
         {
             errors.endDate = 'End date must be after start date.'
         }
-        setErrors(errors)
 
         if (description.length < 30)
         {
             errors.description = 'Description must be at least 30 characters.'
         }
+
+        setErrors(errors)
 
         if (Object.keys(errors).length > 0)
         {
@@ -135,9 +152,9 @@ export function EventForm({ event, group, isCreateForm })
                     {
                         console.log('mysterious error');
                         const data = await res.json();
-                        if (data && data.errors)
+                        if (data && data.message)
                         {
-                            setErrors(data.errors);
+                            setErrors(data.message);
                         }
                     })
             });
@@ -160,7 +177,7 @@ export function EventForm({ event, group, isCreateForm })
 
 
     const buttonText = isCreateForm ? 'Create Event' : 'Update Event'
-
+    console.log('got this far loop test');
     return (
         <>
             <h1>Create a new event for {group.name}</h1>

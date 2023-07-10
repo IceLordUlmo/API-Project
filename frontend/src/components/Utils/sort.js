@@ -4,6 +4,6 @@ export const SortEvents = events =>
     const past = events.filter(event => new Date(event.startDate) < dateNow);
     const future = events.filter(event => new Date(event.startDate) > dateNow);
 
-    return [...past.sort((a, b) => { return new Date(a.startDate) - new Date(b.startDate) }),
-    ...future.sort((a, b) => { return new Date(a.startDate) - new Date(b.startDate) })]
+    return [...future.sort((a, b) => { return new Date(a.startDate) - new Date(b.startDate) }),
+    ...past.sort((a, b) => { return new Date(a.startDate) - new Date(b.startDate) })]
 }

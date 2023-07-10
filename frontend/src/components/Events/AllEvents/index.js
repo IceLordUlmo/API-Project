@@ -27,25 +27,28 @@ export function AllEvents()
     allEvents = SortEvents(allEvents);
 
     return (
-        <div className="all-events-external-div">
-            <h2>Events in Meetup</h2>
-            <div className="all-groups-events-and-groups">
-                <div className='all-groups-headers'>
-                    <h1 className=' all-events-events'>Events</h1>
-                </div>
-                <div className='all-groups-headers'>
-                    <h1 className='all-events-groups'><NavLink to='/Groups' className='all-events-groups-link'>Groups</NavLink></h1>
-                </div>
-            </div>
-            <ul className="all-events-unordered-list-of-events">
-                {
-                    allEvents?.map((singleEvent) => (<div className={"all-events-single-event " +
-                        (allEvents.indexOf(singleEvent) === allEvents.length - 1
-                            ? "all-events-last-event" : '')} >
-                        <MiniEvent key={singleEvent.id} event={singleEvent} />
+        <div className='all-events-constraint'>
+            <div className="all-events-external-div">
+
+                <div className="all-events-events-and-groups">
+                    <div className='all-events-headers'>
+                        <h2 className='all-events-events'>Events</h2>
                     </div>
-                    ))}
-            </ul>
+                    <div className='all-events-headers'>
+                        <h2 className='all-events-groups'><NavLink to='/Groups' className='all-events-groups-link'>Groups</NavLink></h2>
+                    </div>
+                </div>
+                <h3>Events in Meetup</h3>
+                <ul className="all-events-unordered-list-of-events">
+                    {
+                        allEvents?.map((singleEvent) => (<div key={singleEvent.id} className={"all-events-single-event " +
+                            (allEvents.indexOf(singleEvent) === allEvents.length - 1
+                                ? "all-events-last-event" : '')} >
+                            <MiniEvent key={singleEvent.id} event={singleEvent} />
+                        </div>
+                        ))}
+                </ul>
+            </div>
         </div>
     )
 }
